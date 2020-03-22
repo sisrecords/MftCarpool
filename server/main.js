@@ -17,7 +17,7 @@ try {
     res.send("connected!");
   })
 
-
+//check
   async function getConnectionsPool(){
     const config = {
       user: "mftfullstackadmin",
