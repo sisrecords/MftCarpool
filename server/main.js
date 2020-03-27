@@ -3,6 +3,7 @@ const port = 3000;
 
 const express = require("express");
 const session = require("express-session");
+const nodemailer = require("nodemailer");
 (async() => {
 
 try {
@@ -15,6 +16,42 @@ try {
     }
 
     res.send("connected!");
+  })
+
+  server.get('/sendmail', async (req, res) => {
+
+    //https://ethereal.email/ for creating test emails
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: "friedrich73@ethereal.email", // generated ethereal user
+        pass: "qmuMEHjbq1muXzVvMd" // generated ethereal password
+      }
+    });
+
+    // create reusable transporter object using the default SMTP transport
+    // let transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: "mail@gmail.com", // generated ethereal user
+    //     pass: "password" // generated ethereal password
+    //   }
+    // });
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: 'friedrich73@ethereal.email', // sender address
+      to: "friedrich73@ethereal.email", // list of receivers
+      subject: "Hello again ✔", // Subject line
+      // text: "Hello world?", // plain text body
+      html: '<b>Hello world123?</b><p>Click<a href="http://192.168.59.1:3001">Lets Go To Map</a></p>"' // html body
+    });
+
+    res.send("mail was sent!");
   })
 
 //check
