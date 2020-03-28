@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import ExampleMap from "./components/map";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ExampleMap />
   </React.StrictMode>,
   document.getElementById('root')
 );
