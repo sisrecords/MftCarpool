@@ -1,0 +1,169 @@
+.card{
+    width: 100%;
+    height: 80px;
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 25px;
+    display: grid;
+    grid-template-rows: repeat(4,20px);
+    grid-template-columns: repeat(10, 1fr);
+    margin-top: 5px;
+}
+
+.listitem{   
+    height: 80px;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    grid-row:1 / span 4;
+    grid-column: 1/ span 10;  
+}
+
+.carIconReq{
+    grid-row:1 / span 3;
+    grid-column: 9/ span 2;
+    /* color: rgb(105,180,255); */
+    color:#42A5F5;
+}
+
+.carIconOff{
+    grid-row:1 / span 3;
+    grid-column: 9/ span 2;
+    color: #0D47A1;
+}
+
+.carIcon{
+    padding-top: 17px !important;
+    padding-left: 12px !important;
+    width: 45px !important;
+    height: 45px !important;
+}
+
+.addressFrom{
+    grid-row:1 / span 2;
+    grid-column: 1/ span 8;
+    font-size: 18px;
+    padding-right: 15px !important;
+    padding-top: 0px !important;
+    justify-self: right !important;
+}
+
+.cityFrom{
+    grid-row:2 / span 2;
+    grid-column: 1/ span 8;
+    font-size: 12px;
+    padding-right: 15px !important;
+    padding-top: 3px !important;
+    justify-self: right !important;
+}
+
+.addressTo{
+    grid-row:3 / span 2;
+    grid-column: 1/ span 8;
+    font-size: 18px;
+    padding-right: 15px !important;
+    padding-top: 0px !important;
+    justify-self: right !important;
+}
+
+.cityTo{
+    grid-row:4 / span 2;
+    grid-column: 1/ span 8;
+    font-size: 12px;
+    padding-right: 15px !important;
+    padding-top: 3px !important;
+    justify-self: right !important;
+}
+
+.locationIcon{
+    grid-row:1 /span 1 ;
+    grid-column: 3;
+    padding-top: 5px !important;
+    padding-right: 14px !important;
+}
+
+.distance{
+    grid-row:1/ span 1 ;
+    grid-column: 1/ span 3;
+    font-size: 14px;
+    padding-top: 5px !important;
+    padding-right:  40px!important;
+    justify-self: right !important;
+    direction: rtl;
+    color:  rgb(151, 148, 148) !important;
+
+}
+
+.fromYou{
+    grid-row:2/ span 1 ;
+    grid-column: 1/ span 3;
+    font-size: 12px;
+    padding-top: 1px !important;
+    padding-right: 40px !important;
+    justify-self: right !important;
+    direction: rtl;
+    color:  rgb(151, 148, 148) !important;
+
+}
+
+.fromTo{
+    grid-row:1/ span 1 ;
+    grid-column: 8/ span 1;
+    padding-left: 30px !important;
+    padding-top: 12px;
+}
+
+.time{
+    grid-row:3/ span 1 ;
+    grid-column: 1/ span 3;
+    font-size: 16px;
+    /* padding-top: 1px !important; */
+    padding-right: 40px !important;
+    justify-self: right !important;
+    direction: rtl;
+    color:  rgb(151, 148, 148) !important;
+
+}
+
+.date{
+    grid-row:4/ span 1 ;
+    grid-column: 1/ span 3;
+    font-size: 12px;
+    /* padding-top: 1px !important; */
+    padding-right: 40px !important;
+    justify-self: right !important;
+    direction: rtl;
+    color:  rgb(151, 148, 148) !important;
+}
+
+.timeIcon{
+    grid-row:3 /span 1 ;
+    grid-column: 3;
+    /* padding-top: 5px !important; */
+    padding-left: 3px !important;
+}
+
+.dateIcon{
+    grid-row:3 /span 1 ;
+    grid-column: 3;
+    padding-top: 18px !important;
+    padding-left: 3px !important;
+}
+
+.accessTimeIcon{
+    width: 17px !important;
+    height: 17px !important;
+    fill: rgb(185, 182, 182) !important;
+}
+
+.eventIcon{
+    width: 17px !important;
+    height: 17px !important;
+    fill: rgb(185, 182, 182) !important;
+}
+
+.locationOnIcon{
+    fill: rgb(185, 182, 182) !important;
+}
