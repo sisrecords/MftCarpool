@@ -14,6 +14,7 @@
     "date-fns": "^2.0.0-beta.5",
     "express": "^4.17.1",
     "material-ui-popup-state": "^1.5.3",
+    "nodemailer": "^6.4.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router": "^5.1.2",
