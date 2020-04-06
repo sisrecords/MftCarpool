@@ -1,0 +1,90 @@
+.sortButton{
+    padding-top: 30% !important;
+    border: none !important;
+}
+
+.sortIcon{
+    height: 30px !important;
+    width: 30px !important;
+    border: none !important;
+    padding-left: 20%;
+}
+
+.filterButton{
+    padding-top: 33% !important;
+    border: none !important;
+}
+
+.filterDialog{
+    direction: rtl !important;
+    padding-right: 0 !important;
+    text-align: right !important;
+}
+
+.addRide{
+    border-radius: 50px !important;
+    height: 63px;
+    width: 30px;
+    /* box-shadow: 5px 5px 5px  !important; */
+    background-color: #0D47A1 !important;
+}
+
+.addIcon{
+    color: white;
+    height: 35px !important;
+    width: 35px !important;
+}
+
+.popper{
+    z-index: 1;
+    /* padding-top: 10px; */
+    border-radius: 20px !important;
+    /* bottom: 1px !important; */
+}
+
+.offRide{
+    grid-row:2 / span 3 !important;
+    grid-column: 1/ span 3;
+    background-color: #1565C0 !important;
+    border-radius:  50px !important;
+    font-size: 16px !important;
+    color: white !important;
+    padding: 0 !important;
+    margin-left: 20% !important;
+    height: 63px;
+    width: 30px;    
+    bottom: 5px;
+}
+
+.reqRide{
+    grid-row:2 / span 3;
+    grid-column: 6/ span 3 !important;
+    background-color: #1E88E5 !important;
+    border-radius: 50px !important;
+    font-size: 16px !important;
+    color: white !important;
+    height: 63px;
+    width: 30px;   
+    bottom: 5px;
+}
+
+.addReqOrOff{
+    /* margin-left: 10%; */
+    /* margin-top: 35px; */
+    /* background-color: #ffffff;   */
+    width: 160px;
+    display: grid;
+    height: 85px;
+    padding-left: 10px;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+    /* position: sticky !important; */
+    bottom: 10px;
+    /* box-shadow: 5px 5px 5px grey; */
+}
+
+.addNewButtons{
+    width:40px !important;
+    height: 40px !important;
+    color: white;
+}
