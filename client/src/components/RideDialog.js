@@ -12,7 +12,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import EventIcon from '@material-ui/icons/Event';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import Pagination from '@material-ui/lab/Pagination';
-import ExampleMap from "./Map";
+import ExampleMap from "./map";
 
 export default function RideDialog(props) {
   const [open, setOpen] = React.useState(props.open);
