@@ -12,6 +12,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import EventIcon from '@material-ui/icons/Event';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import Pagination from '@material-ui/lab/Pagination';
+import ExampleMap from "./Map";
 
 export default function RideDialog(props) {
   const [open, setOpen] = React.useState(props.open);
@@ -73,23 +74,29 @@ export default function RideDialog(props) {
             <div className={styles.email}>{props.ride.email}</div>
           </div>
           : <div className={styles.details}>
-            <div className={styles.map}><img src='/images/map_example.png' alt="from_to" /></div>
+            <div className={styles.map}>
+              {/* here we will take this info from the props.ride and pass it to the map */}
+              <ExampleMap latitude={31.9517728} longitude={34.8164472}
+                input={'בי"ס ממ"ד ישרון, ירמיהו הנביא, 13, גורדון, ראשון לציון'} />
+            </div>
+            {/* onInputChange={(val)=>{}} onMarkerChange={(lat, lon)=>{}}  */}
+            {/* <div className={styles.map}><img src='/images/map_example.png' alt="from_to" /></div> */}
           </div>}
-          
-          <div className={styles.buttons}>
-            <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} />
-            {props.ride.request === '1' ?
+
+        <div className={styles.buttons}>
+          <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} />
+          {props.ride.request === '1' ?
             <Button className={styles.join} onClick={handleMeet} color="primary" autoFocus>
               צרף אליי לנסיעה!
           </Button> :
-          <Button className={styles.join} onClick={handleMeet} color="primary" autoFocus>
-          אני רוצה להצטרף!
+            <Button className={styles.join} onClick={handleMeet} color="primary" autoFocus>
+              אני רוצה להצטרף!
       </Button>
-}
-            <Button className={styles.cancel} onClick={handleClose} color="primary">
-              ביטול
+          }
+          <Button className={styles.cancel} onClick={handleClose} color="primary">
+            ביטול
           </Button>
-          </div>
+        </div>
 
       </Dialog>
     </div>

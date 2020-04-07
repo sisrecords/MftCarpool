@@ -6,6 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
 import { useDebounce } from "use-debounce";
 import Button from '@material-ui/core/Button';
+import styles from './map.module.css';
 
 const LightTooltip = withStyles(theme => ({
   tooltip: {
@@ -18,13 +19,14 @@ const LightTooltip = withStyles(theme => ({
   },
 }))(Tooltip);
 
-const ExampleMap = () => {
-  const [lat, setLat] = useState(32.11);
-  const [lng, setLng] = useState(34.855);
-  const [zoom, setZoom] = useState(11);
-  const [marker, setMarker] = useState([]);
+const ExampleMap = (props) => {
+  const [editMode, setEditMode] = useState(props.latitude && props.longitude && props.input ? true : false);
+  const [lat, setLat] = useState(editMode ? props.latitude : 32.11);
+  const [lng, setLng] = useState(editMode ? props.longitude : 34.855);
+  const [zoom, setZoom] = useState(editMode ? 17 : 11);
+  const [marker, setMarker] = useState(editMode ? [props.latitude, props.longitude] : []);
   const [options, setOptions] = useState([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(editMode ? props.input : "");
   const [debouncedInput] = useDebounce(input, 350);
   const [first, setFirst] = useState(true);
   const [mapRef, setMapRef] = useState(null);
@@ -44,8 +46,13 @@ const ExampleMap = () => {
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
     const response = await fetch(url)
       .then(res => res.json());
-    setInput(formatLocationName(response.display_name, response.address));
+    let inputVal = formatLocationName(response.display_name, response.address);
+    setInput(inputVal);
     setMarker([lat, lon]);
+    if (!editMode) {
+      props.onInputChange(inputVal);
+      props.onMarkerChange(lat, lon);
+    }
     return response;
   }
 
@@ -100,24 +107,37 @@ const ExampleMap = () => {
       return;
     }
     let loc = options.find(e => e.name === val);
+    console.log(loc);
     if (!loc) {
       setMarker([]);
+      if (!editMode) {
+        props.onMarkerChange(null, null);
+      }
     }
     setInput(val);
+    if (!editMode) {
+      props.onInputChange(val);
+    }
   }
 
   const handleChange = (event, val) => {
     console.log("changed1: ", val);
     console.log("changed2: ", event);
-    if (val && val.latitude) {
+    if (val && val.latitude && val.longitude) {
       setLat(val.latitude);
       setLng(val.longitude);
       setZoom(17);
       setMarker([val.latitude, val.longitude]);
+      if(!editMode){
+        props.onMarkerChange(val.latitude, val.longitude);
+      }
     }
     else {
       if (!val || val === "") {
         setMarker([]);
+        if(!editMode){
+          props.onMarkerChange(null, null);
+        }
       }
     }
   }
@@ -134,19 +154,21 @@ const ExampleMap = () => {
     let map = mapRef.leafletElement;
     if (map) {
       if (marker[0] && marker[1]) {
+        // if(mapRef.viewport.center[0] !== marker[0] || mapRef.viewport.center[1] !== marker[1]){
         map.flyTo([marker[0], marker[1]], 17)
+        // }
       }
     }
   }
 
   return (
-    <div>
-      <div style={{ direction: "rtl" }}>
-        <Button variant="contained" color="primary" onClick={centerMap} disabled={marker.length === 0}>
-          Center Map
-        </Button>
-        <div style={{ width: 300, direction: "rtl" }}>
-          <Autocomplete
+    <div className={styles.mapAndInputContainer}>
+      <div className={styles.autocompleteWrapper}>
+        {editMode ?
+          <div className={styles.displayLocationName}>
+            {props.input}
+          </div>
+          : <Autocomplete
             freeSolo
             openOnFocus
             inputValue={input}
@@ -169,16 +191,16 @@ const ExampleMap = () => {
                 />
               </LightTooltip>
             )}
-          />
-        </div>
+          />}
       </div>
 
       <Map
         center={[lat, lng]}
         zoom={zoom}
         doubleClickZoom={false}
-        onDblClick={addMarker}
-        ref={e => { console.log(e); setMapRef(e); }}
+        touchZoom={true}
+        onDblClick={editMode ? () => { } : addMarker}
+        ref={e => { setMapRef(e); }}
       // onpopupopen={onLocationSelected}
       >
         <TileLayer
@@ -193,6 +215,11 @@ const ExampleMap = () => {
           </Popup> */}
           </Marker> : null}
       </Map>
+      <div className={styles.centerButton}>
+        <Button variant="contained" color="primary" onClick={centerMap} disabled={marker.length === 0}>
+          למרכז המפה
+        </Button>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,21 @@
+.centerButton {
+    display: flex;
+    justify-content: center;
+    padding-top: 5px;
+}
+
+.displayLocationName {
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.autocompleteWrapper {
+    width: 100%;
+    direction: rtl;
+}
+
+.mapAndInputContainer {
+    direction: rtl;
+    height: 100%;
+    width: 100%;
+}
