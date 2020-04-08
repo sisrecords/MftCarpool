@@ -99,8 +99,8 @@ export default function PersonalDetails(props) {
                     {changeDetails ?
                         <Button className={styles.cancel} onClick={() => setChangeDetails(false)} color="primary">
                             ביטול </Button> : 
-                        <Button className={styles.cancel} disabled={true} color="primary">
-                         </Button>
+                        <Button className={styles.cancel} style={{visibility: "hidden"}} color="primary">
+                         טקסט</Button>
                     }
                 </div>
 
