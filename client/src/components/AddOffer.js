@@ -15,7 +15,7 @@ import TextField from '@material-ui/core/TextField';
 import DateFnsUtils from '@date-io/date-fns';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
-import ExampleMap from "./Map";
+import ExampleMap from "./map";
 
 import {
     MuiPickersUtilsProvider,
