@@ -98,10 +98,10 @@ const nodemailer = require("nodemailer");
     }
 
     function setRoutes() {
-      // const authRoutes = require('./routes/auth');
-      // server.use("/auth", authRoutes);
       const ridesRoutes = require('./routes/rides');
       server.use("/rides", ridesRoutes);
+      const usersRoutes = require('./routes/users');
+      server.use("/users", usersRoutes);
     }
 
     server.listen(port, () => {

@@ -6,16 +6,10 @@ const connectionsPool = sql.globalConnection;
 
 router.get('/getAllRides', async (req, res) => {
     const result = await sql.query`select * from rides`;
-    console.log(req.session);
-    // const result = await sql.query`EXEC getAllProjects;`;
     res.send(result.recordset[0]);
 });
 
 router.post('/addRide', async (req, res) => {
-    console.log("add ride start");
-    // console.log("req: ", req);
-    console.log("req body: ", req.body);
-
     var ownerID = req.body.ownerID;
     var fromAddress = req.body.fromAddress;
     var fromAddressLatitude = req.body.fromAddressLatitude;
@@ -48,7 +42,6 @@ router.post('/addRide', async (req, res) => {
 });
 
 router.post('/updateRide', async (req, res) => {
-    console.log(req.body);
     var rideID = req.body.rideID;
     var ownerID = req.body.ownerID;
     var fromAddress = req.body.fromAddress;
@@ -85,18 +78,16 @@ router.post('/updateRide', async (req, res) => {
 });
 
 router.post('/deleteRide', async (req, res) => {
-    var rideID = req.body.rideID;
     let result = await connectionsPool.request()
-        .input("rideID", sql.Int, rideID)
+        .input("rideID", sql.Int, req.body.rideID)
         .input("isActive", sql.Bit, false)
         .query(`update rides set isActive = @isActive where rideID = @rideID`);
     res.send("ride deleted");
 });
 
 router.post('/occupyRide', async (req, res) => {
-    var rideID = req.body.rideID;
     let result = await connectionsPool.request()
-        .input("rideID", sql.Int, rideID)
+        .input("rideID", sql.Int, req.body.rideID)
         .input("isAvailable", sql.Bit, false)
         .query(`update rides set isAvailable = @isAvailable where rideID = @rideID`);
     res.send("ride occupied");
