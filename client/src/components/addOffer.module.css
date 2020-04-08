@@ -4,7 +4,7 @@
     height: 100%;
 }
 
-.form{
+.form {
     height: 70%;
 }
 
@@ -16,7 +16,7 @@
     padding-right: 10px;
 }
 
-.title{
+.title {
     text-align: center;
     font-size: larger !important;
     font-weight: bold;
@@ -25,25 +25,25 @@
     padding-top: 5% !important;
 }
 
-.buttons{
+.buttons {
     display: grid;
     height: 25%;
     grid-template-rows: repeat(5, 20%);
     grid-template-columns: repeat(10, 1fr);
 }
 
-.pagination{
+.pagination {
     grid-row-start: 1;
-    grid-column:2/span 7;
+    grid-column: 2/span 7;
     padding-bottom: 10% !important;
     direction: rtl !important;
     position: sticky;
 
-    margin-right: 20% !important; 
+    margin-right: 20% !important;
     /* לסדר אחכ את המרגין משמאל */
 }
 
-.ok{
+.ok {
     grid-row: 4/ span 3;
     grid-column: 2/span 4;
     border-radius: 25px 25px 0px 0px !important;
@@ -54,7 +54,7 @@
     width: 160%;
 }
 
-.cancel{
+.cancel {
     grid-row: 4/ span 3;
     grid-column: 8/span 2;
     color: grey !important;
@@ -62,126 +62,125 @@
     padding-right: 50% !important;
 }
 
-.name{
+.name {
     grid-row-start: 1;
     grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
 }
 
-.phone{
+.phone {
     grid-row-start: 5;
-    grid-column:2/span 8;
+    grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
 }
 
-.email{
+.email {
     grid-row-start: 9;
-    grid-column:2/span 8;
+    grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
 }
 
-.fromAddress{
+.fromAddress {
     grid-row-start: 13;
     grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
 }
 
-.toAddress{
+.toAddress {
     grid-row-start: 17;
-    grid-column:2/span 8;
+    grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
 }
 
-.date{
+.date {
     grid-row-start: 20;
-    grid-column:2/span 8;
+    grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
     padding-left: 5% !important;
 }
 
-.time{
+.time {
     grid-row-start: 26;
-    grid-column:2/span 8;
+    grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
 }
 
-.fromTo{
-    grid-row:14/ span 1 ;
+.fromTo {
+    grid-row: 14/ span 1;
     grid-column: 1/ span 1;
     padding-right: 6px !important;
     padding-top: 10px;
 }
 
-.mapBeg{
-    grid-row:3/ span 5 ;
-    grid-column: 2/ span 9;
-    padding-top: 5% !important;
+.mapBeg {
+    grid-row: 1/ span 15;
+    grid-column: 1/ span 9;
+    /* padding-top: 5% !important; */
     padding-right: 5% !important;
 }
 
-.mapEnd{
-    grid-row:20/ span 5 ;
-    grid-column: 2/ span 9;
-    padding-top: 5% !important;
+.mapEnd {
+    grid-row: 16/ span 15;
+    grid-column: 1/ span 9;
+    /* padding-top: 5% !important; */
     padding-right: 5% !important;
 }
 
-.dateIconDiv{
+.dateIconDiv {
     grid-row-start: 22;
     grid-column: 1;
 }
 
-.dateIcon{
+.dateIcon {
     color: rgb(194, 193, 193) !important;
     height: 200% !important;
     width: 100% !important;
 }
 
-.timeIconDiv{
+.timeIconDiv {
     grid-row-start: 27;
     grid-column: 1;
 }
 
-.timeIcon{
+.timeIcon {
     color: rgb(194, 193, 193) !important;
     height: 200% !important;
     width: 100% !important;
 }
 
-.phoneIconDiv{
+.phoneIconDiv {
     grid-row-start: 6;
     grid-column: 1;
     /* padding-top: 5% !important; */
     right: 0;
 }
 
-.phoneIcon{
+.phoneIcon {
     color: rgb(194, 193, 193) !important;
     height: 200% !important;
     width: 100% !important;
     transform: rotate(270deg);
 }
 
-.emailIconDiv{
+.emailIconDiv {
     grid-row-start: 10;
     grid-column: 1;
 }
 
-.emailIcon{
+.emailIcon {
     color: rgb(194, 193, 193) !important;
     height: 200% !important;
     width: 100% !important;
 }
 
-.MuiInputLabel-formControl{
+.MuiInputLabel-formControl {
     left: auto !important;
     right: 0 !important;
 }
-

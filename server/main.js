@@ -19,6 +19,7 @@ const nodemailer = require("nodemailer");
 try {
   const server = express();
   setSession();
+  setRoutes();
   const connectionsPool = await getConnectionsPool();
   server.get('/connect', (req, res) => {
     if(req.session.user == null){
@@ -91,8 +92,10 @@ try {
   }
   
   function setRoutes(){
-    const authRoutes = require('./routes/auth');
-    server.use("/auth", authRoutes);
+    // const authRoutes = require('./routes/auth');
+    // server.use("/auth", authRoutes);
+    const ridesRoutes = require('./routes/rides');
+    server.use("/rides", ridesRoutes);
   }
   
   server.listen(port, () => {
