@@ -86,7 +86,6 @@ export default function AddOffer(props) {
             >
                 <DialogTitle className={styles.title} id="alert-dialog-title">
                     מילוי פרטי הצעה </DialogTitle>
-                {/* {page == 1 ? */}
                 <form className={styles.form} noValidate autoComplete="off"
                     style={{
                         visibility: page === 1 ? 'visible' : 'hidden',
@@ -131,7 +130,6 @@ export default function AddOffer(props) {
                     visibility: page === 2 ? 'visible' : 'hidden',
                     position: page === 2 ? 'relative' : 'absolute'
                 }}>
-                    {/* <div className={styles.map}> */}
                     <div className={styles.mapBeg}>
                         <ExampleMap onInputChange={handleFromLocationInputChange}
                             onMarkerChange={handleFromLocationMarkerChange} />
@@ -140,13 +138,7 @@ export default function AddOffer(props) {
                         <ExampleMap onInputChange={handleToLocationInputChange}
                             onMarkerChange={handleToLocationMarkerChange} />
                     </div>
-                    {/* </div> */}
-                    {/* onInputChange={(val)=>{}} onMarkerChange={(lat, lon)=>{}}  */}
-                    {/* <div className={styles.mapBeg}><img src='/images/map_example.png' alt="from_to" /></div> */}
-                    {/* <div className={styles.mapEnd}><img src='/images/map_example.png' alt="from_to" /></div> */}
                 </div>
-                {/* // :  */}
-                {/* // } */}
                 <div className={styles.buttons}>
                     <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} />
                     <Button className={styles.ok} onClick={handleSendRequest} color="primary" autoFocus>
