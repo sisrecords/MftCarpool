@@ -5,40 +5,40 @@
 
 .details {
     display: grid;
-    grid-template-rows: repeat(15, 5%);
+    grid-template-rows: repeat(20, 5%);
     grid-template-columns: repeat(10, 1fr);
     height: 70%;
+    min-height: 70%;
     padding-right: 10px;
 }
 
-.title{
+.title {
     text-align: center;
     font-size: larger !important;
     font-weight: bold;
     height: 8%;
     padding: 0 !important;
-    padding-top: 5% !important;
+    padding-top: 10px !important;
 }
 
-.buttons{
+.buttons {
     display: grid;
-    height: 25%;
+    height: 21%;
+    min-height: 19%;
     grid-template-rows: repeat(5, 20%);
     grid-template-columns: repeat(10, 1fr);
 }
 
-.pagination{
+.pagination {
     grid-row-start: 1;
-    grid-column:2/span 7;
+    grid-column: 2/span 8;
     padding-bottom: 10% !important;
     direction: rtl !important;
     position: sticky;
-
-    margin-right: 20% !important; 
-    /* לסדר אחכ את המרגין מימין */
+    justify-self: center;
 }
 
-.join{
+.join {
     grid-row: 4/ span 2;
     grid-column: 2/span 4;
     border-radius: 25px 25px 0px 0px !important;
@@ -49,7 +49,7 @@
     width: 160%;
 }
 
-.cancel{
+.cancel {
     grid-row: 4/ span 2;
     grid-column: 8/span 2;
     color: grey !important;
@@ -57,171 +57,171 @@
     padding-right: 50% !important;
 }
 
-.name{
-    grid-row-start: 1;
+.name {
+    grid-row-start: 2;
     grid-column: 2/span 9;
     font-size: 120% !important;
-    padding-top: 3% !important;
 }
 
-.phone{
-    grid-row-start: 2;
-    grid-column:2/span 9;
-    font-size: 106% !important;
-    padding-top: 5% !important;
-}
-
-.email{
+.phone {
     grid-row-start: 3;
-    grid-column:2/span 9;
-    font-size: 106%px !important;
-    padding-top: 6% !important;
+    grid-column: 2/span 9;
+    font-size: 106% !important;
+    padding-top: 7px !important;
+}
+
+.email {
+    grid-row-start: 4;
+    grid-column: 2/span 9;
+    font-size: 106% !important;
+    padding-top: 9px !important;
 }
 
 
-.fromAddress{
+.fromAddress {
     grid-row-start: 6;
     grid-column: 2/span 9;
     font-size: 120% !important;
+    padding-top: 7px;
 }
 
-.fromCity{
+.fromCity {
     grid-row-start: 7;
     grid-column: 2/span 9;
     font-size: 90% !important;
+    padding-top: 9px;
 }
 
-.toAddress{
+.toAddress {
     grid-row-start: 9;
-    grid-column:2/span 9;
+    grid-column: 2/span 9;
     font-size: 120% !important;
+    padding-top: 7px;
 }
 
-.toCity{
+.toCity {
     grid-row-start: 10;
-    grid-column:2/span 9;
+    grid-column: 2/span 9;
     font-size: 90% !important;
+    padding-top: 9px;
 }
 
-.date{
+.date {
     grid-row-start: 12;
-    grid-column:2/span 9;
+    grid-column: 2/span 9;
     font-size: 118% !important;
-    padding-top: 4% !important;
+    padding-top: 11px !important;
 }
 
-.time{
+.time {
     grid-row-start: 14;
-    grid-column:2/span 9;
+    grid-column: 2/span 9;
     font-size: 20px !important;
-    padding-top: 5% !important;
+    padding-top: 13px !important;
 }
 
 
-.fromTo{
-    grid-row:6/ span 1 ;
+.fromTo {
+    grid-row: 6/ span 1;
     grid-column: 1/ span 1;
-    padding-right: 6px !important;
     padding-top: 10px;
+    justify-self: center;
+    padding-left: 9px;
 }
 
-.map{
-    grid-row:1/ span 15 ;
+.map {
+    grid-row: 1/ span 15;
     grid-column: 1/ span 10;
-    /* padding-top: 5% !important; */
     padding-right: 5% !important;
     padding-left: 5% !important;
 }
 
-.dateIconDiv{
+.dateIconDiv {
     grid-row-start: 12;
     grid-column: 1;
-    padding-top: 5% !important;
 }
 
-.dateIcon{
+.dateIcon {
     color: rgb(194, 193, 193) !important;
     height: 80% !important;
     width: 80% !important;
-    padding-top: 50%;
+    padding-top: 16px;
 }
 
-.timeIconDiv{
+.timeIconDiv {
     grid-row-start: 14;
     grid-column: 1;
-    /* padding-top: 7% !important; */
 }
 
-.timeIcon{
+.timeIcon {
     color: rgb(194, 193, 193) !important;
     height: 80% !important;
     width: 80% !important;
-    padding-top: 65%;
+    padding-top: 18px;
 }
 
-.phoneIconDiv{
-    grid-row-start: 2;
+.phoneIconDiv {
+    grid-row-start: 3;
     grid-column: 1;
-    margin-top: 5% !important;
 }
 
-.phoneIcon{
+.phoneIcon {
     color: rgb(194, 193, 193) !important;
     height: 80% !important;
     width: 80% !important;
-    padding-top: 40%;
-    padding-right: 60%;;
+    padding-right: 12px;
+    padding-top: 10px;
     transform: rotate(270deg);
 }
 
-.emailIconDiv{
-    grid-row-start: 3;
+.emailIconDiv {
+    grid-row-start: 4;
     grid-column: 1;
-    padding-top: 5% !important;
 }
 
-.emailIcon{
+.emailIcon {
     color: rgb(194, 193, 193) !important;
     height: 80% !important;
     width: 80% !important;
-    padding-top: 60%;
+    padding-top: 16px;
 }
 
-.personalDetailsLable{
+.personalDetailsLabel {
     grid-row-start: 1;
     grid-column: 2/span 9;
     font-size: 60% !important;
     color: rgb(155, 154, 154) !important;
+    padding-top: 11px;
 }
 
-.pickupLocationLable{
-    grid-row-start: 5;
+.pickupLocationLabel {
+    grid-row-start: 6;
     grid-column: 2/span 9;
     font-size: 60% !important;
     color: rgb(155, 154, 154) !important;
-    padding-top: 5% !important;
+    padding-top: 2px !important;
 }
 
-.dropLocationLable{
-    grid-row-start: 8;
+.dropLocationLabel {
+    grid-row-start: 9;
     grid-column: 2/span 9;
     font-size: 60% !important;
     color: rgb(155, 154, 154) !important;
-    padding-top: 5% !important;
+    padding-top: 2px !important;
 }
 
- .dateLable{
+.dateLabel {
     grid-row-start: 12;
     grid-column: 2/span 9;
     font-size: 60% !important;
     color: rgb(155, 154, 154) !important;
     /* padding-top: 4% !important; */
-} 
+}
 
- .timeLable{
-    grid-row-start: 13;
+.timeLabel {
+    grid-row-start: 14;
     grid-column: 2/span 9;
     font-size: 60% !important;
     color: rgb(155, 154, 154) !important;
-    padding-top: 10% !important;
-} 
+    padding-top: 5px !important;
+}

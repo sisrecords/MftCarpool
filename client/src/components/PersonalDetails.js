@@ -74,16 +74,16 @@ export default function PersonalDetails(props) {
                     </div> :
                     <div className={styles.details}>
                         <div className={styles.editIconDiv}><EditIcon onClick={handleChangeDetails}></EditIcon></div>
-                        <div className={styles.nameLable}>שם מלא</div>
+                        <div className={styles.nameLabel}>שם מלא</div>
                         <div className={styles.name}>{pdName}</div>
-                        <div className={styles.addressLable}>כתובת מגורים</div>
+                        <div className={styles.addressLabel}>כתובת מגורים</div>
                         <div className={styles.address}>{pdAddress}</div>
                         <div className={styles.city}>{pdCity}</div>
                         {/* <div className={styles.phoneIconDiv}><PhoneIcon className={styles.phoneIcon}></PhoneIcon></div> */}
-                        <div className={styles.phoneLable}>פלאפון</div>
+                        <div className={styles.phoneLabel}>פלאפון</div>
                         <div className={styles.phone}>{pdPhone}</div>
                         {/* <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div> */}
-                        <div className={styles.emailLable}>דוא"ל</div>
+                        <div className={styles.emailLabel}>דוא"ל</div>
                         <div className={styles.email}>{pdEmail}</div>
                     </div>
 
