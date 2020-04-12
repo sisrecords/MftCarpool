@@ -24,27 +24,27 @@ function Main() {
   }
     ,
   {
-    name: 'שירה', phone: '053-5314563', address: { street: 'הזית', num: '12', city: 'באר שבע' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
+    name: 'שירה', phone: '053-5314564', address: { street: 'הזית', num: '12', city: 'באר שבע' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
     date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', request: '1', distance: '2'
   },
   {
-    name: 'נועה', phone: '052-6231196', address: { street: 'הרצל', num: '98', city: 'נתניה' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
+    name: 'נועה', phone: '052-6231197', address: { street: 'הרצל', num: '98', city: 'נתניה' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
     date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', request: '0', distance: '87'
   },
   {
-    name: 'אביתר', phone: '052-8901236', address: { street: "צ'רניחובסקי", num: '112', city: 'תל אביב' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
+    name: 'אביתר', phone: '052-8901237', address: { street: "צ'רניחובסקי", num: '112', city: 'תל אביב' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
     date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', request: '1', distance: '100'
   },
   {
-    name: 'שירה', phone: '053-5314563', address: { street: 'הזית', num: '12', city: 'באר שבע' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
+    name: 'שירה', phone: '053-5314565', address: { street: 'הזית', num: '12', city: 'באר שבע' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
     date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', request: '1', distance: '2'
   },
   {
-    name: 'נועה', phone: '052-6231196', address: { street: 'הרצל', num: '98', city: 'נתניה' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
+    name: 'נועה', phone: '052-6231198', address: { street: 'הרצל', num: '98', city: 'נתניה' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
     date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', request: '0', distance: '87'
   },
   {
-    name: 'אביתר', phone: '052-8901236', address: { street: "צ'רניחובסקי", num: '112', city: 'תל אביב' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
+    name: 'אביתר', phone: '052-8901238', address: { street: "צ'רניחובסקי", num: '112', city: 'תל אביב' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
     date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', request: '1', distance: '100'
   }
 
@@ -62,11 +62,11 @@ function Main() {
   const [offerSelect, setOfferSelect] = useState(false);
   const [personalDetailsOpen, setPersonalDetailsOpen] = useState(null);
 
-  function onPersonalDetailsClick(){
+  function onPersonalDetailsClick() {
     setPersonalDetailsOpen(true);
   }
 
-  function closePersonalDetails(){
+  function closePersonalDetails() {
     setPersonalDetailsOpen(null);
   }
 
@@ -113,26 +113,26 @@ function Main() {
         </div>
       </div>
       {
-        personalDetailsOpen ? <PersonalDetails personDetails={ridesList[0]}  open={true} onClose={closePersonalDetails}/> : null
+        personalDetailsOpen ? <PersonalDetails personDetails={ridesList[0]} open={true} onClose={closePersonalDetails} /> : null
       }
-      <IconButton className={styles.accountIcon}>
-        <AccountCircleIcon className={styles.accountIcon} onClick={onPersonalDetailsClick} />
+      <IconButton className={styles.accountIcon} onClick={onPersonalDetailsClick}>
+        <AccountCircleIcon className={styles.accountIcon} />
       </IconButton>
 
       <div className={styles.buttons}>
-      <div className={styles.tempBottonsThirePart}></div>
-        {allSelect ? <div className={styles.allSelected} variant="contained"  onClick={onAllClick}>הכל</div>
-        :<div className={styles.all} variant="contained"  onClick={onAllClick}>הכל</div>
+        <div className={styles.tempBottonsThirePart}></div>
+        {allSelect ? <div className={styles.allSelected} variant="contained" onClick={onAllClick}>הכל</div>
+          : <div className={styles.all} variant="contained" onClick={onAllClick}>הכל</div>
         }
-        {requestSelect ? <div className={styles.requestSelected} variant="contained"  onClick={onRequestClick}>בקשות</div>
-        :<div className={styles.request} variant="contained"  onClick={onRequestClick}>בקשות</div>
+        {requestSelect ? <div className={styles.requestSelected} variant="contained" onClick={onRequestClick}>בקשות</div>
+          : <div className={styles.request} variant="contained" onClick={onRequestClick}>בקשות</div>
         }
         {
-          offerSelect ? <div className={styles.offerSelected} variant="contained"  onClick={onOfferClick}>הצעות</div>
-          : <div className={styles.offer} variant="contained" onClick={onOfferClick}>הצעות</div>
+          offerSelect ? <div className={styles.offerSelected} variant="contained" onClick={onOfferClick}>הצעות</div>
+            : <div className={styles.offer} variant="contained" onClick={onOfferClick}>הצעות</div>
         }
-        
-        
+
+
 
       </div>
 
@@ -145,8 +145,8 @@ function Main() {
           <List className={styles.list}>
             {
               ridesList.map(ride => {
-                return <div className={styles.ride} onClick={() => onRideClick(ride)}>
-                  <Ride key={ride.phone} className={styles.ride} itemRide={ride}>
+                return <div key={ride.phone} className={styles.ride} onClick={() => onRideClick(ride)}>
+                  <Ride className={styles.ride} itemRide={ride}>
                   </Ride>
 
                 </div>

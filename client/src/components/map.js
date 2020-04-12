@@ -200,7 +200,7 @@ const ExampleMap = (props) => {
         doubleClickZoom={false}
         touchZoom={true}
         onDblClick={editMode ? () => { } : addMarker}
-        ref={e => { setMapRef(e); }}
+        ref={e => { console.log(e); setMapRef(e); }}
       // onpopupopen={onLocationSelected}
       >
         <TileLayer
@@ -215,11 +215,11 @@ const ExampleMap = (props) => {
           </Popup> */}
           </Marker> : null}
       </Map>
-      <div className={styles.centerButton}>
+      {/* <div className={styles.centerButton}>
         <Button variant="contained" color="primary" onClick={centerMap} disabled={marker.length === 0}>
           למרכז המפה
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -53,19 +53,19 @@ export default function RideDialog(props) {
         }
         {page == 1 ?
           <div className={styles.details}>
-            <div className={styles.personalDetailsLable}>פרטים אישיים</div>
+            <div className={styles.personalDetailsLabel}>פרטים אישיים</div>
             <div className={styles.name}>{props.ride.name}</div>
             <div className={styles.fromTo}><img style={{ height: '80px' }} src='/images/fromto2.png' alt="from_to" /></div>
-            <div className={styles.pickupLocationLable}>נקודת מוצא</div>
+            <div className={styles.pickupLocationLabel}>נקודת מוצא</div>
             <div className={styles.fromAddress}>{props.ride.address.street + ' ' + props.ride.address.num}</div>
             <div className={styles.fromCity}>{props.ride.address.city}</div>
-            <div className={styles.dropLocationLable}>נקודת יעד</div>
+            <div className={styles.dropLocationLabel}>נקודת יעד</div>
             <div className={styles.toAddress}>{props.ride.to.street + ' ' + props.ride.to.num}</div>
             <div className={styles.toCity}>{props.ride.to.city}</div>
-            <div className={styles.dateLable}>תאריך</div>
+            <div className={styles.dateLabel}>תאריך</div>
             <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
             <div className={styles.date}>{props.ride.date}</div>
-            <div className={styles.timeLable}>שעה</div>
+            <div className={styles.timeLabel}>שעה</div>
             <div className={styles.timeIconDiv}><ScheduleIcon className={styles.timeIcon} /></div>
             <div className={styles.time}>{props.ride.time}</div>
             <div className={styles.phoneIconDiv}><PhoneIcon className={styles.phoneIcon}></PhoneIcon></div>

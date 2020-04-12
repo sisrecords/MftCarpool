@@ -85,14 +85,14 @@
 }
 
 
-.nameLable{
+.nameLabel{
     grid-row-start: 3;
     grid-column: 2/span 9;
     font-size: 60% !important;
     color: rgb(155, 154, 154) !important;
 }
 
-.addressLable{
+.addressLabel{
     grid-row-start: 5;
     grid-column: 2/span 9;
     font-size: 60% !important;
@@ -100,7 +100,7 @@
     padding-top: 10% !important;
 }
 
-.phoneLable{
+.phoneLabel{
     grid-row-start: 12;
     grid-column: 2/span 9;
     font-size: 60% !important;
@@ -108,7 +108,7 @@
     padding-top: 4% !important;
 }
 
-.emailLable{
+.emailLabel{
     grid-row-start: 16;
     grid-column: 2/span 9;
     font-size: 60% !important;
