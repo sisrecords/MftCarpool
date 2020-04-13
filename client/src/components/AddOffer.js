@@ -16,6 +16,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 import ExampleMap from "./map";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 import {
     MuiPickersUtilsProvider,
@@ -71,14 +73,64 @@ export default function AddOffer(props) {
     const handleToLocationInputChange = (val) => {
         setToLocation(val);
     }
+
     const handleToLocationMarkerChange = (lat, lon) => {
         setToLatitude(lat);
         setToLongitude(lon);
     }
 
+    const isLocationsValid = () => {
+        if (fromLatitude === "" || fromLatitude === null ||
+            fromLongitude === "" || fromLongitude === null ||
+            toLatitude === "" || toLatitude === null ||
+            toLongitude === "" || toLongitude === null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        validateOnMount: true,
+        initialValues: {
+            name: '',
+            phone: '',
+            email: '',
+            time: ''
+        },
+        validationSchema: Yup.object({
+            name: Yup.string()
+                .min(2, 'נא הכנס שם מלא')
+                .max(100, 'נא צמצם את השם')
+                .required('שדה זה הוא חובה'),
+            phone: Yup.string()
+                .min(10, 'נא הכנס מספר טלפון תקין')
+                .max(10, 'נא הכנס מספר טלפון תקין')
+                .required('שדה זה הוא חובה'),
+            email: Yup.string()
+                .email('נא הכנס מייל תקין')
+                .required('שדה זה הוא חובה'),
+            time: Yup.string()
+                .min(2, 'נא הכנס שעה וזמן ביום: למשל, 9 בבוקר')
+                .max(100, 'נא צמצם את המלל')
+                .required('שדה זה הוא חובה')
+        }),
+        onSubmit: values => {
+            console.log(values);
+            let isLocationsValidRes = isLocationsValid();
+            if (isLocationsValidRes && formik.isValid) {
+                //everything is valid
+                handleSendRequest();
+            }
+        }
+    });
+
     return (
         <div>
             <Dialog className={styles.dialog}
+                disableBackdropClick
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
@@ -92,10 +144,19 @@ export default function AddOffer(props) {
                         position: page === 1 ? 'relative' : 'absolute'
                     }}>
                     <div className={styles.details}>
-                        <TextField className={styles.name} id="name" label="שם מלא" color="secondary" />
-                        <TextField className={styles.phone} id="phone" label="פלאפון" color="secondary" />
+                        <TextField className={styles.name} id="name" label="שם מלא" color="primary"
+                            error={formik.touched.name && formik.errors.name ? true : false}
+                            {...formik.getFieldProps('name')}
+                            helperText={formik.touched.name && formik.errors.name ? formik.errors.name : null} />
+                        <TextField className={styles.phone} id="phone" label="פלאפון" color="primary"
+                            error={formik.touched.phone && formik.errors.phone ? true : false}
+                            {...formik.getFieldProps('phone')}
+                            helperText={formik.touched.phone && formik.errors.phone ? formik.errors.phone : null} />
                         <div className={styles.phoneIconDiv}><PhoneIcon className={styles.phoneIcon}></PhoneIcon></div>
-                        <TextField className={styles.email} id="email" label='דוא"ל' color="secondary" />
+                        <TextField className={styles.email} id="email" label='דוא"ל' color="primary"
+                            error={formik.touched.email && formik.errors.email ? true : false}
+                            {...formik.getFieldProps('email')}
+                            helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null} />
                         <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div>
                         <div className={styles.fromTo}><img style={{ height: '70px' }} src='/images/fromto2.png' alt="from_to" /></div>
                         <TextField className={styles.fromAddress} id="begLocation" label="נקודת מוצא" color="secondary" />
@@ -105,6 +166,7 @@ export default function AddOffer(props) {
                             <Grid className={styles.date} container justify="space-around">
                                 <KeyboardDatePicker
                                     disableToolbar
+                                    disablePast
                                     variant="inline"
                                     format="dd/MM/yyyy"
                                     margin="normal"
@@ -120,7 +182,10 @@ export default function AddOffer(props) {
                         </MuiPickersUtilsProvider>
 
                         <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
-                        <TextField className={styles.time} id="time" label="שעה" color="secondary" />
+                        <TextField className={styles.time} id="time" label="שעה" color="primary"
+                            {...formik.getFieldProps('time')}
+                            error={formik.touched.time && formik.errors.time ? true : false}
+                            helperText={formik.touched.time && formik.errors.time ? formik.errors.time : null} />
                         <div className={styles.timeIconDiv}><ScheduleIcon className={styles.timeIcon} /></div>
 
 
@@ -140,8 +205,12 @@ export default function AddOffer(props) {
                     </div>
                 </div>
                 <div className={styles.buttons}>
-                    <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} />
-                    <Button className={styles.ok} onClick={handleSendRequest} color="primary" autoFocus>
+                    <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} color="primary" />
+                    <Button className={styles.ok} 
+                    onClick={isLocationsValid() && formik.isValid ? formik.handleSubmit :
+                        isLocationsValid() && page === 2 ? (values) => {setPage(1); formik.handleSubmit(values)} : 
+                        formik.isValid && page === 1 ? () => setPage(2) : formik.handleSubmit}
+                     color="primary">
                         שליחת הצעה  </Button>
                     <Button className={styles.cancel} onClick={handleClose} color="primary">
                         ביטול   </Button>

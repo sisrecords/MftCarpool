@@ -79,6 +79,7 @@ export default function AddRequest(props) {
     return (
         <div>
             <Dialog className={styles.dialog}
+                disableBackdropClick
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
@@ -139,7 +140,7 @@ export default function AddRequest(props) {
                     </div>
                 </div>
                 <div className={styles.buttons}>
-                    <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} />
+                    <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} color="primary" />
                     <Button className={styles.ok} onClick={handleSendRequest} color="primary" autoFocus>
                         שליחת בקשה  </Button>
                     <Button className={styles.cancel} onClick={handleClose} color="primary">

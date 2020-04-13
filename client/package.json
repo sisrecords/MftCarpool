@@ -13,18 +13,20 @@
     "@testing-library/user-event": "^7.2.1",
     "date-fns": "^2.0.0-beta.5",
     "express": "^4.17.1",
+    "formik": "^2.1.4",
+    "leaflet": "^1.6.0",
     "material-ui-popup-state": "^1.5.3",
     "nodemailer": "^6.4.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "leaflet": "^1.6.0",
     "react-leaflet": "^2.6.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-scroll-up-button": "^1.6.4",
     "reactstrap": "^8.4.1",
-    "use-debounce": "^3.4.0"
+    "use-debounce": "^3.4.0",
+    "yup": "^0.28.3"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -84,7 +84,7 @@ export default function RideDialog(props) {
           </div>}
 
         <div className={styles.buttons}>
-          <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} />
+          <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} color="primary" />
           {props.ride.request === '1' ?
             <Button className={styles.join} onClick={handleMeet} color="primary" autoFocus>
               צרף אליי לנסיעה!

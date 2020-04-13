@@ -93,4 +93,18 @@ router.post('/occupyRide', async (req, res) => {
     res.send("ride occupied");
 });
 
+router.get('/occupyRide/:rideID/:userID', async (req, res) => {
+    let result = await connectionsPool.request()
+        .input("rideID", sql.Int, req.params.rideID)
+        .input("userID", sql.Int, req.params.userID)
+        .input("isAvailable", sql.Bit, false)
+        .query(`update rides set isAvailable = @isAvailable, chosenUserID = @userID where rideID = @rideID 
+            AND chosenUserID is NULL`);
+    let s = "ride " + req.params.rideID + " occupied by user " + req.params.userID;
+    //if result.rowsAffected[0] === 1 then the query succeeded, if 0 then the ride is taken.
+    //either way, we show an appropriate message to the user
+    // console.log(result.rowsAffected[0] === 0);
+    res.send(result.rowsAffected);
+});
+
 module.exports = router;

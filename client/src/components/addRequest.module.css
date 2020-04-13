@@ -37,13 +37,11 @@
 
 .pagination {
     grid-row-start: 1;
-    grid-column: 2/span 7;
+    grid-column: 2/span 8;
     padding-bottom: 10% !important;
     direction: rtl !important;
     position: sticky;
-
-    margin-right: 20% !important;
-    /* לסדר אחכ את המרגין משמאל */
+    justify-self: center;
 }
 
 .ok {
