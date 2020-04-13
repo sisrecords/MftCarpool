@@ -18,6 +18,8 @@ import Pagination from '@material-ui/lab/Pagination';
 import ExampleMap from "./map";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Ride, { OFFER_RIDE_ID } from '../entities/ride';
+import axios from 'axios';
 
 import {
     MuiPickersUtilsProvider,
@@ -56,10 +58,30 @@ export default function AddOffer(props) {
         props.onClose();
     };
 
-    const handleSendRequest = (values) => {
+    const handleSendRequest = async (values) => {
         // לשלוח בקשה לשרת ומשם הוא יטפל בזה
         // values.name, values.phone, values.email, values.time, fromLocation, fromLatitude, fromLongitude, 
         // toLocation, toLatitude, toLongitude;
+        const response = await axios.post(
+            'http://localhost:3000/rides/addRide',
+            {
+                ownerName: values.name, ownerPhoneNumber: values.phone, ownerEmail: values.email, 
+                fromAddress: fromLocation, fromAddressLatitude: fromLatitude, 
+                fromAddressLongitude: fromLongitude, toAddress: toLocation, 
+                toAddressLatitude: toLatitude, toAddressLongitude: toLongitude, date: selectedDate, 
+                time: values.time, isAvailable: true, isActive: true, rideTypeID: OFFER_RIDE_ID,
+                chosenUserID: null
+            }
+        );
+        let rideID = response.data.recordset[0][""];
+        console.log(rideID);
+        //let newRideID = 0; //we will get it in the server's response
+        //let userID = 1; //need to get the current user ID - we will get it from the server in the app init
+        let newRide = new Ride(rideID, values.name, values.phone, values.email, fromLocation, fromLatitude, 
+            fromLongitude, toLocation, toLatitude, toLongitude, selectedDate, values.time, true, true, 
+            OFFER_RIDE_ID, null);
+        //we will pass the new ride to the handleClose which will pass it to the props.onClose func, so 
+        //we can get it in the main screen and add it to the list
         handleClose();
     }
 
@@ -199,20 +221,20 @@ export default function AddOffer(props) {
                 }}>
                     <div className={styles.mapBeg}>
                         <ExampleMap onInputChange={handleFromLocationInputChange}
-                            onMarkerChange={handleFromLocationMarkerChange} label="כתובת מוצא"/>
+                            onMarkerChange={handleFromLocationMarkerChange} label="כתובת מוצא" />
                     </div>
                     <div className={styles.mapEnd}>
                         <ExampleMap onInputChange={handleToLocationInputChange}
-                            onMarkerChange={handleToLocationMarkerChange} label="כתובת יעד"/>
+                            onMarkerChange={handleToLocationMarkerChange} label="כתובת יעד" />
                     </div>
                 </div>
                 <div className={styles.buttons}>
                     <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} color="primary" />
-                    <Button className={styles.ok} 
-                    onClick={isLocationsValid() && formik.isValid ? formik.handleSubmit :
-                        isLocationsValid() && page === 2 ? (values) => {setPage(1); formik.handleSubmit(values)} : 
-                        formik.isValid && page === 1 ? () => setPage(2) : formik.handleSubmit}
-                     color="primary">
+                    <Button className={styles.ok}
+                        onClick={isLocationsValid() && formik.isValid ? formik.handleSubmit :
+                            isLocationsValid() && page === 2 ? (values) => { setPage(1); formik.handleSubmit(values) } :
+                                formik.isValid && page === 1 ? () => setPage(2) : formik.handleSubmit}
+                        color="primary">
                         שליחת הצעה  </Button>
                     <Button className={styles.cancel} onClick={handleClose} color="primary">
                         ביטול   </Button>

@@ -20,3 +20,7 @@ class Ride{
 }
 
 export default Ride;
+
+const OFFER_RIDE_ID = 1;
+const REQUEST_RIDE_ID = 2;
+export {OFFER_RIDE_ID, REQUEST_RIDE_ID}

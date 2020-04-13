@@ -10,7 +10,9 @@ router.get('/getAllRides', async (req, res) => {
 });
 
 router.post('/addRide', async (req, res) => {
-    var ownerID = req.body.ownerID;
+    var ownerName = req.body.ownerName;
+    var ownerPhoneNumber = req.body.ownerPhoneNumber;
+    var ownerEmail = req.body.ownerEmail;
     var fromAddress = req.body.fromAddress;
     var fromAddressLatitude = req.body.fromAddressLatitude;
     var fromAddressLongitude = req.body.fromAddressLongitude;
@@ -22,8 +24,11 @@ router.post('/addRide', async (req, res) => {
     var isAvailable = req.body.isAvailable;
     var isActive = req.body.isActive;
     var rideTypeID = req.body.rideTypeID;
+    var chosenUserID = req.body.chosenUserID;
     let result = await connectionsPool.request()
-        .input("ownerID", sql.Int, ownerID)
+        .input("ownerName", sql.NVarChar, ownerName)
+        .input("ownerPhoneNumber", sql.NVarChar, ownerPhoneNumber)
+        .input("ownerEmail", sql.NVarChar, ownerEmail)
         .input("fromAddress", sql.NVarChar, fromAddress)
         .input("fromAddressLatitude", sql.Decimal(18, 10), fromAddressLatitude)
         .input("fromAddressLongitude", sql.Decimal(18, 10), fromAddressLongitude)
@@ -35,15 +40,18 @@ router.post('/addRide', async (req, res) => {
         .input("isAvailable", sql.Bit, isAvailable)
         .input("isActive", sql.Bit, isActive)
         .input("rideTypeID", sql.Int, rideTypeID)
-        .query(`insert into rides values(@ownerID, @fromAddress, @fromAddressLatitude, @fromAddressLongitude
+        .input("chosenUserID", sql.Int, chosenUserID)
+        .query(`insert into rides values(@ownerName, @ownerPhoneNumber, @ownerEmail, @fromAddress, @fromAddressLatitude, @fromAddressLongitude
             , @toAddress, @toAddressLatitude, @toAddressLongitude, @date, @time, @isAvailable, @isActive,
-            @rideTypeID) SELECT SCOPE_IDENTITY()`);
+            @rideTypeID, @chosenUserID) SELECT SCOPE_IDENTITY()`);
     res.send(result);
 });
 
 router.post('/updateRide', async (req, res) => {
     var rideID = req.body.rideID;
-    var ownerID = req.body.ownerID;
+    var ownerName = req.body.ownerName;
+    var ownerPhoneNumber = req.body.ownerPhoneNumber;
+    var ownerEmail = req.body.ownerEmail;
     var fromAddress = req.body.fromAddress;
     var fromAddressLatitude = req.body.fromAddressLatitude;
     var fromAddressLongitude = req.body.fromAddressLongitude;
@@ -55,9 +63,12 @@ router.post('/updateRide', async (req, res) => {
     var isAvailable = req.body.isAvailable;
     var isActive = req.body.isActive;
     var rideTypeID = req.body.rideTypeID;
+    var chosenUserID = req.body.chosenUserID;
     let result = await connectionsPool.request()
         .input("rideID", sql.Int, rideID)
-        .input("ownerID", sql.Int, ownerID)
+        .input("ownerName", sql.NVarChar, ownerName)
+        .input("ownerPhoneNumber", sql.NVarChar, ownerPhoneNumber)
+        .input("ownerEmail", sql.NVarChar, ownerEmail)
         .input("fromAddress", sql.NVarChar, fromAddress)
         .input("fromAddressLatitude", sql.Decimal(18, 10), fromAddressLatitude)
         .input("fromAddressLongitude", sql.Decimal(18, 10), fromAddressLongitude)
@@ -69,11 +80,13 @@ router.post('/updateRide', async (req, res) => {
         .input("isAvailable", sql.Bit, isAvailable)
         .input("isActive", sql.Bit, isActive)
         .input("rideTypeID", sql.Int, rideTypeID)
-        .query(`update rides set ownerID = @ownerID, fromAddress = @fromAddress, 
+        .input("chosenUserID", sql.Int, chosenUserID)
+        .query(`update rides set ownerName = @ownerName, ownerPhoneNumber = @ownerPhoneNumber, 
+        ownerEmail = @ownerEmail, fromAddress = @fromAddress, 
         fromAddressLatitude = @fromAddressLatitude, fromAddressLongitude = @fromAddressLongitude, 
         toAddress = @toAddress, toAddressLatitude = @toAddressLatitude, 
         toAddressLongitude = @toAddressLongitude, date = @date, time = @time, isAvailable = @isAvailable, 
-        isActive = @isActive, rideTypeID = @rideTypeID where rideID = @rideID`);
+        isActive = @isActive, rideTypeID = @rideTypeID, chosenUserID = @chosenUserID where rideID = @rideID`);
     res.send("ride updated");
 });
 
