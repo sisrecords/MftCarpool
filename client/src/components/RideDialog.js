@@ -13,6 +13,7 @@ import EventIcon from '@material-ui/icons/Event';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import Pagination from '@material-ui/lab/Pagination';
 import ExampleMap from "./map";
+import {REQUEST_RIDE_ID} from '../entities/ride';
 
 export default function RideDialog(props) {
   const [open, setOpen] = React.useState(props.open);
@@ -45,7 +46,7 @@ export default function RideDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        {props.ride.request === '1' ?
+        {props.ride.rideTypeID === REQUEST_RIDE_ID ?
           <DialogTitle className={styles.title} id="customized-dialog-title" onClose={handleClose}>
             פרטי הצעה </DialogTitle> :
           <DialogTitle className={styles.title} id="customized-dialog-title" onClose={handleClose}>
@@ -57,11 +58,11 @@ export default function RideDialog(props) {
             <div className={styles.name}>{props.ride.name}</div>
             <div className={styles.fromTo}><img style={{ height: '80px' }} src='/images/fromto2.png' alt="from_to" /></div>
             <div className={styles.pickupLocationLabel}>נקודת מוצא</div>
-            <div className={styles.fromAddress}>{props.ride.address.street + ' ' + props.ride.address.num}</div>
-            <div className={styles.fromCity}>{props.ride.address.city}</div>
+            <div className={styles.fromAddress}>{props.ride.fromLocationWithoutCity}</div>
+            <div className={styles.fromCity}>{props.ride.fromLocationCity}</div>
             <div className={styles.dropLocationLabel}>נקודת יעד</div>
-            <div className={styles.toAddress}>{props.ride.to.street + ' ' + props.ride.to.num}</div>
-            <div className={styles.toCity}>{props.ride.to.city}</div>
+            <div className={styles.toAddress}>{props.ride.toLocationWithoutCity}</div>
+            <div className={styles.toCity}>{props.ride.toLocationCity}</div>
             <div className={styles.dateLabel}>תאריך</div>
             <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
             <div className={styles.date}>{props.ride.date}</div>
@@ -90,7 +91,7 @@ export default function RideDialog(props) {
 
         <div className={styles.buttons}>
           <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} color="primary" />
-          {props.ride.request === '1' ?
+          {props.ride.rideTypeID === REQUEST_RIDE_ID ?
             <Button className={styles.join} onClick={handleMeet} color="primary" autoFocus>
               צרף אליי לנסיעה!
           </Button> :

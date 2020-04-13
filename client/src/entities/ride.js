@@ -1,9 +1,11 @@
 class Ride{
-    constructor(rideID, ownerID, fromAddress, fromAddressLatitude, 
+    constructor(rideID, ownerName, ownerPhoneNumber, ownerEmail, fromAddress, fromAddressLatitude, 
         fromAddressLongitude, toAddress, toAddressLatitude, toAddressLongitude, date, time, isAvailable, 
         isActive, rideTypeID, chosenUserID){
         this.rideID = rideID;
-        this.ownerID = ownerID;
+        this.ownerName = ownerName;
+        this.ownerPhoneNumber = ownerPhoneNumber;
+        this.ownerEmail = ownerEmail;
         this.fromAddress = fromAddress;
         this.fromAddressLatitude = fromAddressLatitude;
         this.fromAddressLongitude = fromAddressLongitude;

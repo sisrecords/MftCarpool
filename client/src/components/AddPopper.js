@@ -19,10 +19,10 @@ import AddOffer from './AddOffer';
 //   },
 // }));
 
-export default function AddPopper() {
+export default function AddPopper(props) {
   // const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const [openRequest, setOpenRequest] = useState(null);
   const [openOffer, setOpenOffer] = useState(false);
@@ -48,8 +48,9 @@ export default function AddPopper() {
     setOpenRequest(null);
   }
 
-  function closeOfferDialog() {
+  function closeOfferDialog(ride) {
     setOpenOffer(null);
+    props.onClose(ride);
   }
 
   return (

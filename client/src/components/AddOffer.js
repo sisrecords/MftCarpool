@@ -53,15 +53,12 @@ export default function AddOffer(props) {
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleClose = (ride) => {
         setOpen(false);
-        props.onClose();
+        props.onClose(ride);
     };
 
     const handleSendRequest = async (values) => {
-        // לשלוח בקשה לשרת ומשם הוא יטפל בזה
-        // values.name, values.phone, values.email, values.time, fromLocation, fromLatitude, fromLongitude, 
-        // toLocation, toLatitude, toLongitude;
         const response = await axios.post(
             'http://localhost:3000/rides/addRide',
             {
@@ -75,14 +72,13 @@ export default function AddOffer(props) {
         );
         let rideID = response.data.recordset[0][""];
         console.log(rideID);
-        //let newRideID = 0; //we will get it in the server's response
         //let userID = 1; //need to get the current user ID - we will get it from the server in the app init
         let newRide = new Ride(rideID, values.name, values.phone, values.email, fromLocation, fromLatitude, 
             fromLongitude, toLocation, toLatitude, toLongitude, selectedDate, values.time, true, true, 
             OFFER_RIDE_ID, null);
         //we will pass the new ride to the handleClose which will pass it to the props.onClose func, so 
         //we can get it in the main screen and add it to the list
-        handleClose();
+        handleClose(newRide);
     }
 
     const handleFromLocationInputChange = (val) => {

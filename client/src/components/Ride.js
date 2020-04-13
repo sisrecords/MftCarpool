@@ -7,6 +7,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import EventIcon from '@material-ui/icons/Event';
+import {REQUEST_RIDE_ID} from '../entities/ride';
 
 function Ride(props) {
     return (
@@ -15,21 +16,21 @@ function Ride(props) {
                 <Card className={styles.card}>
                     <div className={styles.fromTo}><img style={{ height: '45px' }} src='/images/from_to.png' alt="from_to" /></div>
                     {
-                        (props.itemRide.request === '1') ?
+                        (props.itemRide.rideTypeID === REQUEST_RIDE_ID) ?
                             <div className={styles.carIconReq}><EmojiPeopleIcon className={styles.carIcon} /></div>
                             : <div className={styles.carIconOff}><DriveEtaIcon className={styles.carIcon} /></div>
                     }
                     <div className={styles.addressFrom}>
-                        {props.itemRide.address.street} {props.itemRide.address.num}
+                        {props.itemRide.fromLocationWithoutCity}
                     </div>
                     <div className={styles.cityFrom}>
-                        {props.itemRide.address.city}
+                        {props.itemRide.fromLocationCity}
                     </div >
                     <div className={styles.addressTo}>
-                        {props.itemRide.to.street} {props.itemRide.to.num}
+                        {props.itemRide.toLocationWithoutCity}
                     </div>
                     <div className={styles.cityTo}>
-                        {props.itemRide.to.city}
+                        {props.itemRide.toLocationCity}
                     </div >
                     <div className={styles.locationIcon}>
                         <LocationOnIcon className={styles.locationOnIcon}/>
