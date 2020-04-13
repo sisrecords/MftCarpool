@@ -8,7 +8,11 @@ import Main from "./components/Main";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Main />
+    <div className="App">
+      <header className="App-header">
+        <Main />
+      </header>
+    </div>
   </React.StrictMode>,
   document.getElementById('root')
 );
