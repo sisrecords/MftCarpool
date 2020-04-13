@@ -132,11 +132,11 @@ export default function AddRequest(props) {
                 }}>
                     <div className={styles.mapBeg}>
                         <ExampleMap onInputChange={handleFromLocationInputChange}
-                            onMarkerChange={handleFromLocationMarkerChange} />
+                            onMarkerChange={handleFromLocationMarkerChange} label="כתובת מוצא"/>
                     </div>
                     <div className={styles.mapEnd}>
                         <ExampleMap onInputChange={handleToLocationInputChange}
-                            onMarkerChange={handleToLocationMarkerChange} />
+                            onMarkerChange={handleToLocationMarkerChange} label="כתובת יעד"/>
                     </div>
                 </div>
                 <div className={styles.buttons}>

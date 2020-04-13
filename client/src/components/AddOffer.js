@@ -56,8 +56,10 @@ export default function AddOffer(props) {
         props.onClose();
     };
 
-    const handleSendRequest = () => {
+    const handleSendRequest = (values) => {
         // לשלוח בקשה לשרת ומשם הוא יטפל בזה
+        // values.name, values.phone, values.email, values.time, fromLocation, fromLatitude, fromLongitude, 
+        // toLocation, toLatitude, toLongitude;
         handleClose();
     }
 
@@ -122,7 +124,7 @@ export default function AddOffer(props) {
             let isLocationsValidRes = isLocationsValid();
             if (isLocationsValidRes && formik.isValid) {
                 //everything is valid
-                handleSendRequest();
+                handleSendRequest(values);
             }
         }
     });
@@ -197,11 +199,11 @@ export default function AddOffer(props) {
                 }}>
                     <div className={styles.mapBeg}>
                         <ExampleMap onInputChange={handleFromLocationInputChange}
-                            onMarkerChange={handleFromLocationMarkerChange} />
+                            onMarkerChange={handleFromLocationMarkerChange} label="כתובת מוצא"/>
                     </div>
                     <div className={styles.mapEnd}>
                         <ExampleMap onInputChange={handleToLocationInputChange}
-                            onMarkerChange={handleToLocationMarkerChange} />
+                            onMarkerChange={handleToLocationMarkerChange} label="כתובת יעד"/>
                     </div>
                 </div>
                 <div className={styles.buttons}>

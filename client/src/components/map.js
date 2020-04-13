@@ -191,8 +191,8 @@ const ExampleMap = (props) => {
                 <TextField
                   {...params}
                   variant="standard"
-                  label="כתובת"
-                  placeholder="הקלד את הכתובת"
+                  label={props.label}
+                  placeholder="הכנס את הכתובת"
                   margin="normal"
                   fullWidth
                   error={(input === "" || input === null || marker.length === 0) ? true : false}

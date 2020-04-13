@@ -1,11 +1,11 @@
 .dialog {
     direction: rtl !important;
     z-index: 1000;
-    height: 100%;
+    height: 100vh !important;
 }
 
 .form {
-    height: 60%;
+    height: 70%;
 }
 
 .details {
@@ -30,7 +30,7 @@
 .buttons {
     display: grid;
     height: 21%;
-    min-height: 21%;
+    min-height: 19%;
     grid-template-rows: repeat(5, 20%);
     grid-template-columns: repeat(10, 1fr);
 }

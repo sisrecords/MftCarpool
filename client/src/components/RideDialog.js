@@ -73,8 +73,13 @@ export default function RideDialog(props) {
             <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div>
             <div className={styles.email}>{props.ride.email}</div>
           </div>
-          : <div className={styles.details}>
-            <div className={styles.map}>
+          : <div className={styles.mapDetails}>
+            <div className={styles.mapBeg}>
+              {/* here we will take this info from the props.ride and pass it to the map */}
+              <ExampleMap latitude={31.9517728} longitude={34.8164472}
+                input={'בי"ס ממ"ד ישרון, ירמיהו הנביא, 13, גורדון, ראשון לציון'} />
+            </div>
+            <div className={styles.mapEnd}>
               {/* here we will take this info from the props.ride and pass it to the map */}
               <ExampleMap latitude={31.9517728} longitude={34.8164472}
                 input={'בי"ס ממ"ד ישרון, ירמיהו הנביא, 13, גורדון, ראשון לציון'} />
