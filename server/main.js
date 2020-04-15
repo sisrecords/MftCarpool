@@ -25,6 +25,7 @@ const nodemailer = require("nodemailer");
 
     const connectionsPool = await getConnectionsPool();
     sql.globalConnection = connectionsPool;
+    nodemailer.transporter = transporter;
     setRoutes();
 
     server.get('/connect', (req, res) => {

@@ -3,6 +3,10 @@
     height: 100vh !important;
 }
 
+.dialogContent {
+    height: 100%;
+}
+
 .details {
     display: grid;
     grid-template-rows: repeat(20, 5%);

@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const sql = require("mssql");
+const nodemailer = require("nodemailer");
 
 const connectionsPool = sql.globalConnection;
+const transporter = nodemailer.transporter;
 
 router.get('/getAllRides', async (req, res) => {
-    const result = await sql.query`select * from rides`;
-    res.send(result.recordset[0]);
+    const result = await sql.query`select * from rides where isActive = 'true' AND isAvailable = 'true'`;
+    res.send(result.recordset);
 });
 
 router.post('/addRide', async (req, res) => {
@@ -106,7 +108,7 @@ router.post('/occupyRide', async (req, res) => {
     res.send("ride occupied");
 });
 
-router.get('/occupyRide/:rideID/:userID', async (req, res) => {
+router.get('/occupyRide/:rideID/:userID/:userEmail', async (req, res) => {
     let result = await connectionsPool.request()
         .input("rideID", sql.Int, req.params.rideID)
         .input("userID", sql.Int, req.params.userID)
@@ -117,7 +119,51 @@ router.get('/occupyRide/:rideID/:userID', async (req, res) => {
     //if result.rowsAffected[0] === 1 then the query succeeded, if 0 then the ride is taken.
     //either way, we show an appropriate message to the user
     // console.log(result.rowsAffected[0] === 0);
-    res.send(result.rowsAffected);
+
+    try {
+        const to = req.params.userEmail;
+        const message = `<div style="direction:rtl;text-align: right;">
+        <b>בקשתך להצטרפות לנסיעה אושרה.</b><br>
+        <p>לחץ כאן למעבר לאפליקציה: <a href="http://192.168.59.1:3001">לאפליקציה</a></p></div>"`
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+          from: 'mftcarpool@gmail.com', // sender address
+          to: to, // list of receivers
+          subject: "אישור בקשת הצטרפות", // Subject line
+          // text: "Hello world?", // plain text body
+          html: message // html body
+        });
+      }
+      catch (ex) {
+        res.status(500).send('error in sending email');
+      }    
+
+    res.send(result.rowsAffected + " " + s);
+});
+
+router.post('/wantToJoinRide', async (req, res) => {
+    try {
+        const to = req.body.ownerEmail;
+        const message = `<div style="direction:rtl;text-align: right;">
+        <b>שלום ${req.body.ownerName},</b><br>
+        <b>${req.body.userName} רוצה להצטרף אליך לנסיעה</b><br>
+        <p>לחץ כאן לאישור הבקשה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}">לאפליקציה</a></p></div>"`
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+          from: 'mftcarpool@gmail.com', // sender address
+          to: to, // list of receivers
+          subject: "בקשת הצטרפות", // Subject line
+          // text: "Hello world?", // plain text body
+          html: message // html body
+        });
+
+        res.send("mail was sent!");
+      }
+      catch (ex) {
+        res.status(500).send('error in sending email');
+      }
 });
 
 module.exports = router;

@@ -74,8 +74,8 @@ export default function AddOffer(props) {
         console.log(rideID);
         //let userID = 1; //need to get the current user ID - we will get it from the server in the app init
         let newRide = new Ride(rideID, values.name, values.phone, values.email, fromLocation, fromLatitude, 
-            fromLongitude, toLocation, toLatitude, toLongitude, selectedDate, values.time, true, true, 
-            OFFER_RIDE_ID, null);
+            fromLongitude, toLocation, toLatitude, toLongitude, selectedDate.toLocaleDateString(), 
+            values.time, true, true, OFFER_RIDE_ID, null);
         //we will pass the new ride to the handleClose which will pass it to the props.onClose func, so 
         //we can get it in the main screen and add it to the list
         handleClose(newRide);

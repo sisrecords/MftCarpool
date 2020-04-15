@@ -9,7 +9,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import EventIcon from '@material-ui/icons/Event';
 import {REQUEST_RIDE_ID} from '../entities/ride';
 
-function Ride(props) {
+function RideCard(props) {
     return (
         <div className={styles.card} >
             <ListItem className={styles.listitem} key={props.itemRide.phone}>
@@ -20,8 +20,13 @@ function Ride(props) {
                             <div className={styles.carIconReq}><EmojiPeopleIcon className={styles.carIcon} /></div>
                             : <div className={styles.carIconOff}><DriveEtaIcon className={styles.carIcon} /></div>
                     }
-                    <div className={styles.addressFrom}>
-                        {props.itemRide.fromLocationWithoutCity}
+                    <div className={styles.addressFrom} title={props.itemRide.fromLocationWithoutCity}>
+                        {
+                            props.itemRide.fromLocationWithoutCity.length > 15 ?
+                            "..." + props.itemRide.fromLocationWithoutCity.substring(0, 16)
+                            : props.itemRide.fromLocationWithoutCity
+                        }
+                        {/* {props.itemRide.fromLocationWithoutCity} */}
                     </div>
                     <div className={styles.cityFrom}>
                         {props.itemRide.fromLocationCity}
@@ -47,4 +52,4 @@ function Ride(props) {
     );
 }
 
-export default Ride;
+export default RideCard;
