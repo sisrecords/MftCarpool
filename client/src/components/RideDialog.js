@@ -64,13 +64,33 @@ export default function RideDialog(props) {
       {
         rideID: props.ride.rideID, ownerEmail: props.ride.email, ownerName: props.ride.name,
         userID: user.userID, userName: values.name, userPhoneNumber: values.phone,
-        userEmail: values.email, userPickupLocation: pickupLocation, 
+        userEmail: values.email, userPickupLocation: pickupLocation,
         userPickupLocationLatitude: pickupLatitude, userPickupLocationLongitude: pickupLongitude
       }
     );
     console.log(response);
-    alert(response.status === 200 ? `נשלח מייל לבעל ההצעה המכיל את פרטיך.\nבמידה והוא יאשר, תקבל על כך מייל.` 
-    :
+    alert(response.status === 200 ? `נשלח מייל לבעל ההצעה המכיל את פרטיך.\nבמידה והוא יאשר, תקבל על כך מייל.`
+      :
+      "קרתה תקלה בעת שליחת הבקשה, אנא נסה שנית.");
+    handleClose();
+  }
+
+  const handlAnswerRequestSubmit = async (values) => {
+    //here we will need the info of the current user
+    let user = new User(1, "mor", "1234567891", "mftcarpool@gmail.com", true);
+    //user is the one who wants to join the ride and the owner is the one offering the ride
+    const response = await axios.post(
+      'http://localhost:3000/rides/wantToAnswerRequest',
+      {
+        rideID: props.ride.rideID, ownerEmail: props.ride.email, ownerName: props.ride.name,
+        userID: user.userID, userName: values.name, userPhoneNumber: values.phone,
+        userEmail: values.email, userPickupLocation: pickupLocation,
+        userPickupLocationLatitude: pickupLatitude, userPickupLocationLongitude: pickupLongitude
+      }
+    );
+    console.log(response);
+    alert(response.status === 200 ? `נשלח מייל לבעל הבקשה המכיל את פרטיך.\nבמידה והוא יאשר, תקבל על כך מייל.`
+      :
       "קרתה תקלה בעת שליחת הבקשה, אנא נסה שנית.");
     handleClose();
   }
@@ -120,7 +140,12 @@ export default function RideDialog(props) {
       let isLocationsValidRes = isLocationsValid();
       if (isLocationsValidRes && formik.isValid) {
         //everything is valid
-        handlJoinOfferSubmit(values);
+        if(props.ride.rideTypeID === REQUEST_RIDE_ID) {
+          handlAnswerRequestSubmit(values);
+        }
+        else {
+          handlJoinOfferSubmit(values);
+        }
       }
     }
   });
@@ -138,63 +163,57 @@ export default function RideDialog(props) {
           <div className={styles.dialogContent}>
             <DialogTitle className={styles.title} id="customized-dialog-title" onClose={handleClose}>
               מילוי פרטים </DialogTitle>
-            {props.ride.rideTypeID === REQUEST_RIDE_ID ?
-              <div className={styles.details}>request</div>
-              :
-              <form className={styles.fillInfoForm} noValidate autoComplete="off">
-                <div className={styles.fillInfoDetails}>
-                  <TextField className={styles.fillInfoName} id="name" label="שם מלא" color="primary"
-                    error={formik.touched.name && formik.errors.name ? true : false}
-                    {...formik.getFieldProps('name')}
-                    helperText={formik.touched.name && formik.errors.name ? formik.errors.name : null}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="end">
-                          <AccountCircleIcon className={styles.fillInfoNameIcon}></AccountCircleIcon>
-                        </InputAdornment>
-                      ),
-                    }} />
-                  <TextField className={styles.fillInfoPhone} id="phone" label="פלאפון" color="primary"
-                    error={formik.touched.phone && formik.errors.phone ? true : false}
-                    {...formik.getFieldProps('phone')}
-                    helperText={formik.touched.phone && formik.errors.phone ? formik.errors.phone : null}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="end">
-                          <PhoneIcon className={styles.fillInfoPhoneIcon}></PhoneIcon>
-                        </InputAdornment>
-                      ),
-                    }} />
-                  <TextField className={styles.fillInfoEmail} id="email" label='דוא"ל' color="primary"
-                    error={formik.touched.email && formik.errors.email ? true : false}
-                    {...formik.getFieldProps('email')}
-                    helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="end">
-                          <EmailIcon className={styles.fillInfoEmailIcon}></EmailIcon>
-                        </InputAdornment>
-                      ),
-                    }} />
-                  <div className={styles.fillInfoMap}>
-                    <ExampleMap onInputChange={handlePickupLocationInputChange}
-                      onMarkerChange={handlePickupLocationMarkerChange} label="כתובת איסוף" />
-                  </div>
+            <form className={styles.fillInfoForm} noValidate autoComplete="off">
+              <div className={styles.fillInfoDetails}>
+                <TextField className={styles.fillInfoName} id="name" label="שם מלא" color="primary"
+                  error={formik.touched.name && formik.errors.name ? true : false}
+                  {...formik.getFieldProps('name')}
+                  helperText={formik.touched.name && formik.errors.name ? formik.errors.name : null}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="end">
+                        <AccountCircleIcon className={styles.fillInfoNameIcon}></AccountCircleIcon>
+                      </InputAdornment>
+                    ),
+                  }} />
+                <TextField className={styles.fillInfoPhone} id="phone" label="פלאפון" color="primary"
+                  error={formik.touched.phone && formik.errors.phone ? true : false}
+                  {...formik.getFieldProps('phone')}
+                  helperText={formik.touched.phone && formik.errors.phone ? formik.errors.phone : null}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="end">
+                        <PhoneIcon className={styles.fillInfoPhoneIcon}></PhoneIcon>
+                      </InputAdornment>
+                    ),
+                  }} />
+                <TextField className={styles.fillInfoEmail} id="email" label='דוא"ל' color="primary"
+                  error={formik.touched.email && formik.errors.email ? true : false}
+                  {...formik.getFieldProps('email')}
+                  helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="end">
+                        <EmailIcon className={styles.fillInfoEmailIcon}></EmailIcon>
+                      </InputAdornment>
+                    ),
+                  }} />
+                <div className={styles.fillInfoMap}>
+                  <ExampleMap onInputChange={handlePickupLocationInputChange}
+                    onMarkerChange={handlePickupLocationMarkerChange} 
+                    label={props.ride.rideTypeID === REQUEST_RIDE_ID ? "כתובת מוצא" 
+                    : "כתובת איסוף"}/>
                 </div>
-              </form>
-            }
+              </div>
+            </form>
             <div className={styles.fillInfoButtons}>
-              {props.ride.rideTypeID === REQUEST_RIDE_ID ?
-                <Button className={styles.fillInfoJoin} onClick={handleMeet} color="primary" autoFocus>
-                  אישור
-            </Button> :
-                <Button className={styles.fillInfoJoin} onClick={formik.handleSubmit} color="primary" autoFocus>
-                  אישור
-            </Button>
-              }
+              <Button className={styles.fillInfoJoin} onClick={formik.handleSubmit} color="primary" autoFocus>
+                אישור
+              </Button>
+
               <Button className={styles.fillInfoCancel} onClick={handleClose} color="primary">
                 ביטול
-          </Button>
+              </Button>
             </div>
           </div>
           :
@@ -230,19 +249,19 @@ export default function RideDialog(props) {
               </div>
               : <div className={styles.mapDetails}>
                 <div className={styles.mapBeg}>
-                  <ExampleMap latitude={props.ride.fromAddressLatitude} 
-                  longitude={props.ride.fromAddressLongitude} input={props.ride.fromAddress} />
+                  <ExampleMap latitude={props.ride.fromAddressLatitude}
+                    longitude={props.ride.fromAddressLongitude} input={props.ride.fromAddress} />
                 </div>
                 <div className={styles.mapEnd}>
-                  <ExampleMap latitude={props.ride.toAddressLatitude} 
-                  longitude={props.ride.toAddressLongitude} input={props.ride.toAddress} />
+                  <ExampleMap latitude={props.ride.toAddressLatitude}
+                    longitude={props.ride.toAddressLongitude} input={props.ride.toAddress} />
                 </div>
               </div>
             }
             <div className={styles.buttons}>
               <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} color="primary" />
               {props.ride.rideTypeID === REQUEST_RIDE_ID ?
-                <Button className={styles.join} onClick={handleMeet} color="primary" autoFocus>
+                <Button className={styles.join} onClick={handlJoinOfferStart} color="primary" autoFocus>
                   צרף אליי לנסיעה!
             </Button> :
                 <Button className={styles.join} onClick={handlJoinOfferStart} color="primary" autoFocus>

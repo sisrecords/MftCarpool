@@ -6,6 +6,9 @@ const nodemailer = require("nodemailer");
 const connectionsPool = sql.globalConnection;
 const transporter = nodemailer.transporter;
 
+const OFFER_RIDE_ID = 1;
+const REQUEST_RIDE_ID = 2;
+
 router.get('/getAllRides', async (req, res) => {
     const result = await sql.query`select * from rides where isActive = 'true' AND isAvailable = 'true'`;
     res.send(result.recordset);
@@ -108,7 +111,8 @@ router.post('/occupyRide', async (req, res) => {
     res.send("ride occupied");
 });
 
-router.get('/occupyRide/:rideID/:userID/:userEmail', async (req, res) => {
+router.get('/occupyRide/:rideID/:userID/:userEmail/:rideTypeID', async (req, res) => {
+    console.log(req.params.rideTypeID);
     let result = await connectionsPool.request()
         .input("rideID", sql.Int, req.params.rideID)
         .input("userID", sql.Int, req.params.userID)
@@ -121,16 +125,21 @@ router.get('/occupyRide/:rideID/:userID/:userEmail', async (req, res) => {
     // console.log(result.rowsAffected[0] === 0);
 
     try {
+        const msg = req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
+        `<b>הצעתך לצירוף לנסיעה אושרה.</b><br>`
+        : `<b>בקשתך להצטרפות לנסיעה אושרה.</b><br>`;
         const to = req.params.userEmail;
         const message = `<div style="direction:rtl;text-align: right;">
-        <b>בקשתך להצטרפות לנסיעה אושרה.</b><br>
+        ${msg}
         <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001">צפייה בנסיעה</a></p></div>"`
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
           from: 'mftcarpool@gmail.com', // sender address
           to: to, // list of receivers
-          subject: "אישור בקשת הצטרפות", // Subject line
+          subject: req.params.rideTypeID === REQUEST_RIDE_ID + "" ? 
+          "אישור הצעת צירוף לנסיעה" :
+          "אישור בקשת הצטרפות לנסיעה", // Subject line
           // text: "Hello world?", // plain text body
           html: message // html body
         });
@@ -154,13 +163,42 @@ router.post('/wantToJoinRide', async (req, res) => {
         <b>מייל: ${req.body.userEmail}</b><br>
         <b>נקודת איסוף: ${req.body.userPickupLocation} </b>
         <p>לצפייה במיקום על המפה: <a href="https://nominatim.openstreetmap.org/reverse.php?format=html&lat=${req.body.userPickupLocationLatitude}&lon=${req.body.userPickupLocationLongitude}&zoom=17">צפייה במפה</a></p>
-        <p>לחץ כאן לאישור הבקשה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}">אישור הבקשה</a></p></div>"`
+        <p>לחץ כאן לאישור הבקשה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}/${OFFER_RIDE_ID}">אישור הבקשה</a></p></div>"`
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
           from: 'mftcarpool@gmail.com', // sender address
           to: to, // list of receivers
-          subject: "בקשת הצטרפות", // Subject line
+          subject: "בקשת הצטרפות לנסיעה", // Subject line
+          // text: "Hello world?", // plain text body
+          html: message // html body
+        });
+
+        res.send("mail was sent!");
+      }
+      catch (ex) {
+        res.status(500).send('error in sending email');
+      }
+});
+
+router.post('/wantToAnswerRequest', async (req, res) => {
+    try {
+        const to = req.body.ownerEmail;
+        const message = `<div style="direction:rtl;text-align: right;">
+        <b>שלום ${req.body.ownerName},</b><br>
+        <b>${req.body.userName} רוצה לצרף אותך אליו לנסיעה.</b><br>
+        <b>פרטים:</b><br>
+        <b>טלפון: ${req.body.userPhoneNumber}</b><br>
+        <b>מייל: ${req.body.userEmail}</b><br>
+        <b>נקודת מוצא: ${req.body.userPickupLocation} </b>
+        <p>לצפייה במיקום על המפה: <a href="https://nominatim.openstreetmap.org/reverse.php?format=html&lat=${req.body.userPickupLocationLatitude}&lon=${req.body.userPickupLocationLongitude}&zoom=17">צפייה במפה</a></p>
+        <p>לחץ כאן לאישור ההצעה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}/${REQUEST_RIDE_ID}">אישור ההצעה</a></p></div>"`
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+          from: 'mftcarpool@gmail.com', // sender address
+          to: to, // list of receivers
+          subject: "בקשת צירוף לנסיעה", // Subject line
           // text: "Hello world?", // plain text body
           html: message // html body
         });
