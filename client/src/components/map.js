@@ -30,6 +30,7 @@ const ExampleMap = (props) => {
   const [debouncedInput] = useDebounce(input, 350);
   const [first, setFirst] = useState(true);
   const [mapRef, setMapRef] = useState(null);
+  const [showErrorFirstTime, setShowErrorFirstTime] = useState(false);
 
   useEffect(
     () => {
@@ -52,6 +53,9 @@ const ExampleMap = (props) => {
     if (!editMode) {
       props.onInputChange(inputVal);
       props.onMarkerChange(lat, lon);
+    }
+    if (!showErrorFirstTime) {
+      setShowErrorFirstTime(true);
     }
     return response;
   }
@@ -118,6 +122,9 @@ const ExampleMap = (props) => {
     if (!editMode) {
       props.onInputChange(val);
     }
+    if (!showErrorFirstTime) {
+      setShowErrorFirstTime(true);
+    }
   }
 
   const handleChange = (event, val) => {
@@ -128,14 +135,14 @@ const ExampleMap = (props) => {
       setLng(val.longitude);
       setZoom(17);
       setMarker([val.latitude, val.longitude]);
-      if(!editMode){
+      if (!editMode) {
         props.onMarkerChange(val.latitude, val.longitude);
       }
     }
     else {
       if (!val || val === "") {
         setMarker([]);
-        if(!editMode){
+        if (!editMode) {
           props.onMarkerChange(null, null);
         }
       }
@@ -184,10 +191,11 @@ const ExampleMap = (props) => {
                 <TextField
                   {...params}
                   variant="standard"
-                  label="כתובת"
-                  placeholder="הקלד את הכתובת"
+                  label={props.label}
+                  placeholder="הכנס את הכתובת"
                   margin="normal"
                   fullWidth
+                  error={(input === "" || input === null || marker.length === 0) ? true : false}
                 />
               </LightTooltip>
             )}
@@ -200,7 +208,7 @@ const ExampleMap = (props) => {
         doubleClickZoom={false}
         touchZoom={true}
         onDblClick={editMode ? () => { } : addMarker}
-        ref={e => { console.log(e); setMapRef(e); }}
+        ref={e => { setMapRef(e); }}
       // onpopupopen={onLocationSelected}
       >
         <TileLayer

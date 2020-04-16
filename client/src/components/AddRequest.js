@@ -79,6 +79,7 @@ export default function AddRequest(props) {
     return (
         <div>
             <Dialog className={styles.dialog}
+                disableBackdropClick
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
@@ -131,15 +132,15 @@ export default function AddRequest(props) {
                 }}>
                     <div className={styles.mapBeg}>
                         <ExampleMap onInputChange={handleFromLocationInputChange}
-                            onMarkerChange={handleFromLocationMarkerChange} />
+                            onMarkerChange={handleFromLocationMarkerChange} label="כתובת מוצא"/>
                     </div>
                     <div className={styles.mapEnd}>
                         <ExampleMap onInputChange={handleToLocationInputChange}
-                            onMarkerChange={handleToLocationMarkerChange} />
+                            onMarkerChange={handleToLocationMarkerChange} label="כתובת יעד"/>
                     </div>
                 </div>
                 <div className={styles.buttons}>
-                    <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} />
+                    <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} color="primary" />
                     <Button className={styles.ok} onClick={handleSendRequest} color="primary" autoFocus>
                         שליחת בקשה  </Button>
                     <Button className={styles.cancel} onClick={handleClose} color="primary">

@@ -1,67 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './stylesheet.module.css';
 import { IconButton, List, Button } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Ride from './Ride';
+import RideCard from './Ride';
 import RideDialog from './RideDialog';
 import AddPopper from './AddPopper';
 import ScrollUpButton from "react-scroll-up-button";
 import PersonalDetails from './PersonalDetails';
+import Ride, { OFFER_RIDE_ID, REQUEST_RIDE_ID } from '../entities/ride';
+import axios from 'axios';
+
+var list = [{
+  name: 'שירה מזל כהן', phone: '053-5314563', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/05/2020', time: '18:00', email: 'nafofi6204@govdep5012.com', rideTypeID: 1, distance: '2', rideID: 19
+},
+{
+  name: 'נועה', phone: '052-6231196', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', rideTypeID: 1, distance: '87', rideID: 2
+},
+{
+  name: 'אביתר', phone: '052-8901236', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', rideTypeID: 2, distance: '100', rideID: 3
+}
+  ,
+{
+  name: 'שירה', phone: '053-5314564', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', rideTypeID: 2, distance: '2', rideID: 4
+},
+{
+  name: 'נועה', phone: '052-6231197', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', rideTypeID: 1, distance: '87', rideID: 5
+},
+{
+  name: 'אביתר', phone: '052-8901237', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', rideTypeID: 2, distance: '100', rideID: 6
+},
+{
+  name: 'שירה', phone: '053-5314565', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', rideTypeID: 2, distance: '2', rideID: 7
+},
+{
+  name: 'נועה', phone: '052-6231198', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', rideTypeID: 1, distance: '87', rideID: 8
+},
+{
+  name: 'אביתר', phone: '052-8901238', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
+  date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', rideTypeID: 2, distance: '100', rideID: 9
+}
+
+];
+
+var ridesDBList = [];
 
 //#1976d2
 function Main() {
-  var list = [{
-    name: 'שירה מזל כהן', phone: '053-5314563', address: { street: 'הזית', num: '12', city: 'באר שבע' }, locationFrom: "משה וילנסקי, נאות לון, באר שבע", 
-    locationTo: "עזריאלי עגול, גשר 'הקריה', מונטיפיורי, תל אביב-יפו", to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', request: '1', distance: '2'
-  },
-  {
-    name: 'נועה', phone: '052-6231196', address: { street: 'הרצל', num: '98', city: 'נתניה' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', request: '0', distance: '87'
-  },
-  {
-    name: 'אביתר', phone: '052-8901236', address: { street: "צ'רניחובסקי", num: '112', city: 'תל אביב' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', request: '1', distance: '100'
-  }
-    ,
-  {
-    name: 'שירה', phone: '053-5314564', address: { street: 'הזית', num: '12', city: 'באר שבע' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', request: '1', distance: '2'
-  },
-  {
-    name: 'נועה', phone: '052-6231197', address: { street: 'הרצל', num: '98', city: 'נתניה' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', request: '0', distance: '87'
-  },
-  {
-    name: 'אביתר', phone: '052-8901237', address: { street: "צ'רניחובסקי", num: '112', city: 'תל אביב' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', request: '1', distance: '100'
-  },
-  {
-    name: 'שירה', phone: '053-5314565', address: { street: 'הזית', num: '12', city: 'באר שבע' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', request: '1', distance: '2'
-  },
-  {
-    name: 'נועה', phone: '052-6231198', address: { street: 'הרצל', num: '98', city: 'נתניה' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', request: '0', distance: '87'
-  },
-  {
-    name: 'אביתר', phone: '052-8901238', address: { street: "צ'רניחובסקי", num: '112', city: 'תל אביב' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
-    date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', request: '1', distance: '100'
-  }
 
-  ];
   function sortList(list) {
     return list.sort((a, b) => {
       return Number(a.distance) - Number(b.distance)
     });
   }
-
-  const [ridesList, setRidesList] = useState(sortList(list));
+  const [ridesList, setRidesList] = useState(sortList(ridesDBList));
   const [selectedRide, setSelectedRide] = useState(null);
   const [allSelect, setAllSelect] = useState(true);
   const [requestSelect, setRequestSelect] = useState(false);
   const [offerSelect, setOfferSelect] = useState(false);
   const [personalDetailsOpen, setPersonalDetailsOpen] = useState(null);
+
+  useEffect(() => {
+    (async function getAllRides() {
+      const response =
+        await axios.get("http://localhost:3000/rides/getAllRides");
+      console.log(response);
+      let rides = response.data;
+      let updatedRides = [];
+      rides.map(ride => {
+        let clientRide = new Ride(ride.RideID, ride.OwnerName, ride.OwnerPhoneNumber, ride.OwnerEmail,
+          ride.FromAddress, ride.FromAddressLatitude, ride.FromAddressLongitude, ride.ToAddress, 
+          ride.ToAddressLatitude, ride.ToAddressLongitude, ride.Date, ride.Time, ride.IsAvailable, 
+          ride.IsActive, ride.RideTypeID, ride.ChosenUserID);
+        updatedRides.push(transformRide(clientRide));
+      });
+      ridesDBList = [ ...updatedRides ];
+      setRidesList(sortList(updatedRides));
+    })();
+  }, [])
 
   function onPersonalDetailsClick() {
     setPersonalDetailsOpen(true);
@@ -81,22 +104,94 @@ function Main() {
     setSelectedRide(null);
   }
 
+  function transformRide(ride) {
+    let distance = Math.round(calculateDistance(+ride.fromAddressLatitude, +ride.fromAddressLongitude));
+    let fromLocation = ride.fromAddress;
+    let fromLocLastCommaIndex = fromLocation.lastIndexOf(", ");
+    let fromLocationWithoutCity = fromLocation.substring(0, fromLocLastCommaIndex);
+    let fromLocationCity = fromLocation.substring(fromLocLastCommaIndex + 2);
+    let toLocation = ride.toAddress;
+    let toLocLastCommaIndex = toLocation.lastIndexOf(", ");
+    let toLocationWithoutCity = toLocation.substring(0, toLocLastCommaIndex);
+    let toLocationCity = toLocation.substring(toLocLastCommaIndex + 2);
+    let newRide = {
+      ...ride, distance: distance, fromLocationWithoutCity: fromLocationWithoutCity,
+      fromLocationCity: fromLocationCity, toLocationWithoutCity: toLocationWithoutCity,
+      toLocationCity: toLocationCity, date: ride.date, name: ride.ownerName,
+      phone: ride.ownerPhoneNumber, email: ride.ownerEmail
+    };
+    return newRide;
+  }
+
+  function onPopperClose(ride) {
+    console.log(ride);
+    // let distance = Math.round(calculateDistance(+ride.fromAddressLatitude, +ride.fromAddressLongitude));
+    // let fromLocation = ride.fromAddress;
+    // let fromLocLastCommaIndex = fromLocation.lastIndexOf(", ");
+    // let fromLocationWithoutCity = fromLocation.substring(0, fromLocLastCommaIndex);
+    // let fromLocationCity = fromLocation.substring(fromLocLastCommaIndex + 2);
+    // let toLocation = ride.toAddress;
+    // let toLocLastCommaIndex = toLocation.lastIndexOf(", ");
+    // let toLocationWithoutCity = toLocation.substring(0, toLocLastCommaIndex);
+    // let toLocationCity = toLocation.substring(toLocLastCommaIndex + 2);
+    // let newRide = {
+    //   ...ride, distance: distance, fromLocationWithoutCity: fromLocationWithoutCity,
+    //   fromLocationCity: fromLocationCity, toLocationWithoutCity: toLocationWithoutCity,
+    //   toLocationCity: toLocationCity, date: ride.date.toLocaleDateString(), name: ride.ownerName,
+    //   phone: ride.ownerPhoneNumber, email: ride.ownerEmail
+    // };
+    let newRide = transformRide(ride);
+    console.log(newRide);
+    //here we will add it to the list
+    console.log(ridesDBList);
+    let copyList = [...ridesDBList];
+    copyList.push(newRide);
+    ridesDBList = sortList(copyList);
+    onAllClick();
+  }
+
+  function calculateDistance(lat, lon) {
+    //we will need to get the user's location info by asking for permission
+    let userLat = 32.3;
+    let userLong = 34.3;
+    return calcCrow(lat, lon, userLat, userLong);
+  }
+
+  function calcCrow(lat1, lon1, lat2, lon2) {
+    var R = 6371; // earth radius in km
+    var dLat = toRad(lat2 - lat1);
+    var dLon = toRad(lon2 - lon1);
+    var lat1Rad = toRad(lat1);
+    var lat2Rad = toRad(lat2);
+
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1Rad) * Math.cos(lat2Rad);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d;
+  }
+
+  // Converts numeric degrees to radians
+  function toRad(Value) {
+    return Value * Math.PI / 180;
+  }
+
   function onAllClick() {
-    setRidesList(list);
+    setRidesList(ridesDBList);
     setAllSelect(true);
     setRequestSelect(false);
     setOfferSelect(false);
   }
 
   function onRequestClick() {
-    setRidesList(list.filter(ride => ride.request === '1'));
+    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === REQUEST_RIDE_ID));
     setAllSelect(false);
     setRequestSelect(true);
     setOfferSelect(false);
   }
 
   function onOfferClick() {
-    setRidesList(list.filter(ride => ride.request === '0'));
+    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === OFFER_RIDE_ID));
     setAllSelect(false);
     setRequestSelect(false);
     setOfferSelect(true);
@@ -146,9 +241,9 @@ function Main() {
           <List className={styles.list}>
             {
               ridesList.map(ride => {
-                return <div key={ride.phone} className={styles.ride} onClick={() => onRideClick(ride)}>
-                  <Ride className={styles.ride} itemRide={ride}>
-                  </Ride>
+                return <div key={ride.rideID} className={styles.ride} onClick={() => onRideClick(ride)}>
+                  <RideCard className={styles.ride} itemRide={ride}>
+                  </RideCard>
 
                 </div>
               })
@@ -157,7 +252,7 @@ function Main() {
         </div>
       </div>
       <div className={styles.addPopper}>
-        <AddPopper />
+        <AddPopper onClose={onPopperClose} />
       </div>
       <div className={styles.scrollUp}>
         <ScrollUpButton ContainerClassName={styles.scrollUpButton} />

@@ -1,16 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const sql = require("mssql");
+const nodemailer = require("nodemailer");
 
 const connectionsPool = sql.globalConnection;
+const transporter = nodemailer.transporter;
 
 router.get('/getAllRides', async (req, res) => {
-    const result = await sql.query`select * from rides`;
-    res.send(result.recordset[0]);
+    const result = await sql.query`select * from rides where isActive = 'true' AND isAvailable = 'true'`;
+    res.send(result.recordset);
 });
 
 router.post('/addRide', async (req, res) => {
-    var ownerID = req.body.ownerID;
+    var ownerName = req.body.ownerName;
+    var ownerPhoneNumber = req.body.ownerPhoneNumber;
+    var ownerEmail = req.body.ownerEmail;
     var fromAddress = req.body.fromAddress;
     var fromAddressLatitude = req.body.fromAddressLatitude;
     var fromAddressLongitude = req.body.fromAddressLongitude;
@@ -22,8 +26,11 @@ router.post('/addRide', async (req, res) => {
     var isAvailable = req.body.isAvailable;
     var isActive = req.body.isActive;
     var rideTypeID = req.body.rideTypeID;
+    var chosenUserID = req.body.chosenUserID;
     let result = await connectionsPool.request()
-        .input("ownerID", sql.Int, ownerID)
+        .input("ownerName", sql.NVarChar, ownerName)
+        .input("ownerPhoneNumber", sql.NVarChar, ownerPhoneNumber)
+        .input("ownerEmail", sql.NVarChar, ownerEmail)
         .input("fromAddress", sql.NVarChar, fromAddress)
         .input("fromAddressLatitude", sql.Decimal(18, 10), fromAddressLatitude)
         .input("fromAddressLongitude", sql.Decimal(18, 10), fromAddressLongitude)
@@ -35,15 +42,18 @@ router.post('/addRide', async (req, res) => {
         .input("isAvailable", sql.Bit, isAvailable)
         .input("isActive", sql.Bit, isActive)
         .input("rideTypeID", sql.Int, rideTypeID)
-        .query(`insert into rides values(@ownerID, @fromAddress, @fromAddressLatitude, @fromAddressLongitude
+        .input("chosenUserID", sql.Int, chosenUserID)
+        .query(`insert into rides values(@ownerName, @ownerPhoneNumber, @ownerEmail, @fromAddress, @fromAddressLatitude, @fromAddressLongitude
             , @toAddress, @toAddressLatitude, @toAddressLongitude, @date, @time, @isAvailable, @isActive,
-            @rideTypeID) SELECT SCOPE_IDENTITY()`);
+            @rideTypeID, @chosenUserID) SELECT SCOPE_IDENTITY()`);
     res.send(result);
 });
 
 router.post('/updateRide', async (req, res) => {
     var rideID = req.body.rideID;
-    var ownerID = req.body.ownerID;
+    var ownerName = req.body.ownerName;
+    var ownerPhoneNumber = req.body.ownerPhoneNumber;
+    var ownerEmail = req.body.ownerEmail;
     var fromAddress = req.body.fromAddress;
     var fromAddressLatitude = req.body.fromAddressLatitude;
     var fromAddressLongitude = req.body.fromAddressLongitude;
@@ -55,9 +65,12 @@ router.post('/updateRide', async (req, res) => {
     var isAvailable = req.body.isAvailable;
     var isActive = req.body.isActive;
     var rideTypeID = req.body.rideTypeID;
+    var chosenUserID = req.body.chosenUserID;
     let result = await connectionsPool.request()
         .input("rideID", sql.Int, rideID)
-        .input("ownerID", sql.Int, ownerID)
+        .input("ownerName", sql.NVarChar, ownerName)
+        .input("ownerPhoneNumber", sql.NVarChar, ownerPhoneNumber)
+        .input("ownerEmail", sql.NVarChar, ownerEmail)
         .input("fromAddress", sql.NVarChar, fromAddress)
         .input("fromAddressLatitude", sql.Decimal(18, 10), fromAddressLatitude)
         .input("fromAddressLongitude", sql.Decimal(18, 10), fromAddressLongitude)
@@ -69,11 +82,13 @@ router.post('/updateRide', async (req, res) => {
         .input("isAvailable", sql.Bit, isAvailable)
         .input("isActive", sql.Bit, isActive)
         .input("rideTypeID", sql.Int, rideTypeID)
-        .query(`update rides set ownerID = @ownerID, fromAddress = @fromAddress, 
+        .input("chosenUserID", sql.Int, chosenUserID)
+        .query(`update rides set ownerName = @ownerName, ownerPhoneNumber = @ownerPhoneNumber, 
+        ownerEmail = @ownerEmail, fromAddress = @fromAddress, 
         fromAddressLatitude = @fromAddressLatitude, fromAddressLongitude = @fromAddressLongitude, 
         toAddress = @toAddress, toAddressLatitude = @toAddressLatitude, 
         toAddressLongitude = @toAddressLongitude, date = @date, time = @time, isAvailable = @isAvailable, 
-        isActive = @isActive, rideTypeID = @rideTypeID where rideID = @rideID`);
+        isActive = @isActive, rideTypeID = @rideTypeID, chosenUserID = @chosenUserID where rideID = @rideID`);
     res.send("ride updated");
 });
 
@@ -91,6 +106,70 @@ router.post('/occupyRide', async (req, res) => {
         .input("isAvailable", sql.Bit, false)
         .query(`update rides set isAvailable = @isAvailable where rideID = @rideID`);
     res.send("ride occupied");
+});
+
+router.get('/occupyRide/:rideID/:userID/:userEmail', async (req, res) => {
+    let result = await connectionsPool.request()
+        .input("rideID", sql.Int, req.params.rideID)
+        .input("userID", sql.Int, req.params.userID)
+        .input("isAvailable", sql.Bit, false)
+        .query(`update rides set isAvailable = @isAvailable, chosenUserID = @userID where rideID = @rideID 
+            AND chosenUserID is NULL`);
+    let s = "ride " + req.params.rideID + " occupied by user " + req.params.userID;
+    //if result.rowsAffected[0] === 1 then the query succeeded, if 0 then the ride is taken.
+    //either way, we show an appropriate message to the user
+    // console.log(result.rowsAffected[0] === 0);
+
+    try {
+        const to = req.params.userEmail;
+        const message = `<div style="direction:rtl;text-align: right;">
+        <b>בקשתך להצטרפות לנסיעה אושרה.</b><br>
+        <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001">צפייה בנסיעה</a></p></div>"`
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+          from: 'mftcarpool@gmail.com', // sender address
+          to: to, // list of receivers
+          subject: "אישור בקשת הצטרפות", // Subject line
+          // text: "Hello world?", // plain text body
+          html: message // html body
+        });
+      }
+      catch (ex) {
+        res.status(500).send('error in sending email');
+      }    
+    console.log(result.rowsAffected[0] === [1]);
+    console.log(result.rowsAffected[0] === 1);
+    res.send(result.rowsAffected + " " + s);
+});
+
+router.post('/wantToJoinRide', async (req, res) => {
+    try {
+        const to = req.body.ownerEmail;
+        const message = `<div style="direction:rtl;text-align: right;">
+        <b>שלום ${req.body.ownerName},</b><br>
+        <b>${req.body.userName} רוצה להצטרף אליך לנסיעה.</b><br>
+        <b>פרטים:</b><br>
+        <b>טלפון: ${req.body.userPhoneNumber}</b><br>
+        <b>מייל: ${req.body.userEmail}</b><br>
+        <b>נקודת איסוף: ${req.body.userPickupLocation} </b>
+        <p>לצפייה במיקום על המפה: <a href="https://nominatim.openstreetmap.org/reverse.php?format=html&lat=${req.body.userPickupLocationLatitude}&lon=${req.body.userPickupLocationLongitude}&zoom=17">צפייה במפה</a></p>
+        <p>לחץ כאן לאישור הבקשה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}">אישור הבקשה</a></p></div>"`
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+          from: 'mftcarpool@gmail.com', // sender address
+          to: to, // list of receivers
+          subject: "בקשת הצטרפות", // Subject line
+          // text: "Hello world?", // plain text body
+          html: message // html body
+        });
+
+        res.send("mail was sent!");
+      }
+      catch (ex) {
+        res.status(500).send('error in sending email');
+      }
 });
 
 module.exports = router;
