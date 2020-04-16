@@ -11,7 +11,8 @@ import PersonalDetails from './PersonalDetails';
 //#1976d2
 function Main() {
   var list = [{
-    name: 'שירה מזל כהן', phone: '053-5314563', address: { street: 'הזית', num: '12', city: 'באר שבע' }, to: { street: 'הקריה', num: '', city: 'תל אביב' },
+    name: 'שירה מזל כהן', phone: '053-5314563', address: { street: 'הזית', num: '12', city: 'באר שבע' }, locationFrom: "משה וילנסקי, נאות לון, באר שבע", 
+    locationTo: "עזריאלי עגול, גשר 'הקריה', מונטיפיורי, תל אביב-יפו", to: { street: 'הקריה', num: '', city: 'תל אביב' },
     date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', request: '1', distance: '2'
   },
   {
