@@ -230,17 +230,13 @@ export default function RideDialog(props) {
               </div>
               : <div className={styles.mapDetails}>
                 <div className={styles.mapBeg}>
-                  {/* here we will take this info from the props.ride and pass it to the map */}
-                  <ExampleMap latitude={31.9517728} longitude={34.8164472}
-                    input={'בי"ס ממ"ד ישרון, ירמיהו הנביא, 13, גורדון, ראשון לציון'} />
+                  <ExampleMap latitude={props.ride.fromAddressLatitude} 
+                  longitude={props.ride.fromAddressLongitude} input={props.ride.fromAddress} />
                 </div>
                 <div className={styles.mapEnd}>
-                  {/* here we will take this info from the props.ride and pass it to the map */}
-                  <ExampleMap latitude={31.9517728} longitude={34.8164472}
-                    input={'בי"ס ממ"ד ישרון, ירמיהו הנביא, 13, גורדון, ראשון לציון'} />
+                  <ExampleMap latitude={props.ride.toAddressLatitude} 
+                  longitude={props.ride.toAddressLongitude} input={props.ride.toAddress} />
                 </div>
-                {/* onInputChange={(val)=>{}} onMarkerChange={(lat, lon)=>{}}  */}
-                {/* <div className={styles.map}><img src='/images/map_example.png' alt="from_to" /></div> */}
               </div>
             }
             <div className={styles.buttons}>

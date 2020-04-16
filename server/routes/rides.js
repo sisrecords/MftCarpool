@@ -37,7 +37,7 @@ router.post('/addRide', async (req, res) => {
         .input("toAddress", sql.NVarChar, toAddress)
         .input("toAddressLatitude", sql.Decimal(18, 10), toAddressLatitude)
         .input("toAddressLongitude", sql.Decimal(18, 10), toAddressLongitude)
-        .input("date", sql.DateTime, date)
+        .input("date", sql.NVarChar, date)
         .input("time", sql.NVarChar, time)
         .input("isAvailable", sql.Bit, isAvailable)
         .input("isActive", sql.Bit, isActive)
