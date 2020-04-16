@@ -178,9 +178,9 @@ export default function AddOffer(props) {
                             {...formik.getFieldProps('email')}
                             helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null} />
                         <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div>
-                        <div className={styles.fromTo}><img style={{ height: '70px' }} src='/images/fromto2.png' alt="from_to" /></div>
+                        {/* <div className={styles.fromTo}><img style={{ height: '70px' }} src='/images/fromto2.png' alt="from_to" /></div>
                         <TextField className={styles.fromAddress} id="begLocation" label="נקודת מוצא" color="secondary" />
-                        <TextField className={styles.toAddress} id="endLocation" label="נקודת יעד" color="secondary" />
+                        <TextField className={styles.toAddress} id="endLocation" label="נקודת יעד" color="secondary" /> */}
 
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <Grid className={styles.date} container justify="space-around">

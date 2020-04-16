@@ -10,9 +10,9 @@
 
 .details {
     display: grid;
-    grid-template-rows: repeat(30, 3%);
+    grid-template-rows: repeat(30, 3.3%);
     grid-template-columns: repeat(10, 1fr);
-    height: 70%;
+    height: 70% !important;
     min-height: 70%;
     padding-right: 10px;
 }
@@ -71,14 +71,14 @@
 }
 
 .phone {
-    grid-row-start: 5;
+    grid-row-start: 7;
     grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
 }
 
 .email {
-    grid-row-start: 9;
+    grid-row-start: 13;
     grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
@@ -99,7 +99,7 @@
 }
 
 .date {
-    grid-row-start: 20;
+    grid-row-start: 18;
     grid-column: 2/span 8;
     font-size: 110% !important;
     margin-right: 5% !important;
@@ -121,14 +121,14 @@
 }
 
 .mapBeg {
-    grid-row: 1/ span 15;
+    grid-row: 1/ span 14;
     grid-column: 1/ span 9;
     /* padding-top: 5% !important; */
     padding-right: 5% !important;
 }
 
 .mapEnd {
-    grid-row: 16/ span 15;
+    grid-row: 16/ span 14;
     grid-column: 1/ span 9;
     /* padding-top: 5% !important; */
     padding-right: 5% !important;
@@ -141,23 +141,23 @@
 
 .dateIcon {
     color: rgb(194, 193, 193) !important;
-    height: 200% !important;
+    height: 250% !important;
     width: 100% !important;
 }
 
 .timeIconDiv {
-    grid-row-start: 27;
+    grid-row-start: 28;
     grid-column: 1;
 }
 
 .timeIcon {
     color: rgb(194, 193, 193) !important;
-    height: 200% !important;
+    height: 250% !important;
     width: 100% !important;
 }
 
 .phoneIconDiv {
-    grid-row-start: 6;
+    grid-row-start: 9;
     grid-column: 1;
     /* padding-top: 5% !important; */
     right: 0;
@@ -165,19 +165,19 @@
 
 .phoneIcon {
     color: rgb(194, 193, 193) !important;
-    height: 200% !important;
+    height: 250% !important;
     width: 100% !important;
     transform: rotate(270deg);
 }
 
 .emailIconDiv {
-    grid-row-start: 10;
+    grid-row-start: 15;
     grid-column: 1;
 }
 
 .emailIcon {
     color: rgb(194, 193, 193) !important;
-    height: 200% !important;
+    height: 250% !important;
     width: 100% !important;
 }
 

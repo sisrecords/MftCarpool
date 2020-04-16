@@ -98,9 +98,9 @@ export default function AddRequest(props) {
                         <div className={styles.phoneIconDiv}><PhoneIcon className={styles.phoneIcon}></PhoneIcon></div>
                         <TextField className={styles.email} id="email" label='דוא"ל' color="secondary" />
                         <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div>
-                        <div className={styles.fromTo}><img style={{ height: '70px' }} src='/images/fromto2.png' alt="from_to" /></div>
+                        {/* <div className={styles.fromTo}><img style={{ height: '70px' }} src='/images/fromto2.png' alt="from_to" /></div>
                         <TextField className={styles.fromAddress} id="begLocation" label="נקודת מוצא" color="secondary" />
-                        <TextField className={styles.toAddress} id="endLocation" label="נקודת יעד" color="secondary" />
+                        <TextField className={styles.toAddress} id="endLocation" label="נקודת יעד" color="secondary" /> */}
 
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <Grid className={styles.date} container justify="space-around">
