@@ -143,10 +143,10 @@ function Main() {
     let newRide = transformRide(ride);
     console.log(newRide);
     //here we will add it to the list
-    console.log(list);
-    let copyList = [...list];
+    console.log(ridesDBList);
+    let copyList = [...ridesDBList];
     copyList.push(newRide);
-    list = copyList;
+    ridesDBList = sortList(copyList);
     onAllClick();
   }
 

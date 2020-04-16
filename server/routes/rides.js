@@ -124,7 +124,7 @@ router.get('/occupyRide/:rideID/:userID/:userEmail', async (req, res) => {
         const to = req.params.userEmail;
         const message = `<div style="direction:rtl;text-align: right;">
         <b>בקשתך להצטרפות לנסיעה אושרה.</b><br>
-        <p>לחץ כאן למעבר לאפליקציה: <a href="http://192.168.59.1:3001">לאפליקציה</a></p></div>"`
+        <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001">צפייה בנסיעה</a></p></div>"`
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
@@ -138,7 +138,8 @@ router.get('/occupyRide/:rideID/:userID/:userEmail', async (req, res) => {
       catch (ex) {
         res.status(500).send('error in sending email');
       }    
-
+    console.log(result.rowsAffected[0] === [1]);
+    console.log(result.rowsAffected[0] === 1);
     res.send(result.rowsAffected + " " + s);
 });
 
@@ -147,8 +148,13 @@ router.post('/wantToJoinRide', async (req, res) => {
         const to = req.body.ownerEmail;
         const message = `<div style="direction:rtl;text-align: right;">
         <b>שלום ${req.body.ownerName},</b><br>
-        <b>${req.body.userName} רוצה להצטרף אליך לנסיעה</b><br>
-        <p>לחץ כאן לאישור הבקשה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}">לאפליקציה</a></p></div>"`
+        <b>${req.body.userName} רוצה להצטרף אליך לנסיעה.</b><br>
+        <b>פרטים:</b><br>
+        <b>טלפון: ${req.body.userPhoneNumber}</b><br>
+        <b>מייל: ${req.body.userEmail}</b><br>
+        <b>נקודת איסוף: ${req.body.userPickupLocation} </b>
+        <p>לצפייה במיקום על המפה: <a href="https://nominatim.openstreetmap.org/reverse.php?format=html&lat=${req.body.userPickupLocationLatitude}&lon=${req.body.userPickupLocationLongitude}&zoom=17">צפייה במפה</a></p>
+        <p>לחץ כאן לאישור הבקשה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}">אישור הבקשה</a></p></div>"`
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
