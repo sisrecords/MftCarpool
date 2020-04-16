@@ -58,6 +58,10 @@ export default function AddOffer(props) {
         props.onClose(ride);
     };
 
+    const handleCancel = () => {
+        setOpen(false);
+    };
+
     const handleSendRequest = async (values) => {
         const response = await axios.post(
             'http://localhost:3000/rides/addRide',
@@ -232,7 +236,7 @@ export default function AddOffer(props) {
                                 formik.isValid && page === 1 ? () => setPage(2) : formik.handleSubmit}
                         color="primary">
                         שליחת הצעה  </Button>
-                    <Button className={styles.cancel} onClick={handleClose} color="primary">
+                    <Button className={styles.cancel} onClick={handleCancel} color="primary">
                         ביטול   </Button>
                 </div>
 
