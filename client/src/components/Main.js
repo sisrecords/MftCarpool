@@ -9,6 +9,7 @@ import ScrollUpButton from "react-scroll-up-button";
 import PersonalDetails from './PersonalDetails';
 import Ride, { OFFER_RIDE_ID, REQUEST_RIDE_ID } from '../entities/ride';
 import axios from 'axios';
+import { trackPromise } from 'react-promise-tracker';
 
 var ridesDBList = [];
 
@@ -73,20 +74,24 @@ function Main() {
 
   useEffect(() => {
     (async function getAllRides() {
-      const response =
-        await axios.get("http://localhost:3000/rides/getAllRides");
-      console.log(response);
-      let rides = response.data;
-      let updatedRides = [];
-      rides.map(ride => {
-        let clientRide = new Ride(ride.RideID, ride.OwnerName, ride.OwnerPhoneNumber, ride.OwnerEmail,
-          ride.FromAddress, ride.FromAddressLatitude, ride.FromAddressLongitude, ride.ToAddress, 
-          ride.ToAddressLatitude, ride.ToAddressLongitude, ride.Date, ride.Time, ride.IsAvailable, 
-          ride.IsActive, ride.RideTypeID, ride.ChosenUserID);
-        updatedRides.push(transformRide(clientRide));
-      });
-      ridesDBList = [ ...updatedRides ];
-      setRidesList(sortList(updatedRides));
+      let response;
+      trackPromise(
+        response = axios.get("http://localhost:3000/rides/getAllRides").then(
+          result => {
+            console.log(result);
+            let rides = result.data;
+            let updatedRides = [];
+            rides.map(ride => {
+              let clientRide = new Ride(ride.RideID, ride.OwnerName, ride.OwnerPhoneNumber, ride.OwnerEmail,
+                ride.FromAddress, ride.FromAddressLatitude, ride.FromAddressLongitude, ride.ToAddress,
+                ride.ToAddressLatitude, ride.ToAddressLongitude, ride.Date, ride.Time, ride.IsAvailable,
+                ride.IsActive, ride.RideTypeID, ride.ChosenUserID);
+              updatedRides.push(transformRide(clientRide));
+            });
+            ridesDBList = [...updatedRides];
+            setRidesList(sortList(updatedRides));
+          }
+        ));
     })();
   }, [])
 

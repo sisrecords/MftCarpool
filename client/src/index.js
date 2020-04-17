@@ -11,6 +11,27 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import { usePromiseTracker } from "react-promise-tracker";
+import Loader from 'react-loader-spinner';
+
+const LoadingIndicator = props => {
+  const { promiseInProgress } = usePromiseTracker();
+  return (
+    promiseInProgress &&
+    <div
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <Loader type="ThreeDots" color="#0D47A1" height="100" width="100" />
+    </div>
+  );
+}
 
 const routes = [
   {
@@ -46,6 +67,7 @@ ReactDOM.render(
             ))}
           </Switch>
         </Router>
+        <LoadingIndicator />
       </header>
     </div>
   </React.StrictMode>,
