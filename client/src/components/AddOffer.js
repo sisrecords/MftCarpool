@@ -69,9 +69,9 @@ export default function AddOffer(props) {
                 ownerName: values.name, ownerPhoneNumber: values.phone, ownerEmail: values.email, 
                 fromAddress: fromLocation, fromAddressLatitude: fromLatitude, 
                 fromAddressLongitude: fromLongitude, toAddress: toLocation, 
-                toAddressLatitude: toLatitude, toAddressLongitude: toLongitude, date: selectedDate, 
-                time: values.time, isAvailable: true, isActive: true, rideTypeID: OFFER_RIDE_ID,
-                chosenUserID: null
+                toAddressLatitude: toLatitude, toAddressLongitude: toLongitude, 
+                date: selectedDate.toLocaleDateString(), time: values.time, isAvailable: true, 
+                isActive: true, rideTypeID: OFFER_RIDE_ID, chosenUserID: null
             }
         );
         let rideID = response.data.recordset[0][""];

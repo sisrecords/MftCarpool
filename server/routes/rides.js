@@ -14,6 +14,19 @@ router.get('/getAllRides', async (req, res) => {
     res.send(result.recordset);
 });
 
+router.get('/getRide/:rideID', async (req, res) => {
+    try {
+        var rideID = req.params.rideID;
+        let result = await connectionsPool.request()
+            .input("rideID", sql.Int, rideID)
+            .query(`select * from rides where rideID = @rideID`);
+        res.send(result.recordset[0]);
+    }
+    catch (ex) {
+        res.send("");
+    }
+});
+
 router.post('/addRide', async (req, res) => {
     var ownerName = req.body.ownerName;
     var ownerPhoneNumber = req.body.ownerPhoneNumber;
@@ -80,7 +93,7 @@ router.post('/updateRide', async (req, res) => {
         .input("toAddress", sql.NVarChar, toAddress)
         .input("toAddressLatitude", sql.Decimal(18, 10), toAddressLatitude)
         .input("toAddressLongitude", sql.Decimal(18, 10), toAddressLongitude)
-        .input("date", sql.DateTime, date)
+        .input("date", sql.NVarChar, date)
         .input("time", sql.NVarChar, time)
         .input("isAvailable", sql.Bit, isAvailable)
         .input("isActive", sql.Bit, isActive)
@@ -126,27 +139,27 @@ router.get('/occupyRide/:rideID/:userID/:userEmail/:rideTypeID', async (req, res
 
     try {
         const msg = req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
-        `<b>הצעתך לצירוף לנסיעה אושרה.</b><br>`
-        : `<b>בקשתך להצטרפות לנסיעה אושרה.</b><br>`;
+            `<b>הצעתך לצירוף לנסיעה אושרה.</b><br>`
+            : `<b>בקשתך להצטרפות לנסיעה אושרה.</b><br>`;
         const to = req.params.userEmail;
         const message = `<div style="direction:rtl;text-align: right;">
         ${msg}
-        <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001">צפייה בנסיעה</a></p></div>"`
+        <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001/ride/${req.params.rideID}">צפייה בנסיעה</a></p></div>"`
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-          from: 'mftcarpool@gmail.com', // sender address
-          to: to, // list of receivers
-          subject: req.params.rideTypeID === REQUEST_RIDE_ID + "" ? 
-          "אישור הצעת צירוף לנסיעה" :
-          "אישור בקשת הצטרפות לנסיעה", // Subject line
-          // text: "Hello world?", // plain text body
-          html: message // html body
+            from: 'mftcarpool@gmail.com', // sender address
+            to: to, // list of receivers
+            subject: req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
+                "אישור הצעת צירוף לנסיעה" :
+                "אישור בקשת הצטרפות לנסיעה", // Subject line
+            // text: "Hello world?", // plain text body
+            html: message // html body
         });
-      }
-      catch (ex) {
+    }
+    catch (ex) {
         res.status(500).send('error in sending email');
-      }    
+    }
     console.log(result.rowsAffected[0] === [1]);
     console.log(result.rowsAffected[0] === 1);
     res.send(result.rowsAffected + " " + s);
@@ -167,18 +180,18 @@ router.post('/wantToJoinRide', async (req, res) => {
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-          from: 'mftcarpool@gmail.com', // sender address
-          to: to, // list of receivers
-          subject: "בקשת הצטרפות לנסיעה", // Subject line
-          // text: "Hello world?", // plain text body
-          html: message // html body
+            from: 'mftcarpool@gmail.com', // sender address
+            to: to, // list of receivers
+            subject: "בקשת הצטרפות לנסיעה", // Subject line
+            // text: "Hello world?", // plain text body
+            html: message // html body
         });
 
         res.send("mail was sent!");
-      }
-      catch (ex) {
+    }
+    catch (ex) {
         res.status(500).send('error in sending email');
-      }
+    }
 });
 
 router.post('/wantToAnswerRequest', async (req, res) => {
@@ -196,18 +209,18 @@ router.post('/wantToAnswerRequest', async (req, res) => {
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-          from: 'mftcarpool@gmail.com', // sender address
-          to: to, // list of receivers
-          subject: "בקשת צירוף לנסיעה", // Subject line
-          // text: "Hello world?", // plain text body
-          html: message // html body
+            from: 'mftcarpool@gmail.com', // sender address
+            to: to, // list of receivers
+            subject: "בקשת צירוף לנסיעה", // Subject line
+            // text: "Hello world?", // plain text body
+            html: message // html body
         });
 
         res.send("mail was sent!");
-      }
-      catch (ex) {
+    }
+    catch (ex) {
         res.status(500).send('error in sending email');
-      }
+    }
 });
 
 module.exports = router;

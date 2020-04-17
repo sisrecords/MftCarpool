@@ -337,3 +337,14 @@
     grid-column: 1/ span 9;
     padding-right: 5% !important;
 }
+
+.returnToMainScreen {
+    grid-row: 4/ span 2;
+    grid-column: 3/span 4;
+    border-radius: 25px 25px 0px 0px !important;
+    background-color: #0D47A1 !important;
+    color: white !important;
+    font-size: 110% !important;
+    width: 150%;
+    height: 100%;
+}
