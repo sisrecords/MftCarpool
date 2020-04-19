@@ -40,15 +40,23 @@ function RideCard(props) {
                     <div className={styles.cityTo}>
                         {props.itemRide.toLocationCity}
                     </div >
-                    <div className={styles.locationIcon}>
-                        <LocationOnIcon className={styles.locationOnIcon} />
+                    <div className={styles.distanceContainer}>
+                        <div className={styles.locationIcon}>
+                            <LocationOnIcon className={styles.locationOnIcon} />
+                        </div>
+                        <div className={styles.distance}> {props.itemRide.distance} ק"מ</div>
                     </div>
-                    <div className={styles.distance}> {props.itemRide.distance} ק"מ</div>
-                    <div className={styles.fromYou}>ממקומך</div>
-                    <div className={styles.timeIcon}><AccessTimeIcon className={styles.accessTimeIcon} /></div>
-                    <div className={styles.time}>{props.itemRide.time}</div>
-                    <div className={styles.dateIcon}><EventIcon className={styles.eventIcon} /></div>
-                    <div className={styles.date}>{props.itemRide.date}</div>
+                    <div className={styles.fromYouContainer}>
+                        <div className={styles.fromYou}>ממקומך</div>
+                    </div>
+                    <div className={styles.timeContainer}>
+                        <div className={styles.timeIcon}><AccessTimeIcon className={styles.accessTimeIcon} /></div>
+                        <div className={styles.time}>{props.itemRide.time}</div>
+                    </div>
+                    <div className={styles.dateContainer}>
+                        <div className={styles.dateIcon}><EventIcon className={styles.eventIcon} /></div>
+                        <div className={styles.date}>{props.itemRide.date}</div>
+                    </div>
                 </Card>
             </ListItem>
         </div>

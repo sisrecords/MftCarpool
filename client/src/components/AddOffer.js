@@ -66,19 +66,19 @@ export default function AddOffer(props) {
         const response = await axios.post(
             'http://localhost:3000/rides/addRide',
             {
-                ownerName: values.name, ownerPhoneNumber: values.phone, ownerEmail: values.email, 
-                fromAddress: fromLocation, fromAddressLatitude: fromLatitude, 
-                fromAddressLongitude: fromLongitude, toAddress: toLocation, 
-                toAddressLatitude: toLatitude, toAddressLongitude: toLongitude, 
-                date: selectedDate.toLocaleDateString(), time: values.time, isAvailable: true, 
+                ownerName: values.name, ownerPhoneNumber: values.phone, ownerEmail: values.email,
+                fromAddress: fromLocation, fromAddressLatitude: fromLatitude,
+                fromAddressLongitude: fromLongitude, toAddress: toLocation,
+                toAddressLatitude: toLatitude, toAddressLongitude: toLongitude,
+                date: selectedDate.toLocaleDateString(), time: values.time, isAvailable: true,
                 isActive: true, rideTypeID: OFFER_RIDE_ID, chosenUserID: null
             }
         );
         let rideID = response.data.recordset[0][""];
         console.log(rideID);
         //let userID = 1; //need to get the current user ID - we will get it from the server in the app init
-        let newRide = new Ride(rideID, values.name, values.phone, values.email, fromLocation, fromLatitude, 
-            fromLongitude, toLocation, toLatitude, toLongitude, selectedDate.toLocaleDateString(), 
+        let newRide = new Ride(rideID, values.name, values.phone, values.email, fromLocation, fromLatitude,
+            fromLongitude, toLocation, toLatitude, toLongitude, selectedDate.toLocaleDateString(),
             values.time, true, true, OFFER_RIDE_ID, null);
         //we will pass the new ride to the handleClose which will pass it to the props.onClose func, so 
         //we can get it in the main screen and add it to the list
@@ -137,8 +137,8 @@ export default function AddOffer(props) {
                 .email('נא הכנס מייל תקין')
                 .required('שדה זה הוא חובה'),
             time: Yup.string()
-                .min(2, 'נא הכנס שעה וזמן ביום: למשל, 9 בבוקר')
-                .max(100, 'נא צמצם את המלל')
+                // .min(2, 'נא הכנס שעה וזמן ביום: למשל, 9 בבוקר')
+                // .max(100, 'נא צמצם את המלל')
                 .required('שדה זה הוא חובה')
         }),
         onSubmit: values => {
@@ -206,8 +206,25 @@ export default function AddOffer(props) {
                         </MuiPickersUtilsProvider>
 
                         <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
-                        <TextField className={styles.time} id="time" label="שעה" color="primary"
+                        {/* <TextField className={styles.time} id="time" label="שעה" color="primary"
                             {...formik.getFieldProps('time')}
+                            error={formik.touched.time && formik.errors.time ? true : false}
+                            helperText={formik.touched.time && formik.errors.time ? formik.errors.time : null} />
+                        <div className={styles.timeIconDiv}><ScheduleIcon className={styles.timeIcon} /></div> */}
+
+                        <TextField
+                            id="time"
+                            label="שעה"
+                            color="primary"
+                            type="time"
+                            {...formik.getFieldProps('time')}
+                            className={styles.time}
+                            InputLabelProps={{
+                                shrink: true
+                            }}
+                            inputProps={{
+                                step: 60 // 1 min
+                            }}
                             error={formik.touched.time && formik.errors.time ? true : false}
                             helperText={formik.touched.time && formik.errors.time ? formik.errors.time : null} />
                         <div className={styles.timeIconDiv}><ScheduleIcon className={styles.timeIcon} /></div>
