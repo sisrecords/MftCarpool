@@ -133,10 +133,6 @@ router.get('/occupyRide/:rideID/:userID/:userEmail/:rideTypeID', async (req, res
         .query(`update rides set isAvailable = @isAvailable, chosenUserID = @userID where rideID = @rideID 
             AND chosenUserID is NULL`);
     let s = "ride " + req.params.rideID + " occupied by user " + req.params.userID;
-    //if result.rowsAffected[0] === 1 then the query succeeded, if 0 then the ride is taken.
-    //either way, we show an appropriate message to the user
-    // console.log(result.rowsAffected[0] === 0);
-
     try {
         const msg = req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
             `<b>הצעתך לצירוף לנסיעה אושרה.</b><br>`
@@ -158,11 +154,14 @@ router.get('/occupyRide/:rideID/:userID/:userEmail/:rideTypeID', async (req, res
         });
     }
     catch (ex) {
-        res.status(500).send('error in sending email');
+        res.redirect('/fail');
     }
-    console.log(result.rowsAffected[0] === [1]);
-    console.log(result.rowsAffected[0] === 1);
-    res.send(result.rowsAffected + " " + s);
+    if(result.rowsAffected[0] === 1) {
+        res.redirect(`http://192.168.59.1:3001/rideOccupied/${req.params.rideTypeID}`);
+    }
+    else {
+        res.redirect('/fail');
+    }
 });
 
 router.post('/wantToJoinRide', async (req, res) => {
@@ -190,7 +189,7 @@ router.post('/wantToJoinRide', async (req, res) => {
         res.send("mail was sent!");
     }
     catch (ex) {
-        res.status(500).send('error in sending email');
+        res.send('error in sending email');
     }
 });
 
@@ -219,7 +218,7 @@ router.post('/wantToAnswerRequest', async (req, res) => {
         res.send("mail was sent!");
     }
     catch (ex) {
-        res.status(500).send('error in sending email');
+        res.send('error in sending email');
     }
 });
 
