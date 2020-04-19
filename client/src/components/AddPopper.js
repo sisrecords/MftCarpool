@@ -44,8 +44,9 @@ export default function AddPopper(props) {
     setOpenOffer(openOffer => !openOffer);
   }
 
-  function closeRequestDialog() {
+  function closeRequestDialog(ride) {
     setOpenRequest(null);
+    props.onClose(ride);
   }
 
   function closeOfferDialog(ride) {

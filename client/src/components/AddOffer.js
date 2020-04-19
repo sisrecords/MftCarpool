@@ -60,6 +60,10 @@ export default function AddOffer(props) {
         props.onClose(ride);
     };
 
+    const handleCancel = () => {
+        setOpen(false);
+    };
+
     const handleSendRequest = async (values) => {
         const response = await axios.post(
             'http://localhost:3000/rides/addRide',
@@ -67,9 +71,9 @@ export default function AddOffer(props) {
                 ownerName: values.name, ownerPhoneNumber: values.phone, ownerEmail: values.email, 
                 fromAddress: fromLocation, fromAddressLatitude: fromLatitude, 
                 fromAddressLongitude: fromLongitude, toAddress: toLocation, 
-                toAddressLatitude: toLatitude, toAddressLongitude: toLongitude, date: selectedDate, 
-                time: values.time, isAvailable: true, isActive: true, rideTypeID: OFFER_RIDE_ID,
-                chosenUserID: null
+                toAddressLatitude: toLatitude, toAddressLongitude: toLongitude, 
+                date: selectedDate.toLocaleDateString(), time: values.time, isAvailable: true, 
+                isActive: true, rideTypeID: OFFER_RIDE_ID, chosenUserID: null
             }
         );
         let rideID = response.data.recordset[0][""];
@@ -261,7 +265,7 @@ export default function AddOffer(props) {
                                 formik.isValid && page === 1 ? () => setPage(2) : formik.handleSubmit}
                         color="primary">
                         שליחת הצעה  </Button>
-                    <Button className={styles.cancel} onClick={handleClose} color="primary">
+                    <Button className={styles.cancel} onClick={handleCancel} color="primary">
                         ביטול   </Button>
                 </div>
 

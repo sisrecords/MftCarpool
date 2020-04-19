@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './stylesheet.module.css';
-import { IconButton, List, Button } from '@material-ui/core';
+import { IconButton, List } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import RideCard from './Ride';
 import RideDialog from './RideDialog';
@@ -9,50 +9,55 @@ import ScrollUpButton from "react-scroll-up-button";
 import PersonalDetails from './PersonalDetails';
 import Ride, { OFFER_RIDE_ID, REQUEST_RIDE_ID } from '../entities/ride';
 import axios from 'axios';
-
-var list = [{
-  name: 'שירה מזל כהן', phone: '053-5314563', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/05/2020', time: '18:00', email: 'nafofi6204@govdep5012.com', rideTypeID: 1, distance: '2', rideID: 19
-},
-{
-  name: 'נועה', phone: '052-6231196', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', rideTypeID: 1, distance: '87', rideID: 2
-},
-{
-  name: 'אביתר', phone: '052-8901236', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', rideTypeID: 2, distance: '100', rideID: 3
-}
-  ,
-{
-  name: 'שירה', phone: '053-5314564', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', rideTypeID: 2, distance: '2', rideID: 4
-},
-{
-  name: 'נועה', phone: '052-6231197', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', rideTypeID: 1, distance: '87', rideID: 5
-},
-{
-  name: 'אביתר', phone: '052-8901237', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', rideTypeID: 2, distance: '100', rideID: 6
-},
-{
-  name: 'שירה', phone: '053-5314565', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/05/2020', time: '18:00', email: 'shiraco44@gmail.com', rideTypeID: 2, distance: '2', rideID: 7
-},
-{
-  name: 'נועה', phone: '052-6231198', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/05/2020', time: '19:00', email: 'noa12@gmail.com', rideTypeID: 1, distance: '87', rideID: 8
-},
-{
-  name: 'אביתר', phone: '052-8901238', fromLocationWithoutCity: "ביאליק", fromLocationCity: "נתניה", toLocationWithoutCity: "גורדון", toLocationCity: "הרצליה",
-  date: '01/06/2020', time: '7:00', email: 'evya26@gmail.com', rideTypeID: 2, distance: '100', rideID: 9
-}
-
-];
+import { trackPromise } from 'react-promise-tracker';
 
 var ridesDBList = [];
 
-//#1976d2
+function transformRide(ride) {
+  let distance = Math.round(calculateDistance(+ride.fromAddressLatitude, +ride.fromAddressLongitude));
+  let fromLocation = ride.fromAddress;
+  let fromLocLastCommaIndex = fromLocation.lastIndexOf(", ");
+  let fromLocationWithoutCity = fromLocation.substring(0, fromLocLastCommaIndex);
+  let fromLocationCity = fromLocation.substring(fromLocLastCommaIndex + 2);
+  let toLocation = ride.toAddress;
+  let toLocLastCommaIndex = toLocation.lastIndexOf(", ");
+  let toLocationWithoutCity = toLocation.substring(0, toLocLastCommaIndex);
+  let toLocationCity = toLocation.substring(toLocLastCommaIndex + 2);
+  let newRide = {
+    ...ride, distance: distance, fromLocationWithoutCity: fromLocationWithoutCity,
+    fromLocationCity: fromLocationCity, toLocationWithoutCity: toLocationWithoutCity,
+    toLocationCity: toLocationCity, date: ride.date, name: ride.ownerName,
+    phone: ride.ownerPhoneNumber, email: ride.ownerEmail
+  };
+  return newRide;
+}
+
+function calculateDistance(lat, lon) {
+  //we will need to get the user's location info by asking for permission
+  let userLat = 32.3;
+  let userLong = 34.3;
+  return calcCrow(lat, lon, userLat, userLong);
+}
+
+function calcCrow(lat1, lon1, lat2, lon2) {
+  var R = 6371; // earth radius in km
+  var dLat = toRad(lat2 - lat1);
+  var dLon = toRad(lon2 - lon1);
+  var lat1Rad = toRad(lat1);
+  var lat2Rad = toRad(lat2);
+
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1Rad) * Math.cos(lat2Rad);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d;
+}
+
+// Converts numeric degrees to radians
+function toRad(Value) {
+  return Value * Math.PI / 180;
+}
+
 function Main() {
 
   function sortList(list) {
@@ -69,20 +74,24 @@ function Main() {
 
   useEffect(() => {
     (async function getAllRides() {
-      const response =
-        await axios.get("http://localhost:3000/rides/getAllRides");
-      console.log(response);
-      let rides = response.data;
-      let updatedRides = [];
-      rides.map(ride => {
-        let clientRide = new Ride(ride.RideID, ride.OwnerName, ride.OwnerPhoneNumber, ride.OwnerEmail,
-          ride.FromAddress, ride.FromAddressLatitude, ride.FromAddressLongitude, ride.ToAddress, 
-          ride.ToAddressLatitude, ride.ToAddressLongitude, ride.Date, ride.Time, ride.IsAvailable, 
-          ride.IsActive, ride.RideTypeID, ride.ChosenUserID);
-        updatedRides.push(transformRide(clientRide));
-      });
-      ridesDBList = [ ...updatedRides ];
-      setRidesList(sortList(updatedRides));
+      let response;
+      trackPromise(
+        response = axios.get("http://localhost:3000/rides/getAllRides").then(
+          result => {
+            console.log(result);
+            let rides = result.data;
+            let updatedRides = [];
+            rides.map(ride => {
+              let clientRide = new Ride(ride.RideID, ride.OwnerName, ride.OwnerPhoneNumber, ride.OwnerEmail,
+                ride.FromAddress, ride.FromAddressLatitude, ride.FromAddressLongitude, ride.ToAddress,
+                ride.ToAddressLatitude, ride.ToAddressLongitude, ride.Date, ride.Time, ride.IsAvailable,
+                ride.IsActive, ride.RideTypeID, ride.ChosenUserID);
+              updatedRides.push(transformRide(clientRide));
+            });
+            ridesDBList = [...updatedRides];
+            setRidesList(sortList(updatedRides));
+          }
+        ));
     })();
   }, [])
 
@@ -104,76 +113,12 @@ function Main() {
     setSelectedRide(null);
   }
 
-  function transformRide(ride) {
-    let distance = Math.round(calculateDistance(+ride.fromAddressLatitude, +ride.fromAddressLongitude));
-    let fromLocation = ride.fromAddress;
-    let fromLocLastCommaIndex = fromLocation.lastIndexOf(", ");
-    let fromLocationWithoutCity = fromLocation.substring(0, fromLocLastCommaIndex);
-    let fromLocationCity = fromLocation.substring(fromLocLastCommaIndex + 2);
-    let toLocation = ride.toAddress;
-    let toLocLastCommaIndex = toLocation.lastIndexOf(", ");
-    let toLocationWithoutCity = toLocation.substring(0, toLocLastCommaIndex);
-    let toLocationCity = toLocation.substring(toLocLastCommaIndex + 2);
-    let newRide = {
-      ...ride, distance: distance, fromLocationWithoutCity: fromLocationWithoutCity,
-      fromLocationCity: fromLocationCity, toLocationWithoutCity: toLocationWithoutCity,
-      toLocationCity: toLocationCity, date: ride.date, name: ride.ownerName,
-      phone: ride.ownerPhoneNumber, email: ride.ownerEmail
-    };
-    return newRide;
-  }
-
   function onPopperClose(ride) {
-    console.log(ride);
-    // let distance = Math.round(calculateDistance(+ride.fromAddressLatitude, +ride.fromAddressLongitude));
-    // let fromLocation = ride.fromAddress;
-    // let fromLocLastCommaIndex = fromLocation.lastIndexOf(", ");
-    // let fromLocationWithoutCity = fromLocation.substring(0, fromLocLastCommaIndex);
-    // let fromLocationCity = fromLocation.substring(fromLocLastCommaIndex + 2);
-    // let toLocation = ride.toAddress;
-    // let toLocLastCommaIndex = toLocation.lastIndexOf(", ");
-    // let toLocationWithoutCity = toLocation.substring(0, toLocLastCommaIndex);
-    // let toLocationCity = toLocation.substring(toLocLastCommaIndex + 2);
-    // let newRide = {
-    //   ...ride, distance: distance, fromLocationWithoutCity: fromLocationWithoutCity,
-    //   fromLocationCity: fromLocationCity, toLocationWithoutCity: toLocationWithoutCity,
-    //   toLocationCity: toLocationCity, date: ride.date.toLocaleDateString(), name: ride.ownerName,
-    //   phone: ride.ownerPhoneNumber, email: ride.ownerEmail
-    // };
     let newRide = transformRide(ride);
-    console.log(newRide);
-    //here we will add it to the list
-    console.log(ridesDBList);
     let copyList = [...ridesDBList];
     copyList.push(newRide);
     ridesDBList = sortList(copyList);
     onAllClick();
-  }
-
-  function calculateDistance(lat, lon) {
-    //we will need to get the user's location info by asking for permission
-    let userLat = 32.3;
-    let userLong = 34.3;
-    return calcCrow(lat, lon, userLat, userLong);
-  }
-
-  function calcCrow(lat1, lon1, lat2, lon2) {
-    var R = 6371; // earth radius in km
-    var dLat = toRad(lat2 - lat1);
-    var dLon = toRad(lon2 - lon1);
-    var lat1Rad = toRad(lat1);
-    var lat2Rad = toRad(lat2);
-
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1Rad) * Math.cos(lat2Rad);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c;
-    return d;
-  }
-
-  // Converts numeric degrees to radians
-  function toRad(Value) {
-    return Value * Math.PI / 180;
   }
 
   function onAllClick() {
@@ -199,7 +144,6 @@ function Main() {
 
 
   return (
-    // <div>
 
     <div className={styles.page}>
 
@@ -264,3 +208,4 @@ function Main() {
 }
 
 export default Main;
+export const transformRideFunc = transformRide;

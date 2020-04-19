@@ -123,8 +123,8 @@ export default function AddRequest(props) {
                             ),
                           }}
                         />
-                        <MuiPickersUtilsProvider position="end" utils={DateFnsUtils}>
-                            <Grid className={styles.date} container  justify="space-around">
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <Grid className={styles.date} container justify="space-around">
                                 <KeyboardDatePicker
                                     disableToolbar
                                     variant="inline"

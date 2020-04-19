@@ -6,9 +6,25 @@ const nodemailer = require("nodemailer");
 const connectionsPool = sql.globalConnection;
 const transporter = nodemailer.transporter;
 
+const OFFER_RIDE_ID = 1;
+const REQUEST_RIDE_ID = 2;
+
 router.get('/getAllRides', async (req, res) => {
     const result = await sql.query`select * from rides where isActive = 'true' AND isAvailable = 'true'`;
     res.send(result.recordset);
+});
+
+router.get('/getRide/:rideID', async (req, res) => {
+    try {
+        var rideID = req.params.rideID;
+        let result = await connectionsPool.request()
+            .input("rideID", sql.Int, rideID)
+            .query(`select * from rides where rideID = @rideID`);
+        res.send(result.recordset[0]);
+    }
+    catch (ex) {
+        res.send("");
+    }
 });
 
 router.post('/addRide', async (req, res) => {
@@ -37,7 +53,7 @@ router.post('/addRide', async (req, res) => {
         .input("toAddress", sql.NVarChar, toAddress)
         .input("toAddressLatitude", sql.Decimal(18, 10), toAddressLatitude)
         .input("toAddressLongitude", sql.Decimal(18, 10), toAddressLongitude)
-        .input("date", sql.DateTime, date)
+        .input("date", sql.NVarChar, date)
         .input("time", sql.NVarChar, time)
         .input("isAvailable", sql.Bit, isAvailable)
         .input("isActive", sql.Bit, isActive)
@@ -77,7 +93,7 @@ router.post('/updateRide', async (req, res) => {
         .input("toAddress", sql.NVarChar, toAddress)
         .input("toAddressLatitude", sql.Decimal(18, 10), toAddressLatitude)
         .input("toAddressLongitude", sql.Decimal(18, 10), toAddressLongitude)
-        .input("date", sql.DateTime, date)
+        .input("date", sql.NVarChar, date)
         .input("time", sql.NVarChar, time)
         .input("isAvailable", sql.Bit, isAvailable)
         .input("isActive", sql.Bit, isActive)
@@ -108,7 +124,8 @@ router.post('/occupyRide', async (req, res) => {
     res.send("ride occupied");
 });
 
-router.get('/occupyRide/:rideID/:userID/:userEmail', async (req, res) => {
+router.get('/occupyRide/:rideID/:userID/:userEmail/:rideTypeID', async (req, res) => {
+    console.log(req.params.rideTypeID);
     let result = await connectionsPool.request()
         .input("rideID", sql.Int, req.params.rideID)
         .input("userID", sql.Int, req.params.userID)
@@ -121,23 +138,28 @@ router.get('/occupyRide/:rideID/:userID/:userEmail', async (req, res) => {
     // console.log(result.rowsAffected[0] === 0);
 
     try {
+        const msg = req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
+            `<b>הצעתך לצירוף לנסיעה אושרה.</b><br>`
+            : `<b>בקשתך להצטרפות לנסיעה אושרה.</b><br>`;
         const to = req.params.userEmail;
         const message = `<div style="direction:rtl;text-align: right;">
-        <b>בקשתך להצטרפות לנסיעה אושרה.</b><br>
-        <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001">צפייה בנסיעה</a></p></div>"`
+        ${msg}
+        <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001/ride/${req.params.rideID}">צפייה בנסיעה</a></p></div>"`
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-          from: 'mftcarpool@gmail.com', // sender address
-          to: to, // list of receivers
-          subject: "אישור בקשת הצטרפות", // Subject line
-          // text: "Hello world?", // plain text body
-          html: message // html body
+            from: 'mftcarpool@gmail.com', // sender address
+            to: to, // list of receivers
+            subject: req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
+                "אישור הצעת צירוף לנסיעה" :
+                "אישור בקשת הצטרפות לנסיעה", // Subject line
+            // text: "Hello world?", // plain text body
+            html: message // html body
         });
-      }
-      catch (ex) {
+    }
+    catch (ex) {
         res.status(500).send('error in sending email');
-      }    
+    }
     console.log(result.rowsAffected[0] === [1]);
     console.log(result.rowsAffected[0] === 1);
     res.send(result.rowsAffected + " " + s);
@@ -154,22 +176,51 @@ router.post('/wantToJoinRide', async (req, res) => {
         <b>מייל: ${req.body.userEmail}</b><br>
         <b>נקודת איסוף: ${req.body.userPickupLocation} </b>
         <p>לצפייה במיקום על המפה: <a href="https://nominatim.openstreetmap.org/reverse.php?format=html&lat=${req.body.userPickupLocationLatitude}&lon=${req.body.userPickupLocationLongitude}&zoom=17">צפייה במפה</a></p>
-        <p>לחץ כאן לאישור הבקשה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}">אישור הבקשה</a></p></div>"`
+        <p>לחץ כאן לאישור הבקשה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}/${OFFER_RIDE_ID}">אישור הבקשה</a></p></div>"`
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-          from: 'mftcarpool@gmail.com', // sender address
-          to: to, // list of receivers
-          subject: "בקשת הצטרפות", // Subject line
-          // text: "Hello world?", // plain text body
-          html: message // html body
+            from: 'mftcarpool@gmail.com', // sender address
+            to: to, // list of receivers
+            subject: "בקשת הצטרפות לנסיעה", // Subject line
+            // text: "Hello world?", // plain text body
+            html: message // html body
         });
 
         res.send("mail was sent!");
-      }
-      catch (ex) {
+    }
+    catch (ex) {
         res.status(500).send('error in sending email');
-      }
+    }
+});
+
+router.post('/wantToAnswerRequest', async (req, res) => {
+    try {
+        const to = req.body.ownerEmail;
+        const message = `<div style="direction:rtl;text-align: right;">
+        <b>שלום ${req.body.ownerName},</b><br>
+        <b>${req.body.userName} רוצה לצרף אותך אליו לנסיעה.</b><br>
+        <b>פרטים:</b><br>
+        <b>טלפון: ${req.body.userPhoneNumber}</b><br>
+        <b>מייל: ${req.body.userEmail}</b><br>
+        <b>נקודת מוצא: ${req.body.userPickupLocation} </b>
+        <p>לצפייה במיקום על המפה: <a href="https://nominatim.openstreetmap.org/reverse.php?format=html&lat=${req.body.userPickupLocationLatitude}&lon=${req.body.userPickupLocationLongitude}&zoom=17">צפייה במפה</a></p>
+        <p>לחץ כאן לאישור ההצעה: <a href="http://192.168.59.1:3000/rides/occupyRide/${req.body.rideID}/${req.body.userID}/${req.body.userEmail}/${REQUEST_RIDE_ID}">אישור ההצעה</a></p></div>"`
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: 'mftcarpool@gmail.com', // sender address
+            to: to, // list of receivers
+            subject: "בקשת צירוף לנסיעה", // Subject line
+            // text: "Hello world?", // plain text body
+            html: message // html body
+        });
+
+        res.send("mail was sent!");
+    }
+    catch (ex) {
+        res.status(500).send('error in sending email');
+    }
 });
 
 module.exports = router;
