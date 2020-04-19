@@ -23,7 +23,7 @@ function RideCard(props) {
                     <div className={styles.addressFrom} title={props.itemRide.fromLocationWithoutCity}>
                         {
                             props.itemRide.fromLocationWithoutCity.length > 15 ?
-                                props.itemRide.fromLocationWithoutCity.substring(0, 16) + "..."
+                                props.itemRide.fromLocationWithoutCity.substring(0, 15) + "..."
                                 : props.itemRide.fromLocationWithoutCity
                         }
                     </div>
@@ -33,7 +33,7 @@ function RideCard(props) {
                     <div className={styles.addressTo} title={props.itemRide.toLocationWithoutCity}>
                         {
                             props.itemRide.toLocationWithoutCity.length > 15 ?
-                                props.itemRide.toLocationWithoutCity.substring(0, 16) + "..."
+                                props.itemRide.toLocationWithoutCity.substring(0, 15) + "..."
                                 : props.itemRide.toLocationWithoutCity
                         }
                     </div>
