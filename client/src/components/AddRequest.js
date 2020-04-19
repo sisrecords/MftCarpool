@@ -16,6 +16,9 @@ import DateFnsUtils from '@date-io/date-fns';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 import ExampleMap from "./map";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
 
 import {
     MuiPickersUtilsProvider,
@@ -93,17 +96,35 @@ export default function AddRequest(props) {
                         position: page === 1 ? 'relative' : 'absolute'
                     }}>
                     <div className={styles.details}>
-                        <TextField className={styles.name} id="name" label="שם מלא" color="secondary" />
-                        <TextField className={styles.phone} id="phone" label="פלאפון" color="secondary" />
-                        <div className={styles.phoneIconDiv}><PhoneIcon className={styles.phoneIcon}></PhoneIcon></div>
-                        <TextField className={styles.email} id="email" label='דוא"ל' color="secondary" />
-                        <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div>
-                        {/* <div className={styles.fromTo}><img style={{ height: '70px' }} src='/images/fromto2.png' alt="from_to" /></div>
-                        <TextField className={styles.fromAddress} id="begLocation" label="נקודת מוצא" color="secondary" />
-                        <TextField className={styles.toAddress} id="endLocation" label="נקודת יעד" color="secondary" /> */}
-
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <Grid className={styles.date} container justify="space-around">
+                        <TextField className={styles.name} id="name" label="שם מלא" color="secondary" 
+                        InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="end">
+                                <AccountCircleIcon className={styles.fillInfoIcon}></AccountCircleIcon>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                        <TextField className={styles.phone} id="phone" label="פלאפון" color="secondary" 
+                        InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="end">
+                                <PhoneIcon className={styles.fillInfoPhoneIcon}></PhoneIcon>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                        <TextField className={styles.email} id="email" label='דוא"ל' color="secondary"
+                        InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="end">
+                                <EmailIcon className={styles.fillInfoIcon}></EmailIcon>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                        <MuiPickersUtilsProvider position="end" utils={DateFnsUtils}>
+                            <Grid className={styles.date} container  justify="space-around">
                                 <KeyboardDatePicker
                                     disableToolbar
                                     variant="inline"
@@ -120,10 +141,15 @@ export default function AddRequest(props) {
                             </Grid>
                         </MuiPickersUtilsProvider>
 
-                        <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
-                        <TextField className={styles.time} id="time" label="שעה" color="secondary" />
-                        <div className={styles.timeIconDiv}><ScheduleIcon className={styles.timeIcon} /></div>
-
+                        <TextField className={styles.time} id="time" label="שעה" color="secondary" 
+                             InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="end">
+                                    <ScheduleIcon className={styles.fillInfoIcon}></ScheduleIcon>
+                                  </InputAdornment>
+                                ),
+                              }} />
+   
                     </div>
                 </form>
                 <div className={styles.details} style={{

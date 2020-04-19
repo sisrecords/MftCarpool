@@ -20,6 +20,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Ride, { OFFER_RIDE_ID } from '../entities/ride';
 import axios from 'axios';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import {
     MuiPickersUtilsProvider,
@@ -167,20 +169,40 @@ export default function AddOffer(props) {
                         <TextField className={styles.name} id="name" label="שם מלא" color="primary"
                             error={formik.touched.name && formik.errors.name ? true : false}
                             {...formik.getFieldProps('name')}
-                            helperText={formik.touched.name && formik.errors.name ? formik.errors.name : null} />
+                            helperText={formik.touched.name && formik.errors.name ? formik.errors.name : null}
+                            InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="end">
+                                    <AccountCircleIcon className={styles.fillInfoIcon}></AccountCircleIcon>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
                         <TextField className={styles.phone} id="phone" label="פלאפון" color="primary"
                             error={formik.touched.phone && formik.errors.phone ? true : false}
                             {...formik.getFieldProps('phone')}
-                            helperText={formik.touched.phone && formik.errors.phone ? formik.errors.phone : null} />
-                        <div className={styles.phoneIconDiv}><PhoneIcon className={styles.phoneIcon}></PhoneIcon></div>
+                            helperText={formik.touched.phone && formik.errors.phone ? formik.errors.phone : null} 
+                            InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="end">
+                                    <PhoneIcon className={styles.fillInfoIcon}></PhoneIcon>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                        {/* <div className={styles.phoneIconDiv}><PhoneIcon className={styles.phoneIcon}></PhoneIcon></div> */}
                         <TextField className={styles.email} id="email" label='דוא"ל' color="primary"
                             error={formik.touched.email && formik.errors.email ? true : false}
                             {...formik.getFieldProps('email')}
-                            helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null} />
-                        <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div>
-                        {/* <div className={styles.fromTo}><img style={{ height: '70px' }} src='/images/fromto2.png' alt="from_to" /></div>
-                        <TextField className={styles.fromAddress} id="begLocation" label="נקודת מוצא" color="secondary" />
-                        <TextField className={styles.toAddress} id="endLocation" label="נקודת יעד" color="secondary" /> */}
+                            helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null} 
+                            InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="end">
+                                    <EmailIcon className={styles.fillInfoIcon}></EmailIcon>
+                                  </InputAdornment>
+                                ),
+                              }}/>
+                        {/* <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div> */}
 
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <Grid className={styles.date} container justify="space-around">
@@ -201,12 +223,19 @@ export default function AddOffer(props) {
                             </Grid>
                         </MuiPickersUtilsProvider>
 
-                        <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
+                        {/* <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div> */}
                         <TextField className={styles.time} id="time" label="שעה" color="primary"
                             {...formik.getFieldProps('time')}
                             error={formik.touched.time && formik.errors.time ? true : false}
-                            helperText={formik.touched.time && formik.errors.time ? formik.errors.time : null} />
-                        <div className={styles.timeIconDiv}><ScheduleIcon className={styles.timeIcon} /></div>
+                            helperText={formik.touched.time && formik.errors.time ? formik.errors.time : null} 
+                            InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="end">
+                                    <ScheduleIcon className={styles.fillInfoIcon}></ScheduleIcon>
+                                  </InputAdornment>
+                                ),
+                              }}/>
+                        {/* <div className={styles.timeIconDiv}><ScheduleIcon className={styles.timeIcon} /></div> */}
 
 
                     </div>

@@ -14,17 +14,17 @@
     grid-template-columns: repeat(10, 1fr);
     height: 70%;
     min-height: 70%;
-    padding-right: 10px;
+    padding-top: 10%;
 }
 
 .title {
     text-align: center;
     font-size: larger !important;
     font-weight: bold;
-    height: 50px;
+    height: 8%;
     padding: 0 !important;
     padding-top: 5% !important;
-    padding-top: 10px !important;
+    /* padding-top: 10px !important; */
 }
 
 .buttons {
@@ -68,50 +68,50 @@
     grid-row-start: 1;
     grid-column: 2/span 8;
     font-size: 110% !important;
-    margin-right: 5% !important;
+    /* margin-right: 5% !important; */
 }
 
 .phone {
     grid-row-start: 7;
     grid-column: 2/span 8;
     font-size: 110% !important;
-    margin-right: 5% !important;
+    /* margin-right: 5% !important; */
 }
 
 .email {
     grid-row-start: 13;
     grid-column: 2/span 8;
     font-size: 110% !important;
-    margin-right: 5% !important;
+    /* margin-right: 5% !important; */
 }
 
 .fromAddress {
     grid-row-start: 13;
     grid-column: 2/span 8;
     font-size: 110% !important;
-    margin-right: 5% !important;
+    /* margin-right: 5% !important; */
 }
 
 .toAddress {
     grid-row-start: 17;
     grid-column: 2/span 8;
     font-size: 110% !important;
-    margin-right: 5% !important;
+    /* margin-right: 5% !important; */
 }
 
 .date {
     grid-row-start: 18;
     grid-column: 2/span 8;
     font-size: 110% !important;
-    margin-right: 5% !important;
-    padding-left: 5% !important;
+    /* margin-right: 5% !important; */
+    padding-left: 1% !important;
 }
 
 .time {
     grid-row-start: 26;
     grid-column: 2/span 8;
     font-size: 110% !important;
-    margin-right: 5% !important;
+    /* margin-right: 5% !important; */
 }
 
 .fromTo {
@@ -185,4 +185,13 @@
 .MuiInputLabel-formControl {
     left: auto !important;
     right: 0 !important;
+}
+
+.fillInfoIcon {
+    color: rgb(194, 193, 193) !important;
+}
+
+.fillInfoPhoneIcon {
+    color: rgb(194, 193, 193) !important;
+    transform: rotate(270deg);
 }
