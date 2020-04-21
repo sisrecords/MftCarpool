@@ -68,9 +68,7 @@ export default function PersonalDetails(props) {
                         <TextField required  className={styles.addressEdit} id="begLocation" label="כתובת מגורים" color="secondary" defaultValue={pdAddress} onChange={(event)=>setTempAddress(event.target.value)}/>
                         <TextField required  className={styles.cityEdit} id="endLocation" label="עיר מגורים" color="secondary" defaultValue={pdCity} onChange={(event)=>setTempCity(event.target.value)} />
                         <TextField required  className={styles.phoneEdit} id="phone" label="פלאפון" color="secondary" defaultValue={pdPhone} onChange={(event)=>setTempPhone(event.target.value)}/>
-                        {/* <div className={styles.phoneIconDiv}><PhoneIcon className={styles.phoneIcon}></PhoneIcon></div> */}
                         <TextField required  className={styles.emailEdit} id="email" label='דוא"ל' color="secondary" defaultValue={pdEmail} onChange={(event)=>setTempEmail(event.target.value)}/>
-                        {/* <div className={styles.emailIconDiv}><EmailIcon className={styles.emailIcon} /></div> */}
                     </div> :
                     <div className={styles.details}>
                         <div className={styles.editIconDiv}><EditIcon onClick={handleChangeDetails}></EditIcon></div>

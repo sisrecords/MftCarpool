@@ -10,7 +10,7 @@ const OFFER_RIDE_ID = 1;
 const REQUEST_RIDE_ID = 2;
 
 router.get('/getAllRides', async (req, res) => {
-    const result = await sql.query`select * from rides where isActive = 'true' AND isAvailable = 'true'`;
+    const result = await sql.query`select * from rides where isActive = 'true'`;
     res.send(result.recordset);
 });
 
