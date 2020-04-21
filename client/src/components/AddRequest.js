@@ -59,37 +59,14 @@ export default function AddRequest(props) {
         setOpen(true);
     };
 
-    const handleClose = (ride) => {
+    const handleClose = () => {
         setOpen(false);
-        props.onClose(ride);
+        props.onClose();
     };
 
-    const handleCancel = () => {
-        setOpen(false);
-    };
-
-    const handleSendRequest = async (values) => {
-        console.log(selectedDate);
-        const response = await axios.post(
-            'http://localhost:3000/rides/addRide',
-            {
-                ownerName: values.name, ownerPhoneNumber: values.phone, ownerEmail: values.email, 
-                fromAddress: fromLocation, fromAddressLatitude: fromLatitude, 
-                fromAddressLongitude: fromLongitude, toAddress: toLocation, 
-                toAddressLatitude: toLatitude, toAddressLongitude: toLongitude, 
-                date: selectedDate.toLocaleDateString(), time: values.time, isAvailable: true, 
-                isActive: true, rideTypeID: REQUEST_RIDE_ID, chosenUserID: null
-            }
-        );
-        let rideID = response.data.recordset[0][""];
-        console.log(rideID);
-        //let userID = 1; //need to get the current user ID - we will get it from the server in the app init
-        let newRide = new Ride(rideID, values.name, values.phone, values.email, fromLocation, fromLatitude, 
-            fromLongitude, toLocation, toLatitude, toLongitude, selectedDate.toLocaleDateString(), 
-            values.time, true, true, REQUEST_RIDE_ID, null);
-        //we will pass the new ride to the handleClose which will pass it to the props.onClose func, so 
-        //we can get it in the main screen and add it to the list
-        handleClose(newRide);
+    const handleSendRequest = () => {
+        // לשלוח בקשה לשרת ומשם הוא יטפל בזה
+        handleClose();
     }
 
     const handleFromLocationInputChange = (val) => {
@@ -104,7 +81,6 @@ export default function AddRequest(props) {
     const handleToLocationInputChange = (val) => {
         setToLocation(val);
     }
-
     const handleToLocationMarkerChange = (lat, lon) => {
         setToLatitude(lat);
         setToLongitude(lon);
@@ -234,7 +210,6 @@ export default function AddRequest(props) {
                                 {/* <KeyboardDatePicker
                                     autoOk
                                     disableToolbar
-                                    disablePast
                                     variant="inline"
                                     format="dd/MM/yyyy"
                                     margin="normal"
@@ -281,22 +256,18 @@ export default function AddRequest(props) {
                 }}>
                     <div className={styles.mapBeg}>
                         <ExampleMap onInputChange={handleFromLocationInputChange}
-                            onMarkerChange={handleFromLocationMarkerChange} label="כתובת מוצא" />
+                            onMarkerChange={handleFromLocationMarkerChange} label="כתובת מוצא"/>
                     </div>
                     <div className={styles.mapEnd}>
                         <ExampleMap onInputChange={handleToLocationInputChange}
-                            onMarkerChange={handleToLocationMarkerChange} label="כתובת יעד" />
+                            onMarkerChange={handleToLocationMarkerChange} label="כתובת יעד"/>
                     </div>
                 </div>
                 <div className={styles.buttons}>
                     <Pagination className={styles.pagination} count={2} page={page} onChange={handleChange} color="primary" />
-                    <Button className={styles.ok}
-                        onClick={isLocationsValid() && formik.isValid ? formik.handleSubmit :
-                            isLocationsValid() && page === 2 ? (values) => { setPage(1); formik.handleSubmit(values) } :
-                                formik.isValid && page === 1 ? () => setPage(2) : formik.handleSubmit}
-                        color="primary">
+                    <Button className={styles.ok} onClick={handleSendRequest} color="primary" autoFocus>
                         שליחת בקשה  </Button>
-                    <Button className={styles.cancel} onClick={handleCancel} color="primary">
+                    <Button className={styles.cancel} onClick={handleClose} color="primary">
                         ביטול   </Button>
                 </div>
 

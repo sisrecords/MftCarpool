@@ -280,11 +280,14 @@ export default function RideDialog(props) {
                 <div className={styles.name}>{rideToShow.name}</div>
                 <div className={styles.fromTo}><img style={{ height: '80px' }} src='/images/fromto2.png' alt="from_to" /></div>
                 <div className={styles.pickupLocationLabel}>נקודת מוצא</div>
-                <div className={styles.fromAddress}>{rideToShow.fromLocationWithoutCity}</div>
-                <div className={styles.fromCity}>{rideToShow.fromLocationCity}</div>
+                <div className={styles.fromAddress}>{props.ride.fromLocationWithoutCity.length > 27 ? 
+                 props.ride.fromLocationWithoutCity.substring(0,24)+"..." : props.ride.fromLocationWithoutCity }</div>
+
+                <div className={styles.fromCity}>{props.ride.fromLocationCity}</div>
                 <div className={styles.dropLocationLabel}>נקודת יעד</div>
-                <div className={styles.toAddress}>{rideToShow.toLocationWithoutCity}</div>
-                <div className={styles.toCity}>{rideToShow.toLocationCity}</div>
+                <div className={styles.toAddress}>{props.ride.toLocationWithoutCity.length > 27 ? 
+                props.ride.toLocationWithoutCity.substring(0,24)+"..."  : props.ride.toLocationWithoutCity }</div>
+                <div className={styles.toCity}>{props.ride.toLocationCity}</div>
                 <div className={styles.dateLabel}>תאריך</div>
                 <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
                 <div className={styles.date}>{rideToShow.date}</div>

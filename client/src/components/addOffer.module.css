@@ -15,6 +15,7 @@
     grid-template-columns: repeat(10, 1fr);
     height: 70% !important;
     min-height: 70%;
+    /* padding-top: 10%; */
     /* padding-right: 10px; */
 }
 
@@ -24,8 +25,8 @@
     font-weight: bold;
     height: 8%;
     padding: 0 !important;
-    /* padding-top: 5% !important; */
-    padding-top: 10px !important;
+    padding-top: 5% !important;
+    /* padding-top: 10px !important; */
 }
 
 .buttons {
@@ -104,6 +105,7 @@
     grid-column: 2/span 8;
     font-size: 110% !important;
     /* margin-right: 5% !important; */
+    padding-left: 1% !important;
 }
 
 .time {

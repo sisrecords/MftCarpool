@@ -22,7 +22,10 @@ import Ride, { OFFER_RIDE_ID } from '../entities/ride';
 import axios from 'axios';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+<<<<<<< HEAD
+=======
 import heLocale from "date-fns/locale/he";
+>>>>>>> 6ee66e8ca1a3527ec0954d6a16846485a11a377b
 
 import {
     MuiPickersUtilsProvider,
