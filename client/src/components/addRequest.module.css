@@ -24,13 +24,8 @@
     font-weight: bold;
     height: 8%;
     padding: 0 !important;
-<<<<<<< HEAD
     padding-top: 5% !important;
-    /* padding-top: 10px !important; */
-=======
-    /* padding-top: 5% !important; */
-    padding-top: 10px !important;
->>>>>>> 6424c7be2ff59a00f081bb9dc948bfbaf0693878
+    /* padding-top: 10px !imeportant; */
 }
 
 .buttons {
