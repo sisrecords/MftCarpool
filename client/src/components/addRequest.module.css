@@ -16,6 +16,7 @@
     height: 70% !important;
     min-height: 70%;
     /* padding-top: 10%; */
+    /* padding-right: 10px; */
 }
 
 .title {
@@ -72,14 +73,14 @@
 }
 
 .phone {
-    grid-row-start: 7;
+    grid-row-start: 8;
     grid-column: 2/span 8;
     font-size: 110% !important;
     /* margin-right: 5% !important; */
 }
 
 .email {
-    grid-row-start: 13;
+    grid-row-start: 15;
     grid-column: 2/span 8;
     font-size: 110% !important;
     /* margin-right: 5% !important; */
@@ -100,7 +101,7 @@
 }
 
 .date {
-    grid-row-start: 18;
+    grid-row-start: 22;
     grid-column: 2/span 8;
     font-size: 110% !important;
     /* margin-right: 5% !important; */
@@ -108,7 +109,7 @@
 }
 
 .time {
-    grid-row-start: 26;
+    grid-row-start: 29;
     grid-column: 2/span 8;
     font-size: 110% !important;
     /* margin-right: 5% !important; */
@@ -187,11 +188,23 @@
     right: 0 !important;
 }
 
-.fillInfoIcon {
+.fillInfoNameIcon {
     color: rgb(194, 193, 193) !important;
 }
 
 .fillInfoPhoneIcon {
     color: rgb(194, 193, 193) !important;
     transform: rotate(270deg);
+}
+
+.fillInfoEmailIcon {
+    color: rgb(194, 193, 193) !important;
+}
+
+.fillInfoTimeIcon {
+    color: rgb(194, 193, 193) !important;
+}
+
+.fillInfoDateIcon {
+    color: rgb(194, 193, 193) !important;
 }

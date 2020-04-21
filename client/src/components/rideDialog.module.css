@@ -96,10 +96,13 @@
 
 
 .fromAddress {
-    grid-row-start: 6;
+    grid-row: 6/span 2;
     grid-column: 2/span 9;
     font-size: 120% !important;
     padding-top: 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .fromCity {
@@ -110,10 +113,13 @@
 }
 
 .toAddress {
-    grid-row-start: 9;
+    grid-row: 9/span 2;
     grid-column: 2/span 9;
     font-size: 120% !important;
     padding-top: 7px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .toCity {

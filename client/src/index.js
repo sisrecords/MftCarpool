@@ -6,6 +6,7 @@ import Main from "./components/Main";
 import React from 'react';
 import ViewRideDialog from "./components/ViewRideDialog";
 import NotFoundPage from "./components/NotFoundPage";
+import FailPage from "./components/FailPage";
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,6 +14,7 @@ import {
 } from "react-router-dom";
 import { usePromiseTracker } from "react-promise-tracker";
 import Loader from 'react-loader-spinner';
+import OccupiedRidePage from './components/OccupiedRidePage';
 
 const LoadingIndicator = props => {
   const { promiseInProgress } = usePromiseTracker();
@@ -41,6 +43,14 @@ const routes = [
   {
     path: "/ride/:rideID",
     component: ViewRideDialog
+  },
+  {
+    path: "/rideOccupied/:rideTypeID",
+    component: OccupiedRidePage
+  },
+  {
+    path: "/fail",
+    component: FailPage
   },
   {
     path: "/*",

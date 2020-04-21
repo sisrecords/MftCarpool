@@ -16,15 +16,20 @@ import DateFnsUtils from '@date-io/date-fns';
 import Grid from '@material-ui/core/Grid';
 import Pagination from '@material-ui/lab/Pagination';
 import ExampleMap from "./map";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import Ride, { REQUEST_RIDE_ID } from '../entities/ride';
+import axios from 'axios';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-
+import heLocale from "date-fns/locale/he";
 
 import {
     MuiPickersUtilsProvider,
     KeyboardTimePicker,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { DatePicker } from "@material-ui/pickers";
 
 export default function AddRequest(props) {
     const [open, setOpen] = useState(props.open);
@@ -39,6 +44,8 @@ export default function AddRequest(props) {
     const [toLocation, setToLocation] = useState("");
     const [toLatitude, setToLatitude] = useState("");
     const [toLongitude, setToLongitude] = useState("");
+
+    const [isDateOpen, setIsDateOpen] = useState(false);
 
     const handleChange = (event, value) => {
         setPage(value);
@@ -79,6 +86,52 @@ export default function AddRequest(props) {
         setToLongitude(lon);
     }
 
+    const isLocationsValid = () => {
+        if (fromLatitude === "" || fromLatitude === null ||
+            fromLongitude === "" || fromLongitude === null ||
+            toLatitude === "" || toLatitude === null ||
+            toLongitude === "" || toLongitude === null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        validateOnMount: true,
+        initialValues: {
+            name: '',
+            phone: '',
+            email: '',
+            time: ''
+        },
+        validationSchema: Yup.object({
+            name: Yup.string()
+                .min(2, 'נא הכנס שם מלא')
+                .max(100, 'נא צמצם את השם')
+                .required('שדה זה הוא חובה'),
+            phone: Yup.string()
+                .min(10, 'נא הכנס מספר טלפון תקין')
+                .max(10, 'נא הכנס מספר טלפון תקין')
+                .required('שדה זה הוא חובה'),
+            email: Yup.string()
+                .email('נא הכנס מייל תקין')
+                .required('שדה זה הוא חובה'),
+            time: Yup.string()
+                .required('שדה זה הוא חובה')
+        }),
+        onSubmit: values => {
+            console.log(values);
+            let isLocationsValidRes = isLocationsValid();
+            if (isLocationsValidRes && formik.isValid) {
+                //everything is valid
+                handleSendRequest(values);
+            }
+        }
+    });
+
     return (
         <div>
             <Dialog className={styles.dialog}
@@ -96,36 +149,66 @@ export default function AddRequest(props) {
                         position: page === 1 ? 'relative' : 'absolute'
                     }}>
                     <div className={styles.details}>
-                        <TextField className={styles.name} id="name" label="שם מלא" color="secondary" 
-                        InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="end">
-                                <AccountCircleIcon className={styles.fillInfoIcon}></AccountCircleIcon>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        <TextField className={styles.phone} id="phone" label="פלאפון" color="secondary" 
-                        InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="end">
-                                <PhoneIcon className={styles.fillInfoPhoneIcon}></PhoneIcon>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        <TextField className={styles.email} id="email" label='דוא"ל' color="secondary"
-                        InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="end">
-                                <EmailIcon className={styles.fillInfoIcon}></EmailIcon>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <TextField className={styles.name} id="name" label="שם מלא" color="primary"
+                            error={formik.touched.name && formik.errors.name ? true : false}
+                            {...formik.getFieldProps('name')}
+                            helperText={formik.touched.name && formik.errors.name ? formik.errors.name : null}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="end">
+                                        <AccountCircleIcon className={styles.fillInfoNameIcon}></AccountCircleIcon>
+                                    </InputAdornment>
+                                ),
+                            }} />
+
+                        <TextField className={styles.phone} id="phone" label="פלאפון" color="primary"
+                            error={formik.touched.phone && formik.errors.phone ? true : false}
+                            {...formik.getFieldProps('phone')}
+                            helperText={formik.touched.phone && formik.errors.phone ? formik.errors.phone : null}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="end">
+                                        <PhoneIcon className={styles.fillInfoPhoneIcon}></PhoneIcon>
+                                    </InputAdornment>
+                                ),
+                            }} />
+
+                        <TextField className={styles.email} id="email" label='דוא"ל' color="primary"
+                            error={formik.touched.email && formik.errors.email ? true : false}
+                            {...formik.getFieldProps('email')}
+                            helperText={formik.touched.email && formik.errors.email ? formik.errors.email : null}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="end">
+                                        <EmailIcon className={styles.fillInfoEmailIcon}></EmailIcon>
+                                    </InputAdornment>
+                                ),
+                            }} />
+
+                        <MuiPickersUtilsProvider locale={heLocale} utils={DateFnsUtils}>
                             <Grid className={styles.date} container justify="space-around">
-                                <KeyboardDatePicker
+                            <DatePicker
+                                    autoOk
+                                    disablePast
+                                    disableToolbar
+                                    variant="inline"
+                                    open={isDateOpen}
+                                    onOpen={() => setIsDateOpen(true)}
+                                    onClose={() => setIsDateOpen(false)}
+                                    label="תאריך"
+                                    format="dd/MM/yyyy"
+                                    value={selectedDate}
+                                    onChange={handleDateChange}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="end">
+                                                <EventIcon className={styles.fillInfoDateIcon}></EventIcon>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                {/* <KeyboardDatePicker
+                                    autoOk
                                     disableToolbar
                                     variant="inline"
                                     format="dd/MM/yyyy"
@@ -137,19 +220,34 @@ export default function AddRequest(props) {
                                     KeyboardButtonProps={{
                                         'aria-label': 'change date',
                                     }}
-                                />
+                                    invalidDateMessage="נא הזן תאריך תקין"
+                                /> */}
                             </Grid>
                         </MuiPickersUtilsProvider>
 
-                        <TextField className={styles.time} id="time" label="שעה" color="secondary" 
-                             InputProps={{
+                        <TextField
+                            id="time"
+                            label="שעה"
+                            color="primary"
+                            type="time"
+                            {...formik.getFieldProps('time')}
+                            className={styles.time}
+                            InputLabelProps={{
+                                shrink: true
+                            }}
+                            inputProps={{
+                                step: 60 // 1 min
+                            }}
+                            error={formik.touched.time && formik.errors.time ? true : false}
+                            helperText={formik.touched.time && formik.errors.time ? formik.errors.time : null}
+                            InputProps={{
                                 startAdornment: (
-                                  <InputAdornment position="end">
-                                    <ScheduleIcon className={styles.fillInfoIcon}></ScheduleIcon>
-                                  </InputAdornment>
+                                    <InputAdornment position="end">
+                                        <ScheduleIcon className={styles.fillInfoTimeIcon}></ScheduleIcon>
+                                    </InputAdornment>
                                 ),
-                              }} />
-   
+                            }} />
+
                     </div>
                 </form>
                 <div className={styles.details} style={{
