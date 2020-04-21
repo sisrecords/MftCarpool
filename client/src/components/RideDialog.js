@@ -93,7 +93,7 @@ export default function RideDialog(props) {
 
   const handlJoinOfferSubmit = async (values) => {
     //here we will need the info of the current user
-    let user = new User(1, "mor", "1234567891", "mftcarpool@gmail.com", true);
+    let user = new User(1, "mor", "pass", "1234567891", "mftcarpool@gmail.com", true);
     //user is the one who wants to join the ride and the owner is the one offering the ride
     const response = await axios.post(
       'http://localhost:3000/rides/wantToJoinRide',
@@ -113,7 +113,7 @@ export default function RideDialog(props) {
 
   const handlAnswerRequestSubmit = async (values) => {
     //here we will need the info of the current user
-    let user = new User(1, "mor", "1234567891", "mftcarpool@gmail.com", true);
+    let user = new User(1, "mor", "pass", "1234567891", "mftcarpool@gmail.com", true);
     //user is the one who wants to join the ride and the owner is the one offering the ride
     const response = await axios.post(
       'http://localhost:3000/rides/wantToAnswerRequest',
@@ -280,14 +280,14 @@ export default function RideDialog(props) {
                 <div className={styles.name}>{rideToShow.name}</div>
                 <div className={styles.fromTo}><img style={{ height: '80px' }} src='/images/fromto2.png' alt="from_to" /></div>
                 <div className={styles.pickupLocationLabel}>נקודת מוצא</div>
-                <div className={styles.fromAddress}>{props.ride.fromLocationWithoutCity.length > 27 ? 
-                 props.ride.fromLocationWithoutCity.substring(0,24)+"..." : props.ride.fromLocationWithoutCity }</div>
+                <div className={styles.fromAddress} title={rideToShow.fromLocationWithoutCity}>{rideToShow.fromLocationWithoutCity.length > 27 ?
+                  rideToShow.fromLocationWithoutCity.substring(0, 24) + "..." : rideToShow.fromLocationWithoutCity}</div>
 
-                <div className={styles.fromCity}>{props.ride.fromLocationCity}</div>
+                <div className={styles.fromCity}>{rideToShow.fromLocationCity}</div>
                 <div className={styles.dropLocationLabel}>נקודת יעד</div>
-                <div className={styles.toAddress}>{props.ride.toLocationWithoutCity.length > 27 ? 
-                props.ride.toLocationWithoutCity.substring(0,24)+"..."  : props.ride.toLocationWithoutCity }</div>
-                <div className={styles.toCity}>{props.ride.toLocationCity}</div>
+                <div className={styles.toAddress} title={rideToShow.toLocationWithoutCity}>{rideToShow.toLocationWithoutCity.length > 27 ?
+                  rideToShow.toLocationWithoutCity.substring(0, 24) + "..." : rideToShow.toLocationWithoutCity}</div>
+                <div className={styles.toCity}>{rideToShow.toLocationCity}</div>
                 <div className={styles.dateLabel}>תאריך</div>
                 <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
                 <div className={styles.date}>{rideToShow.date}</div>

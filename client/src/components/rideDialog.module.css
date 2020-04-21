@@ -103,6 +103,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-left: 1px;
 }
 
 .fromCity {
@@ -120,6 +121,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-left: 1px;
 }
 
 .toCity {

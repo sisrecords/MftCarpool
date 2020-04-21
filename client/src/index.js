@@ -15,6 +15,7 @@ import {
 import { usePromiseTracker } from "react-promise-tracker";
 import Loader from 'react-loader-spinner';
 import OccupiedRidePage from './components/OccupiedRidePage';
+import LoginPage from './components/Login';
 
 const LoadingIndicator = props => {
   const { promiseInProgress } = usePromiseTracker();
@@ -47,6 +48,10 @@ const routes = [
   {
     path: "/rideOccupied/:rideTypeID",
     component: OccupiedRidePage
+  },
+  {
+    path: "/login",
+    component: LoginPage
   },
   {
     path: "/fail",
