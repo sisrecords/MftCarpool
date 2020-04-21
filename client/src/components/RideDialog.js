@@ -93,7 +93,7 @@ export default function RideDialog(props) {
 
   const handlJoinOfferSubmit = async (values) => {
     //here we will need the info of the current user
-    let user = new User(1, "mor", "1234567891", "mftcarpool@gmail.com", true);
+    let user = new User(1, "mor", "pass", "1234567891", "mftcarpool@gmail.com", true);
     //user is the one who wants to join the ride and the owner is the one offering the ride
     const response = await axios.post(
       'http://localhost:3000/rides/wantToJoinRide',
@@ -113,7 +113,7 @@ export default function RideDialog(props) {
 
   const handlAnswerRequestSubmit = async (values) => {
     //here we will need the info of the current user
-    let user = new User(1, "mor", "1234567891", "mftcarpool@gmail.com", true);
+    let user = new User(1, "mor", "pass", "1234567891", "mftcarpool@gmail.com", true);
     //user is the one who wants to join the ride and the owner is the one offering the ride
     const response = await axios.post(
       'http://localhost:3000/rides/wantToAnswerRequest',
