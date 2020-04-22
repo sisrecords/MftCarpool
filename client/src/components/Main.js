@@ -76,9 +76,9 @@ function Main() {
   const [personalDetailsOpen, setPersonalDetailsOpen] = useState(null);
 
   useEffect(() => {
-    // if(!currentUser) {
-    //   return;
-    // }
+    if(!currentUser) {
+      return;
+    }
     (async function getAllRides() {
       let response;
       trackPromise(
@@ -136,22 +136,21 @@ function Main() {
   }
 
   function onRequestClick() {
-    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === REQUEST_RIDE_ID));
+    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === REQUEST_RIDE_ID && ride.isAvailable === true));
     setAllSelect(false);
     setRequestSelect(true);
     setOfferSelect(false);
+    setHistorySelect(false);
   }
 
   function onOfferClick() {
-    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === OFFER_RIDE_ID));
+    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === OFFER_RIDE_ID && ride.isAvailable === true));
     setAllSelect(false);
     setRequestSelect(false);
     setOfferSelect(true);
+    setHistorySelect(false);
   }
 
-  // if(!currentUser){
-  //   history.push("/login");
-  // }
   function onHistoryClick() {
     setRidesList(ridesDBList.filter(ride => ride.isAvailable === false));
     setAllSelect(false);
@@ -160,6 +159,9 @@ function Main() {
     setHistorySelect(true);
   }
 
+  if(!currentUser){
+    history.push("/login");
+  }
 
   return (
 

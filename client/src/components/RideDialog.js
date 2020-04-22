@@ -14,7 +14,7 @@ import ScheduleIcon from '@material-ui/icons/Schedule';
 import Pagination from '@material-ui/lab/Pagination';
 import ExampleMap from "./map";
 import Ride, { REQUEST_RIDE_ID } from '../entities/ride';
-import User from '../entities/user';
+import User, { currentUser } from '../entities/user';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -92,14 +92,11 @@ export default function RideDialog(props) {
   }
 
   const handlJoinOfferSubmit = async (values) => {
-    //here we will need the info of the current user
-    let user = new User(1, "mor", "pass", "1234567891", "mftcarpool@gmail.com", true);
-    //user is the one who wants to join the ride and the owner is the one offering the ride
     const response = await axios.post(
       'http://localhost:3000/rides/wantToJoinRide',
       {
         rideID: rideToShow.rideID, ownerEmail: rideToShow.email, ownerName: rideToShow.name,
-        userID: user.userID, userName: values.name, userPhoneNumber: values.phone,
+        userID: currentUser.userID, userName: values.name, userPhoneNumber: values.phone,
         userEmail: values.email, userPickupLocation: pickupLocation,
         userPickupLocationLatitude: pickupLatitude, userPickupLocationLongitude: pickupLongitude
       }
@@ -112,14 +109,11 @@ export default function RideDialog(props) {
   }
 
   const handlAnswerRequestSubmit = async (values) => {
-    //here we will need the info of the current user
-    let user = new User(1, "mor", "pass", "1234567891", "mftcarpool@gmail.com", true);
-    //user is the one who wants to join the ride and the owner is the one offering the ride
     const response = await axios.post(
       'http://localhost:3000/rides/wantToAnswerRequest',
       {
         rideID: rideToShow.rideID, ownerEmail: rideToShow.email, ownerName: rideToShow.name,
-        userID: user.userID, userName: values.name, userPhoneNumber: values.phone,
+        userID: currentUser.userID, userName: values.name, userPhoneNumber: values.phone,
         userEmail: values.email, userPickupLocation: pickupLocation,
         userPickupLocationLatitude: pickupLatitude, userPickupLocationLongitude: pickupLongitude
       }
@@ -154,9 +148,9 @@ export default function RideDialog(props) {
     enableReinitialize: true,
     validateOnMount: true,
     initialValues: {
-      name: '',
-      phone: '',
-      email: ''
+      name: currentUser.userName,
+      phone: currentUser.userPhoneNumber,
+      email: currentUser.userEmail
     },
     validationSchema: Yup.object({
       name: Yup.string()
