@@ -9,7 +9,7 @@ router.get('/getAllUsers', async (req, res) => {
     res.send(result.recordset);
 });
 
-router.post('/addUser', async (req, res) => {
+router.post('/addUserOrEmailTaken', async (req, res) => {
     var userName = req.body.userName;
     var userPassword = req.body.userPassword;
     var userPhoneNumber = req.body.userPhoneNumber;
@@ -21,8 +21,7 @@ router.post('/addUser', async (req, res) => {
         .input("userPhoneNumber", sql.NVarChar, userPhoneNumber)
         .input("userEmail", sql.NVarChar, userEmail)
         .input("isActive", sql.Bit, isActive)
-        .query(`insert into users values(@userName, @userPassword, @userPhoneNumber, @userEmail
-            , @isActive) SELECT SCOPE_IDENTITY()`);
+        .execute("addUserOrEmailTaken");
     res.send(result);
 });
 

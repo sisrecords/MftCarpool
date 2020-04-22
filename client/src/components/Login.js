@@ -27,7 +27,6 @@ export default function LoginPage(props) {
 
     const handleClose = () => {
         setOpen(false);
-        // history.push("/app");
     }
 
     const handleClickShowPassword = () => {
@@ -36,25 +35,23 @@ export default function LoginPage(props) {
 
     const handleSignup = async (values) => {
         trackPromise(axios.post(
-            'http://localhost:3000/users/addUser',
+            'http://localhost:3000/users/addUserOrEmailTaken',
             {
                 userName: values.name, userPassword: values.password, userPhoneNumber: values.phone,
                 userEmail: values.email, isActive: true
             }
         ).then(result => {
-            let userID = result.data.recordset[0][""];
-            console.log(userID);
-            let user = new User(userID, values.name, values.password, values.phone, values.email, true);
-            alert("ההרשמה בוצעה בהצלחה. \n לחץ אישור ותופנה לעמוד הראשי.");
-            setCurrentUser(user);
-            //here we will need to save the user as the current user and redirect it to the home page
-            history.push("/app");
+            if (result.data.recordsets.length > 0) {
+                let userID = result.data.recordset[0][""];
+                let user = new User(userID, values.name, values.password, values.phone, values.email, true);
+                alert("ההרשמה בוצעה בהצלחה. \n לחץ אישור ותופנה לעמוד הראשי.");
+                setCurrentUser(user);
+                history.push("/app");
+            }
+            else {
+                alert("כתובת המייל שציינת משוייכת למשתמש אחר. \n נא הכנס כתובת אחרת.");
+            }
         }));
-        // console.log(response);
-        // alert(response.status === 200 ? `נשלח מייל לבעל ההצעה המכיל את פרטיך.\nבמידה והוא יאשר, תקבל על כך מייל.`
-        //     :
-        //     "קרתה תקלה בעת שליחת הבקשה, אנא נסה שנית.");
-        // handleClose();
     }
 
     const handleLogin = async (values) => {
@@ -64,7 +61,7 @@ export default function LoginPage(props) {
                 if (result.data.length !== 0) {
                     console.log("success");
                     let user = result.data[0];
-                    let clientUser = new User(user.UserID, user.UserName, user.UserPassword, 
+                    let clientUser = new User(user.UserID, user.UserName, user.UserPassword,
                         user.UserPhoneNumber, user.UserEmail, user.IsActive);
                     console.log(clientUser);
                     setCurrentUser(clientUser);
@@ -75,12 +72,6 @@ export default function LoginPage(props) {
                     alert("שם משתמש או סיסמא שגויים, נא נסה שנית.");
                 }
             }));
-        // let userID = response.data.recordset[0][""];
-        // console.log(userID);
-        // let user = new User(userID, values.name, values.password, values.phone, values.email, true);
-        // alert("ההרשמה בוצעה בהצלחה. \n לחץ אישור ותופנה לעמוד הראשי.")
-        //here we will need to save the user as the current user and redirect it to the home page
-        // history.push("/app");
     }
 
     const handleChangeToSignup = () => {
