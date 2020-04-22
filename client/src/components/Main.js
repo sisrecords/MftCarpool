@@ -72,6 +72,7 @@ function Main() {
   const [allSelect, setAllSelect] = useState(true);
   const [requestSelect, setRequestSelect] = useState(false);
   const [offerSelect, setOfferSelect] = useState(false);
+  const [historySelect, setHistorySelect] = useState(false);
   const [personalDetailsOpen, setPersonalDetailsOpen] = useState(null);
 
   useEffect(() => {
@@ -127,10 +128,11 @@ function Main() {
   }
 
   function onAllClick() {
-    setRidesList(ridesDBList);
+    setRidesList(ridesDBList.filter(ride => ride.isAvailable === true));
     setAllSelect(true);
     setRequestSelect(false);
     setOfferSelect(false);
+    setHistorySelect(false);
   }
 
   function onRequestClick() {
@@ -150,6 +152,14 @@ function Main() {
   // if(!currentUser){
   //   history.push("/login");
   // }
+  function onHistoryClick() {
+    setRidesList(ridesDBList.filter(ride => ride.isAvailable === false));
+    setAllSelect(false);
+    setRequestSelect(false);
+    setOfferSelect(false);
+    setHistorySelect(true);
+  }
+
 
   return (
 
@@ -178,6 +188,10 @@ function Main() {
         {
           offerSelect ? <div className={styles.offerSelected} variant="contained" onClick={onOfferClick}>הצעות</div>
             : <div className={styles.offer} variant="contained" onClick={onOfferClick}>הצעות</div>
+        }
+        {
+          historySelect ? <div className={styles.historySelected} variant="contained" onClick={onHistoryClick}>היסטוריה</div>
+          : <div className={styles.history} variant="contained" onClick={onHistoryClick}>היסטוריה</div>
         }
 
 
