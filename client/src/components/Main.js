@@ -171,6 +171,7 @@ function Main() {
         <div className={styles.carimgdiv}>
           <img className={styles.carimg} src='/images/carpool_car.png' alt="car" />
         </div>
+        <div className={styles.extraDivForComputers}></div>
       </div>
       {
         personalDetailsOpen ? <PersonalDetails personDetails={ridesList[0]} open={true} onClose={closePersonalDetails} /> : null
