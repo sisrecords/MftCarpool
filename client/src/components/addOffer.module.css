@@ -30,6 +30,9 @@
 }
 
 .buttons {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     display: grid;
     height: 21%;
     min-height: 19%;
@@ -44,6 +47,7 @@
     direction: rtl !important;
     position: sticky;
     justify-self: center;
+    padding-top: 5px;
 }
 
 .ok {

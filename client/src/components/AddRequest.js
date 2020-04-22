@@ -66,6 +66,7 @@ export default function AddRequest(props) {
 
     const handleCancel = () => {
         setOpen(false);
+        props.onCancel();
     };
 
     const handleSendRequest = async (values) => {
@@ -292,7 +293,7 @@ export default function AddRequest(props) {
                     <Button className={styles.ok} onClick={isLocationsValid() && formik.isValid ? formik.handleSubmit :
                         isLocationsValid() && page === 2 ? (values) => { setPage(1); formik.handleSubmit(values) } :
                             formik.isValid && page === 1 ? () => setPage(2) : formik.handleSubmit}
-                        color="primary" autoFocus>
+                        color="primary">
                         שליחת בקשה  </Button>
                     <Button className={styles.cancel} onClick={handleCancel} color="primary">
                         ביטול   </Button>

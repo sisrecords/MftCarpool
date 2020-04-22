@@ -3,11 +3,17 @@
     height: 70% !important;
 }
 
+.form {
+    height: 70%;
+    min-height: 70%;
+}
+
 .details {
     display: grid;
-    grid-template-rows: repeat(20, 5%);
+    grid-template-rows: repeat(25, 4%);
     grid-template-columns: repeat(10, 1fr);
-    height: 72%;
+    height: 100%;
+    /* min-height: 70%; */
     padding-right: 10px;
 }
 
@@ -15,26 +21,39 @@
     text-align: center;
     font-size: larger !important;
     font-weight: bold;
-    height: 5%;
+    height: 8%;
+    min-height: 8%;
     padding: 0 !important;
-    padding-top: 5% !important;
+    /* padding-top: 5% !important; */
+    padding-top: 10px !important;
 }
 
 .buttons{
     display: grid;
     height: 20%;
-    grid-template-rows: repeat(4, 25%);
+    min-height: 20%;
+    grid-template-rows: repeat(5, 20%);
     grid-template-columns: repeat(10, 1fr);
 }
 
 .join{
-    grid-row: 3/ span 2;
+    grid-row: 3/ span 3;
     grid-column: 2/span 4;
     border-radius: 25px 25px 0px 0px !important;
     background-color: #0D47A1 !important;
     color: white !important;
     font-size: 110% !important;
     width: 140%;
+}
+
+.closePersonalDetails{
+    grid-row: 2/ span 4;
+    grid-column: 3/span 4;
+    border-radius: 25px 25px 0px 0px !important;
+    background-color: #0D47A1 !important;
+    color: white !important;
+    font-size: 110% !important;
+    width: 150%;
 }
 
 .cancel{
@@ -46,14 +65,15 @@
 
 .editIconDiv{
     grid-row-start: 3;
-    grid-column: 9/span 9;
+    grid-column: 9/span 1;
+    cursor: pointer;
 }
 
 .name{
-    grid-row-start: 3;
+    grid-row-start: 4;
     grid-column: 2/span 9;
     font-size: 120% !important;
-    padding-top: 3% !important;
+    /* padding-top: 3% !important; */
 }
 
 .address{
@@ -71,17 +91,24 @@
 }
 
 .phone{
-    grid-row-start: 13;
+    grid-row-start: 8;
     grid-column:2/span 9;
     font-size: 120% !important;
-    padding-top: 4% !important;
+    /* padding-top: 4% !important; */
 }
 
 .email{
-    grid-row-start: 18;
+    grid-row-start: 12;
     grid-column:2/span 9;
     font-size: 120% !important;
-    padding-top: 2% !important;
+    /* padding-top: 2% !important; */
+}
+
+.password{
+    grid-row-start: 16;
+    grid-column:2/span 9;
+    font-size: 120% !important;
+    /* padding-top: 2% !important; */
 }
 
 
@@ -101,19 +128,27 @@
 }
 
 .phoneLabel{
-    grid-row-start: 12;
+    grid-row-start: 7;
     grid-column: 2/span 9;
     font-size: 60% !important;
     color: rgb(155, 154, 154) !important;
-    padding-top: 4% !important;
+    /* padding-top: 4% !important; */
 }
 
 .emailLabel{
-    grid-row-start: 16;
+    grid-row-start: 11;
     grid-column: 2/span 9;
     font-size: 60% !important;
     color: rgb(155, 154, 154) !important;
-    padding-top: 9% !important;
+    /* padding-top: 9% !important; */
+}
+
+.passwordLabel{
+    grid-row-start: 15;
+    grid-column: 2/span 9;
+    font-size: 60% !important;
+    color: rgb(155, 154, 154) !important;
+    /* padding-top: 9% !important; */
 }
 
 
@@ -123,7 +158,7 @@
     grid-row-start: 2;
     grid-column: 2/span 8;
     font-size: 80% !important;
-    margin-top: 3% !important;
+    /* margin-top: 3% !important; */
 }
 
 .addressEdit{
@@ -140,23 +175,46 @@
 }
 
 .phoneEdit{
-    grid-row-start: 14;
+    grid-row-start: 8;
     grid-column:2/span 8;
     font-size: 120% !important;
     /* padding-top: 4% !important; */
 }
 
 .emailEdit{
-    grid-row-start: 18;
+    grid-row-start: 14;
     grid-column:2/span 8;
     font-size: 120% !important;
-    padding-top: 2% !important;
+    /* padding-top: 2% !important; */
+}
+
+.passwordEdit{
+    grid-row-start: 20;
+    grid-column:2/span 8;
+    font-size: 120% !important;
+    /* padding-top: 2% !important; */
 }
 
 
+.nameIcon {
+    color: rgb(194, 193, 193) !important;
+}
+
+.phoneIcon {
+    color: rgb(194, 193, 193) !important;
+    transform: rotate(270deg);
+}
+
+.emailIcon {
+    color: rgb(194, 193, 193) !important;
+}
+
+.passwordIcon {
+    color: rgb(194, 193, 193) !important;
+}
 
 /*    ///////////////////////    */
-.phoneIconDiv{
+/* .phoneIconDiv{
     grid-row-start: 2;
     grid-column: 1;
     padding-top: 5% !important;
@@ -182,4 +240,4 @@
     height: 80% !important;
     width: 80% !important;
     padding-top: 30%;
-}
+} */

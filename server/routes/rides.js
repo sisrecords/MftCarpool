@@ -132,31 +132,31 @@ router.get('/occupyRide/:rideID/:userID/:userEmail/:rideTypeID', async (req, res
         .input("isAvailable", sql.Bit, false)
         .query(`update rides set isAvailable = @isAvailable, chosenUserID = @userID where rideID = @rideID 
             AND chosenUserID is NULL`);
-    let s = "ride " + req.params.rideID + " occupied by user " + req.params.userID;
-    try {
-        const msg = req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
-            `<b>הצעתך לצירוף לנסיעה אושרה.</b><br>`
-            : `<b>בקשתך להצטרפות לנסיעה אושרה.</b><br>`;
-        const to = req.params.userEmail;
-        const message = `<div style="direction:rtl;text-align: right;">
-        ${msg}
-        <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001/ride/${req.params.rideID}">צפייה בנסיעה</a></p></div>"`
+    if (result.rowsAffected[0] === 1) {
+        let s = "ride " + req.params.rideID + " occupied by user " + req.params.userID;
+        try {
+            const msg = req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
+                `<b>הצעתך לצירוף לנסיעה אושרה.</b><br>`
+                : `<b>בקשתך להצטרפות לנסיעה אושרה.</b><br>`;
+            const to = req.params.userEmail;
+            const message = `<div style="direction:rtl;text-align: right;">
+            ${msg}
+            <p>לחץ כאן לצפייה בנסיעה: <a href="http://192.168.59.1:3001/ride/${req.params.rideID}">צפייה בנסיעה</a></p></div>"`
 
-        // send mail with defined transport object
-        let info = await transporter.sendMail({
-            from: 'mftcarpool@gmail.com', // sender address
-            to: to, // list of receivers
-            subject: req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
-                "אישור הצעת צירוף לנסיעה" :
-                "אישור בקשת הצטרפות לנסיעה", // Subject line
-            // text: "Hello world?", // plain text body
-            html: message // html body
-        });
-    }
-    catch (ex) {
-        res.redirect('/fail');
-    }
-    if(result.rowsAffected[0] === 1) {
+            // send mail with defined transport object
+            let info = await transporter.sendMail({
+                from: 'mftcarpool@gmail.com', // sender address
+                to: to, // list of receivers
+                subject: req.params.rideTypeID === REQUEST_RIDE_ID + "" ?
+                    "אישור הצעת צירוף לנסיעה" :
+                    "אישור בקשת הצטרפות לנסיעה", // Subject line
+                // text: "Hello world?", // plain text body
+                html: message // html body
+            });
+        }
+        catch (ex) {
+            res.redirect('/fail');
+        }
         res.redirect(`http://192.168.59.1:3001/rideOccupied/${req.params.rideTypeID}`);
     }
     else {

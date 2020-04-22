@@ -16,7 +16,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import LockIcon from '@material-ui/icons/Lock';
 import { useHistory } from "react-router-dom";
-import User from "../entities/user";
+import User, { currentUser, setCurrentUser } from "../entities/user";
+import { trackPromise } from 'react-promise-tracker';
 
 export default function LoginPage(props) {
     const history = useHistory();
@@ -34,20 +35,21 @@ export default function LoginPage(props) {
     };
 
     const handleSignup = async (values) => {
-        const response = await axios.post(
+        trackPromise(axios.post(
             'http://localhost:3000/users/addUser',
             {
                 userName: values.name, userPassword: values.password, userPhoneNumber: values.phone,
                 userEmail: values.email, isActive: true
             }
-        );
-        let userID = response.data.recordset[0][""];
-        console.log(userID);
-        let user = new User(userID, values.name, values.password, values.phone, values.email, true);
-        alert("ההרשמה בוצעה בהצלחה. \n לחץ אישור ותופנה לעמוד הראשי.")
-        //here we will need to save the user as the current user and redirect it to the home page
-        history.push("/app");
-
+        ).then(result => {
+            let userID = result.data.recordset[0][""];
+            console.log(userID);
+            let user = new User(userID, values.name, values.password, values.phone, values.email, true);
+            alert("ההרשמה בוצעה בהצלחה. \n לחץ אישור ותופנה לעמוד הראשי.");
+            setCurrentUser(user);
+            //here we will need to save the user as the current user and redirect it to the home page
+            history.push("/app");
+        }));
         // console.log(response);
         // alert(response.status === 200 ? `נשלח מייל לבעל ההצעה המכיל את פרטיך.\nבמידה והוא יאשר, תקבל על כך מייל.`
         //     :
@@ -56,23 +58,23 @@ export default function LoginPage(props) {
     }
 
     const handleLogin = async (values) => {
-        const response = await axios.get(
-            `http://localhost:3000/users/authUser/${values.email}/${values.password}`,
-            // {
-            //     params: {
-            //         userEmail: values.email, userPassword: values.password
-            //     }
-            // }
-        );
-        console.log(response)
-        if(response.data.length !== 0){
-            console.log("success");
-            history.push("/app");
-        }
-        else {
-            console.log("invalid email/password");
-            alert("שם משתמש או סיסמא שגויים, נא נסה שנית.")
-        }
+        trackPromise(axios.get(
+            `http://localhost:3000/users/authUser/${values.email}/${values.password}`).then(result => {
+                console.log(result)
+                if (result.data.length !== 0) {
+                    console.log("success");
+                    let user = result.data[0];
+                    let clientUser = new User(user.UserID, user.UserName, user.UserPassword, 
+                        user.UserPhoneNumber, user.UserEmail, user.IsActive);
+                    console.log(clientUser);
+                    setCurrentUser(clientUser);
+                    history.push("/app");
+                }
+                else {
+                    console.log("invalid email/password");
+                    alert("שם משתמש או סיסמא שגויים, נא נסה שנית.");
+                }
+            }));
         // let userID = response.data.recordset[0][""];
         // console.log(userID);
         // let user = new User(userID, values.name, values.password, values.phone, values.email, true);
@@ -148,16 +150,6 @@ export default function LoginPage(props) {
                 console.log("form is valid");
                 handleSignup(values);
             }
-            // let isLocationsValidRes = isLocationsValid();
-            // if (isLocationsValidRes && formik.isValid) {
-            //     //everything is valid
-            //     if (rideToShow.rideTypeID === REQUEST_RIDE_ID) {
-            //         handlAnswerRequestSubmit(values);
-            //     }
-            //     else {
-            //         handlJoinOfferSubmit(values);
-            //     }
-            // }
         }
     });
 

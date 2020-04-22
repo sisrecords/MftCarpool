@@ -20,11 +20,10 @@ import AddOffer from './AddOffer';
 // }));
 
 export default function AddPopper(props) {
-  // const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const [openRequest, setOpenRequest] = useState(null);
+  const [openRequest, setOpenRequest] = useState(false);
   const [openOffer, setOpenOffer] = useState(false);
 
   const handleClickAway = () => {
@@ -45,13 +44,21 @@ export default function AddPopper(props) {
   }
 
   function closeRequestDialog(ride) {
-    setOpenRequest(null);
+    setOpenRequest(false);
     props.onClose(ride);
   }
 
   function closeOfferDialog(ride) {
-    setOpenOffer(null);
+    setOpenOffer(false);
     props.onClose(ride);
+  }
+
+  function cancelRequestDialog() {
+    setOpenRequest(false);
+  }
+
+  function cancelOfferDialog() {
+    setOpenOffer(false);
   }
 
   return (
@@ -60,11 +67,11 @@ export default function AddPopper(props) {
         <div>
           {
             openRequest ?
-              <AddRequest open={true} onClose={closeRequestDialog} /> : null
+              <AddRequest open={true} onClose={closeRequestDialog} onCancel={cancelRequestDialog} /> : null
           }
           {
             openOffer ?
-              <AddOffer open={true} onClose={closeOfferDialog} /> : null
+              <AddOffer open={true} onClose={closeOfferDialog} onCancel={cancelOfferDialog}/> : null
           }
           <Button className={styles.addRide} variant="contained" onClick={handleClick} >
             <AddIcon className={styles.addIcon}></AddIcon>

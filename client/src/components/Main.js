@@ -10,6 +10,8 @@ import PersonalDetails from './PersonalDetails';
 import Ride, { OFFER_RIDE_ID, REQUEST_RIDE_ID } from '../entities/ride';
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
+import { currentUser } from '../entities/user';
+import { useHistory } from "react-router-dom";
 
 var ridesDBList = [];
 
@@ -59,7 +61,7 @@ function toRad(Value) {
 }
 
 function Main() {
-
+  const history = useHistory();
   function sortList(list) {
     return list.sort((a, b) => {
       return Number(a.distance) - Number(b.distance)
@@ -74,6 +76,9 @@ function Main() {
   const [personalDetailsOpen, setPersonalDetailsOpen] = useState(null);
 
   useEffect(() => {
+    if(!currentUser) {
+      return;
+    }
     (async function getAllRides() {
       let response;
       trackPromise(
@@ -131,17 +136,19 @@ function Main() {
   }
 
   function onRequestClick() {
-    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === REQUEST_RIDE_ID));
+    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === REQUEST_RIDE_ID && ride.isAvailable === true));
     setAllSelect(false);
     setRequestSelect(true);
     setOfferSelect(false);
+    setHistorySelect(false);
   }
 
   function onOfferClick() {
-    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === OFFER_RIDE_ID));
+    setRidesList(ridesDBList.filter(ride => ride.rideTypeID === OFFER_RIDE_ID && ride.isAvailable === true));
     setAllSelect(false);
     setRequestSelect(false);
     setOfferSelect(true);
+    setHistorySelect(false);
   }
 
   function onHistoryClick() {
@@ -152,6 +159,9 @@ function Main() {
     setHistorySelect(true);
   }
 
+  if(!currentUser){
+    history.push("/login");
+  }
 
   return (
 

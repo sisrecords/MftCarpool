@@ -66,6 +66,7 @@ export default function AddOffer(props) {
 
     const handleCancel = () => {
         setOpen(false);
+        props.onCancel();
     };
 
     const handleSendRequest = async (values) => {
