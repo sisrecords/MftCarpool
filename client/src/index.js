@@ -25,10 +25,12 @@ const LoadingIndicator = props => {
       style={{
         position: "absolute",
         width: "100%",
-        height: "100",
+        height: "100%",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        zIndex: 15000,
+        top: "0"
       }}
     >
       <Loader type="ThreeDots" color="#0D47A1" height="100" width="100" />

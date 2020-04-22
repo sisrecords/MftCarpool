@@ -10,6 +10,8 @@ import PersonalDetails from './PersonalDetails';
 import Ride, { OFFER_RIDE_ID, REQUEST_RIDE_ID } from '../entities/ride';
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
+import { currentUser } from '../entities/user';
+import { useHistory } from "react-router-dom";
 
 var ridesDBList = [];
 
@@ -59,7 +61,7 @@ function toRad(Value) {
 }
 
 function Main() {
-
+  const history = useHistory();
   function sortList(list) {
     return list.sort((a, b) => {
       return Number(a.distance) - Number(b.distance)
@@ -73,6 +75,9 @@ function Main() {
   const [personalDetailsOpen, setPersonalDetailsOpen] = useState(null);
 
   useEffect(() => {
+    // if(!currentUser) {
+    //   return;
+    // }
     (async function getAllRides() {
       let response;
       trackPromise(
@@ -142,6 +147,9 @@ function Main() {
     setOfferSelect(true);
   }
 
+  // if(!currentUser){
+  //   history.push("/login");
+  // }
 
   return (
 
