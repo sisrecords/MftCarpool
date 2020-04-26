@@ -14,7 +14,7 @@ function RideCard(props) {
         <div className={styles.card} >
             <ListItem className={styles.listitem} key={props.itemRide.phone}>
                 <Card className={styles.card}>
-                    <div className={styles.fromTo}><img style={{ height: '45px' }} src='/images/from_to.png' alt="from_to" /></div>
+                    <div className={styles.fromTo}><img style={{ height: '45px', paddingRight: '9px' }} src='/images/from_to.png' alt="from_to" /></div>
                     {
                         (props.itemRide.rideTypeID === REQUEST_RIDE_ID) ?
                             <div className={styles.carIconReq}><EmojiPeopleIcon className={styles.carIcon} /></div>
