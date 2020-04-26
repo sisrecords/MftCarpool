@@ -188,3 +188,196 @@
     align-items: center;
     padding-left: 4px;
 }
+
+@media screen and (min-width: 700px) {
+    .card {
+        width: 100%;
+        height: 80px;
+        padding-left: 0;
+        padding-right: 0;
+        border-radius: 25px;
+        display: grid;
+        grid-template-rows: repeat(4, 20px);
+        grid-template-columns: repeat(10, 1fr);
+        margin-top: 5px;
+    }
+    
+    .listitem {
+        height: 80px;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 0px;
+        margin-top: 0px;
+        grid-row: 1 / span 4;
+        grid-column: 1/ span 10;
+    }
+    
+    .carIconReq {
+        grid-row: 1 / span 3;
+        grid-column: 9/ span 2;
+        /* color: rgb(105,180,255); */
+        color: #42A5F5;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .carIconOff {
+        grid-row: 1 / span 3;
+        grid-column: 9/ span 2;
+        color: #0D47A1;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .carIcon {
+        padding-top: 17px !important;
+        /* padding-left: 12px !important; */
+        width: 45px !important;
+        height: 45px !important;
+    }
+    
+    .addressFrom {
+        direction: rtl;
+        grid-row: 1 / span 2;
+        grid-column: 1/ span 8;
+        font-size: 18px;
+        padding-right: 15px !important;
+        padding-top: 0px !important;
+        justify-self: right !important;
+    }
+    
+    .cityFrom {
+        grid-row: 2 / span 2;
+        grid-column: 1/ span 8;
+        font-size: 12px;
+        padding-right: 15px !important;
+        padding-top: 3px !important;
+        justify-self: right !important;
+    }
+    
+    .addressTo {
+        direction: rtl;
+        grid-row: 3 / span 2;
+        grid-column: 1/ span 8;
+        font-size: 18px;
+        padding-right: 15px !important;
+        padding-top: 0px !important;
+        justify-self: right !important;
+    }
+    
+    .cityTo {
+        grid-row: 4 / span 2;
+        grid-column: 1/ span 8;
+        font-size: 12px;
+        padding-right: 15px !important;
+        padding-top: 3px !important;
+        justify-self: right !important;
+    }
+    
+    .locationIcon {
+        display: flex;
+        padding-left: 3px;
+        padding-top: 1px;
+    }
+    
+    .distance {
+        font-size: 14px;
+        direction: rtl;
+        color: rgb(151, 148, 148) !important;
+    
+    }
+    
+    .fromYou {
+        font-size: 14px;
+        color: rgb(151, 148, 148) !important;
+    
+    }
+    
+    .fromTo {
+        grid-row: 1/ span 1;
+        grid-column: 8/ span 1;
+        padding-left: 60px !important;
+        padding-top: 12px;
+    }
+    
+    .time {
+        font-size: 14px;
+        direction: rtl;
+        color: rgb(151, 148, 148) !important;
+    
+    }
+    
+    .date {
+        font-size: 14px;
+        color: rgb(151, 148, 148) !important;
+    }
+    
+    .timeIcon {
+        display: flex;
+        padding-left: 3px;
+        /* padding-top: 1px; */
+    }
+    
+    .dateIcon {
+        display: flex;
+        padding-left: 3px;
+        /* padding-top: 1px; */
+    }
+    
+    .accessTimeIcon {
+        width: 17px !important;
+        height: 17px !important;
+        fill: rgb(185, 182, 182) !important;
+    }
+    
+    .eventIcon {
+        width: 17px !important;
+        height: 17px !important;
+        fill: rgb(185, 182, 182) !important;
+    }
+    
+    .locationOnIcon {
+        width: 17px !important;
+        height: 17px !important;
+        fill: rgb(185, 182, 182) !important;
+    }
+    
+    .dateContainer {
+        grid-row: 4 /span 1;
+        grid-column: 1 /span 1;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 4px;
+    }
+    
+    .timeContainer {
+        grid-row: 3 /span 1;
+        grid-column: 1 /span 1;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        padding-left: 4px;
+    }
+    
+    .distanceContainer {
+        grid-row: 1 /span 1;
+        grid-column: 1 /span 1;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        padding-left: 4px;
+    }
+    
+    .fromYouContainer {
+        grid-row: 2 /span 1;
+        grid-column: 1 /span 1;
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+        align-items: center;
+        padding-left: 4px;
+    }
+}
