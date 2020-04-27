@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import Card from '@material-ui/core/Card';
 import styles from './ride.module.css';
@@ -9,7 +10,26 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import EventIcon from '@material-ui/icons/Event';
 import { REQUEST_RIDE_ID } from '../entities/ride';
 
+function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height
+    };
+  }
+
 function RideCard(props) {
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    
+    useEffect(() => {
+        function handleResize() {
+          setWindowDimensions(getWindowDimensions());
+        }
+    
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
+
     return (
         <div className={styles.card} >
             <ListItem className={styles.listitem} key={props.itemRide.phone}>
@@ -22,9 +42,19 @@ function RideCard(props) {
                     }
                     <div className={styles.addressFrom} title={props.itemRide.fromLocationWithoutCity}>
                         {
+                            windowDimensions.width < 390 ?
                             props.itemRide.fromLocationWithoutCity.length > 15 ?
                                 props.itemRide.fromLocationWithoutCity.substring(0, 15) + "..."
                                 : props.itemRide.fromLocationWithoutCity
+                            :
+                                windowDimensions.width < 700 ?
+                                props.itemRide.fromLocationWithoutCity.length > 20 ?
+                                props.itemRide.fromLocationWithoutCity.substring(0, 20) + "..."
+                                : props.itemRide.fromLocationWithoutCity
+                                :
+                                    props.itemRide.fromLocationWithoutCity.length > windowDimensions.width ?
+                                    props.itemRide.fromLocationWithoutCity.substring(0, windowDimensions.width) + "..."
+                                    : props.itemRide.fromLocationWithoutCity
                         }
                     </div>
                     <div className={styles.cityFrom}>
@@ -32,9 +62,19 @@ function RideCard(props) {
                     </div >
                     <div className={styles.addressTo} title={props.itemRide.toLocationWithoutCity}>
                         {
+                            windowDimensions.width < 390 ?
                             props.itemRide.toLocationWithoutCity.length > 15 ?
                                 props.itemRide.toLocationWithoutCity.substring(0, 15) + "..."
                                 : props.itemRide.toLocationWithoutCity
+                            :
+                                windowDimensions.width < 700 ?
+                                props.itemRide.toLocationWithoutCity.length > 20 ?
+                                props.itemRide.toLocationWithoutCity.substring(0, 20) + "..."
+                                : props.itemRide.toLocationWithoutCity
+                                 :
+                                    props.itemRide.toLocationWithoutCity.length > windowDimensions.width ?
+                                    props.itemRide.toLocationWithoutCity.substring(0, windowDimensions.width) + "..."
+                                    : props.itemRide.toLocationWithoutCity
                         }
                     </div>
                     <div className={styles.cityTo}>

@@ -24,6 +24,14 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useParams, useHistory } from "react-router-dom";
 import { transformRideFunc } from "./Main";
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}
+
 export default function RideDialog(props) {
   let { rideID } = useParams();
   const history = useHistory();
@@ -40,6 +48,18 @@ export default function RideDialog(props) {
   const [pickupLocation, setPickupLocation] = useState("");
   const [pickupLatitude, setPickupLatitude] = useState("");
   const [pickupLongitude, setPickupLongitude] = useState("");
+
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   useEffect(() => {
     if (rideID && !rideToShow) {
@@ -274,13 +294,48 @@ export default function RideDialog(props) {
                 <div className={styles.name}>{rideToShow.name}</div>
                 <div className={styles.fromTo}><img style={{ height: '80px' }} src='/images/fromto2.png' alt="from_to" /></div>
                 <div className={styles.pickupLocationLabel}>נקודת מוצא</div>
-                <div className={styles.fromAddress} title={rideToShow.fromLocationWithoutCity}>{rideToShow.fromLocationWithoutCity.length > 27 ?
-                  rideToShow.fromLocationWithoutCity.substring(0, 24) + "..." : rideToShow.fromLocationWithoutCity}</div>
+                <div className={styles.fromAddress} title={rideToShow.fromLocationWithoutCity}>
+                  {/* {rideToShow.fromLocationWithoutCity.length > 27 ?
+                  rideToShow.fromLocationWithoutCity.substring(0, 24) + "..." : rideToShow.fromLocationWithoutCity}
+                   */}
+                  {
+                    windowDimensions.width < 390 ?
+                      rideToShow.fromLocationWithoutCity.length > 27 ?
+                        rideToShow.fromLocationWithoutCity.substring(0, 24) + "..."
+                        : rideToShow.fromLocationWithoutCity
+                      :
+                      windowDimensions.width < 700 ?
+                        rideToShow.fromLocationWithoutCity.length > 40 ?
+                          rideToShow.fromLocationWithoutCity.substring(0, 40) + "..."
+                          : rideToShow.fromLocationWithoutCity
+                        :
+                        rideToShow.fromLocationWithoutCity.length > windowDimensions.width ?
+                          rideToShow.fromLocationWithoutCity.substring(0, windowDimensions.width) + "..."
+                          : rideToShow.fromLocationWithoutCity
+                  }
+                </div>
 
                 <div className={styles.fromCity}>{rideToShow.fromLocationCity}</div>
                 <div className={styles.dropLocationLabel}>נקודת יעד</div>
-                <div className={styles.toAddress} title={rideToShow.toLocationWithoutCity}>{rideToShow.toLocationWithoutCity.length > 27 ?
-                  rideToShow.toLocationWithoutCity.substring(0, 24) + "..." : rideToShow.toLocationWithoutCity}</div>
+                <div className={styles.toAddress} title={rideToShow.toLocationWithoutCity}>
+                  {/* {rideToShow.toLocationWithoutCity.length > 27 ?
+                  rideToShow.toLocationWithoutCity.substring(0, 24) + "..." : rideToShow.toLocationWithoutCity} */}
+                   {
+                    windowDimensions.width < 390 ?
+                      rideToShow.toLocationWithoutCity.length > 27 ?
+                        rideToShow.toLocationWithoutCity.substring(0, 24) + "..."
+                        : rideToShow.toLocationWithoutCity
+                      :
+                      windowDimensions.width < 700 ?
+                        rideToShow.toLocationWithoutCity.length > 40 ?
+                          rideToShow.toLocationWithoutCity.substring(0, 40) + "..."
+                          : rideToShow.toLocationWithoutCity
+                        :
+                        rideToShow.toLocationWithoutCity.length > windowDimensions.width ?
+                          rideToShow.toLocationWithoutCity.substring(0, windowDimensions.width) + "..."
+                          : rideToShow.toLocationWithoutCity
+                  }
+                  </div>
                 <div className={styles.toCity}>{rideToShow.toLocationCity}</div>
                 <div className={styles.dateLabel}>תאריך</div>
                 <div className={styles.dateIconDiv}><EventIcon className={styles.dateIcon} /></div>
